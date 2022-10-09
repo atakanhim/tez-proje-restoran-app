@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const localMasaNo = Number(sessionStorage.getItem("masaNo")) || null;
 const initialState = {
   masaNo: localMasaNo,
+  cart: [],
+  total: 0,
 };
 
 const restoranSlice = createSlice({

@@ -42,17 +42,19 @@ const Loading = () => {
       dispatch(setMasaNo(masaId));
       sessionStorage.setItem("masaNo", masaId);
 
-      message.current.innerHTML = "Masa numaranız: " + masaId;
+      message.current.innerHTML =
+        masaId + " Nolu Masa ile giriş gerçekleeşiyor \n ...";
       setLoading(true);
     } else {
-      message.current.innerHTML = "Masa numaranız 1-12 arasında olmalıdır";
+      message.current.innerHTML =
+        "Masa numaranız 1-12 arasında olmalıdır \n Lütfen yeni bir numara giriniz";
       setLoading(false);
     }
   };
 
   return (
     <div className="absolute inset-0	bg-black w-full h-screen z-20 text-slate-50 flex items-center justify-center">
-      <p className="" ref={message}></p>
+      <p className="text-lg" ref={message}></p>
     </div>
   );
 };

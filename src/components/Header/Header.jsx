@@ -1,5 +1,6 @@
 import React from "react";
 import { BsCart2 } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import lospolos from "../../img/lospolos.png";
@@ -7,7 +8,7 @@ import "./Header.css";
 
 const Header = () => {
   // reducers
-
+  const { masaNo, cart, total } = useSelector((state) => state.restoran);
   // local states
   const [menuOpen, setMenuOpen] = React.useState(false); // hamburger menu
 
@@ -30,11 +31,14 @@ const Header = () => {
 
         <div className="sepetLogo">
           {/* aynı zamanda açılır menu olacak */}
+          {cart.length > 0 ? (
+            <p className=" text-sm text-white font-semibold ">{cart.length}</p>
+          ) : (
+            <p>0</p>
+          )}
 
-          <p className="text-sm text-white font-semibold">12</p>
-
-          <p>₺12</p>
-          <BsCart2 className="text-xl md:text-2xl" />
+          <p>₺{total}</p>
+          <BsCart2 className="text-lg md:text-2xl" />
         </div>
       </div>
 
