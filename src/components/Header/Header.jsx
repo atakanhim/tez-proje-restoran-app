@@ -2,7 +2,7 @@ import React from "react";
 import { BsCart2 } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
-import lospolos from "../img/lospolos.png";
+import lospolos from "../../img/lospolos.png";
 import "./Header.css";
 
 const Header = () => {
