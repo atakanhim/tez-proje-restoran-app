@@ -14,7 +14,7 @@ const Header = () => {
   //hamburge menu bitiş
 
   return (
-    <div className="fixed flex z-15 w-full h-16  bg-[#2e2e2efb]">
+    <div className="fixed flex z-10 w-full h-16  bg-[#2e2e2efb]">
       {/* for pc : h-screen */}
       <div className="flex w-full h-full items-center justify-between ">
         <div
