@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Header, Home, Loading, Login } from "./components";
+import { Categories, Header, Home, Loading, Login } from "./components";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -11,8 +11,9 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/*" element={<Home />} />
+          <Route path="/*" element={<Categories />} />
           <Route path="/restoran/table/*" element={<Loading />} />
+          <Route path="/admin/categories/*" element={<Categories />} />
         </Routes>
       </div>
     </AnimatePresence>

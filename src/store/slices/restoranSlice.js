@@ -5,6 +5,7 @@ const initialState = {
   masaNo: localMasaNo,
   cart: [],
   total: 0,
+  user: "musteri",
 };
 
 const restoranSlice = createSlice({
