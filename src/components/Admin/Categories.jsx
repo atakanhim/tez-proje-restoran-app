@@ -2,6 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+// import axios from "axios";
+
+import Axios from "axios";
 
 const Categories = () => {
   const [categories, setCategories] = React.useState([
@@ -11,7 +14,6 @@ const Categories = () => {
       category_description: "",
     },
   ]);
-
   const schema = yup
     .object({
       category_name: yup.string().required("ad gereklidir"),
@@ -28,7 +30,22 @@ const Categories = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const category_name = data.category_name;
+    const category_description = data.category_description;
+    console.log(data);
+    //axios post
+    Axios.post("http://localhost:5000/api/category/add", {
+      category_name,
+      category_description,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-slate-400">
