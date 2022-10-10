@@ -7,13 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
 
 const Categories = () => {
-  const [categories, setCategories] = React.useState([
-    {
-      category_name: "",
-      category_image: "",
-      category_description: "",
-    },
-  ]);
   const schema = yup
     .object({
       category_name: yup.string().required("ad gereklidir"),
@@ -33,7 +26,6 @@ const Categories = () => {
   const onSubmit = (data) => {
     const category_name = data.category_name;
     const category_description = data.category_description;
-    console.log(data);
     //axios post
     Axios.post("http://localhost:5000/api/category/add", {
       category_name,
