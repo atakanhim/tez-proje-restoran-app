@@ -2,7 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-
+var url = window.location.href;
+url = url.split("/"); // url aldım ve böldüm
 const Home = () => {
   const navigate = useNavigate();
   const { masaNo } = useSelector((state) => state.restoran);

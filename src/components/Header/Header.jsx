@@ -14,13 +14,16 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = React.useState(false); // hamburger menu
   const [showHeader, setShowHeader] = React.useState(true); // search bar
 
+  // this.url
+  var url = window.location.href;
+  url = url.split("/"); // url aldım ve böldüm
   useEffect(() => {
-    if (user === "musteri") {
-      setShowHeader(true);
-    } else {
+    if (url[3] === "admin") {
       setShowHeader(false);
+    } else {
+      setShowHeader(true);
     }
-  }, [user]);
+  }, [url]);
 
   //hamburge menu bitiş
 
