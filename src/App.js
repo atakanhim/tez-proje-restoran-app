@@ -22,16 +22,16 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className=" w-screen bg-slate-100 gap-2  flex  flex-col  text-base font-bold   ">
+      <div className=" w-screen bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
         <Header />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Categories />} />
-          <Route path="/categories" element={<Categories />} />
+          <Route path="/" element={<Home />} />
           <Route path="/restoran/table/*" element={<Loading />} />
           <Route path="/admin/categories/*" element={<Categories />} />
           <Route path="/*" element={<Home />} />
         </Routes>
+        <Home />
       </div>
     </AnimatePresence>
   );
