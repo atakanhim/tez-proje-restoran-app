@@ -12,17 +12,11 @@ import {
 } from "../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
-
-import Axios from "axios";
 import CategoryCard from "../CustomCarts/CategoryCard";
-
+ad;
 const Categories = () => {
   const { categories } = useSelector((state) => state.restoran);
   const dispatch = useDispatch();
-  useEffect(() => {
-    getCategory();
-  }, []);
-
   const getCategory = async () => {
     const response = await getCategories();
     dispatch(setCategories(response));
