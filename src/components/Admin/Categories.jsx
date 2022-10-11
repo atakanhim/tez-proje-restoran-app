@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { setCategories } from "../../store/slices/restoranSlice";
+import { useSelector } from "react-redux";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
-import { motion } from "framer-motion";
 
 import Axios from "axios";
 import CategoryCard from "../CustomCarts/CategoryCard";
 
 const Categories = () => {
-  const [categories, setCategories] = React.useState([]);
+  const { categories } = useSelector((state) => state.restoran);
+
+  const dispatch = useDispatch();
+
   // axios get req
   useEffect(() => {
     getCategory();
@@ -17,14 +23,23 @@ const Categories = () => {
 
   const getCategory = async () => {
     const response = await Axios.get("http://localhost:5000/api/category");
-    setCategories(response.data);
+    console.log(response.data);
+    dispatch(setCategories(response.data));
+  };
+
+  const deleteCategory = async (id) => {
+    const response = await Axios.delete(
+      `http://localhost:5000/api/category/clear/${id}`
+    );
+    getCategory();
     console.log(response.data);
   };
+
   const deleteAll = async () => {
     const response = await Axios.delete(
       "http://localhost:5000/api/category/clear"
     );
-    setCategories([]);
+    getCategory();
     console.log(response.data);
   };
   const setCategory = async (category_name, category_description) => {
@@ -129,14 +144,11 @@ const Categories = () => {
         </form>
       </div>
 
-      <div className="flex w-4/5 h-auto bg-gray-100 gap-12 p-3 flex-wrap justify-center">
-        <CategoryCard categories={categories} />
+      <div className="flex w-4/5 h-auto gap-12 p-3 flex-wrap justify-center">
+        <CategoryCard categories={categories} deleteCategory={deleteCategory} />
       </div>
 
       <div className="flex w-4/5 h-auto bg-slate-600 gap-12 p-3 flex-wrap justify-center">
-        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          Düzenle
-        </button>
         <button
           onClick={deleteAll}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

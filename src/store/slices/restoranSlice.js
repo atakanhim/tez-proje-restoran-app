@@ -6,6 +6,8 @@ const initialState = {
   cart: [],
   total: 0,
   user: "musteri",
+  categories: [],
+  currentCategory: "all",
 };
 
 const restoranSlice = createSlice({
@@ -17,9 +19,20 @@ const restoranSlice = createSlice({
         return { ...state, masaNo: action.payload };
       },
     },
+    setCategories: {
+      reducer: (state, action) => {
+        return { ...state, categories: action.payload };
+      },
+    },
+    setCurrentCategory: {
+      reducer: (state, action) => {
+        return { ...state, currentCategory: action.payload };
+      },
+    },
   },
 });
 console.log(restoranSlice);
-export const { setMasaNo } = restoranSlice.actions;
+export const { setMasaNo, setCategories, setCurrentCategory } =
+  restoranSlice.actions;
 
 export default restoranSlice.reducer;

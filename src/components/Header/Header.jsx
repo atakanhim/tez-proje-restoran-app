@@ -3,13 +3,19 @@ import { useEffect } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurrentCategory } from "../../store/slices/restoranSlice";
 
 import lospolos from "../../img/lospolos.png";
 import "./Header.css";
 
 const Header = () => {
-  // reducers
-  const { masaNo, cart, total, user } = useSelector((state) => state.restoran);
+  const dispatch = useDispatch();
+
+  // global states
+  const { masaNo, cart, total, user, categories, currentCategory } =
+    useSelector((state) => state.restoran);
+
   // local states
   const [menuOpen, setMenuOpen] = React.useState(false); // hamburger menu
   const [showHeader, setShowHeader] = React.useState(true); // search bar
@@ -19,14 +25,20 @@ const Header = () => {
   url = url.split("/"); // url aldım ve böldüm
   useEffect(() => {
     if (url[3] === "admin") {
-      setShowHeader(false);
+      setShowHeader(true);
     } else {
       setShowHeader(true);
     }
   }, [url]);
 
   //hamburge menu bitiş
-
+  const changeCategory = (category) => {
+    if (category === currentCategory) {
+      dispatch(setCurrentCategory("all"));
+    } else {
+      dispatch(setCurrentCategory(category));
+    }
+  };
   return (
     <div
       className={
@@ -58,7 +70,20 @@ const Header = () => {
         </div>
       </div>
       <ul className={`menu-btn__links ${menuOpen ? "open" : ""}`}>
-        <li className={`menu-btn__link active`}>menu1</li>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <li
+              key={category._id}
+              className={`menu-btn__link ${
+                currentCategory === category.category_name ? "active" : ""
+              }`}
+              onClick={() => changeCategory(category.category_name)}
+            >
+              <NavLink to={`/category/${category._id}`}>
+                {category.category_name}
+              </NavLink>
+            </li>
+          ))}
       </ul>
       {/* for mobile : h-screen */}
     </div>

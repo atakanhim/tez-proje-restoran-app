@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-const CategoryCard = ({ categories }) => {
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+const CategoryCard = ({ categories, deleteCategory }) => {
   return (
     <>
       {categories.length > 0 &&
@@ -15,6 +16,24 @@ const CategoryCard = ({ categories }) => {
                 src={category.category_image}
                 className="w-full h-full object-cover rounded-lg"
               ></motion.img>
+            </div>
+            <p className="text-base text-headingColor font-semibold my-2">
+              {category.category_name.length > 25
+                ? `${category.category_name.slice(0, 25)}..`
+                : category.category_name}
+            </p>
+
+            <div>
+              <motion.i
+                whileTap={{ scale: 0.9 }}
+                onClick={() => deleteCategory(category._id)}
+                className="w-full absolute bottom-2 right-2 flex items-center justify-between px-4"
+              >
+                <DeleteOutlineOutlinedIcon
+                  className="text-base text-red-400 drop-shadow-md hover:text-red-600
+                "
+                />
+              </motion.i>
             </div>
           </motion.div>
         ))}
