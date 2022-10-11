@@ -4,7 +4,12 @@ import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
-
+import {
+  getCategories,
+  deleteCategory,
+  addCategory,
+  deleteAllCategories,
+} from "../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
 
@@ -13,47 +18,33 @@ import CategoryCard from "../CustomCarts/CategoryCard";
 
 const Categories = () => {
   const { categories } = useSelector((state) => state.restoran);
-
   const dispatch = useDispatch();
-
-  // axios get req
   useEffect(() => {
     getCategory();
   }, []);
 
   const getCategory = async () => {
-    const response = await Axios.get("http://localhost:5000/api/category");
-    console.log(response.data);
-    dispatch(setCategories(response.data));
+    const response = await getCategories();
+    dispatch(setCategories(response));
   };
 
-  const deleteCategory = async (id) => {
-    const response = await Axios.delete(
-      `http://localhost:5000/api/category/clear/${id}`
-    );
-    getCategory();
-    console.log(response.data);
+  const deleteCategoryWithId = async (id) => {
+    deleteCategory(id).then((res) => {
+      getCategory();
+      console.log(res);
+    });
   };
 
   const deleteAll = async () => {
-    const response = await Axios.delete(
-      "http://localhost:5000/api/category/clear"
-    );
-    getCategory();
-    console.log(response.data);
+    deleteAllCategories().then((res) => {
+      getCategory();
+      console.log(res);
+    });
   };
   const setCategory = async (category_name, category_description) => {
-    Axios.post("http://localhost:5000/api/category/add", {
-      category_name,
-      category_description,
-    })
-      .then((res) => {
-        console.log(res);
-        getCategory();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const response = await addCategory(category_name, category_description);
+    getCategory();
+    console.log(response);
   };
   // schema for yup
   const schema = yup
@@ -145,7 +136,10 @@ const Categories = () => {
       </div>
 
       <div className="flex w-4/5 h-auto gap-12 p-3 flex-wrap justify-center">
-        <CategoryCard categories={categories} deleteCategory={deleteCategory} />
+        <CategoryCard
+          categories={categories}
+          deleteCategory={deleteCategoryWithId}
+        />
       </div>
 
       <div className="flex w-4/5 h-auto bg-slate-600 gap-12 p-3 flex-wrap justify-center">
