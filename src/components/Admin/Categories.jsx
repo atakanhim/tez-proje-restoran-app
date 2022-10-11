@@ -22,7 +22,11 @@ const Categories = () => {
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
-  const uploadImage = (e) => {};
+  const uploadImage = (e) => {
+    setIsLoading(true);
+    const imageFile = e.target.files[0];
+    console.log(imageFile);
+  };
   const deleteImage = () => {};
 
   const dispatch = useDispatch();

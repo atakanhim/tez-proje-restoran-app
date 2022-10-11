@@ -33,7 +33,6 @@ const Loading = () => {
         navigate("/", { replace: true });
       }
     }, 3000);
-    console.log("timer: " + timer);
     return () => clearTimeout(timer);
   }, [loading, navigate]);
 
