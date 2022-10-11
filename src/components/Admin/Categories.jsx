@@ -119,6 +119,7 @@ const Categories = () => {
       category_image
     );
     getCategory();
+    setImageAsset(false);
   };
   // schema for yup
   const schema = yup
