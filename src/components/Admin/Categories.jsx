@@ -181,15 +181,15 @@ const Categories = () => {
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="mt-4  w-full md:w-auto border-none outline-none bg-emerald-400 px-12 py-2 rounded-lg text-lg text-white font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300  hover:bg-emerald-800  transition-all ease-in-out duration-500"
             >
-              Ekle
+              Kategori Ekle
             </button>
           </div>
         </form>
       </div>
 
-      <div className="flex w-4/5 h-auto gap-12 p-3 flex-wrap justify-center">
+      <div className="flex w-3/5 h-auto gap-12 p-3 flex-wrap justify-center">
         <CategoryCard
           categories={categories}
           deleteCategory={deleteCategoryWithId}
