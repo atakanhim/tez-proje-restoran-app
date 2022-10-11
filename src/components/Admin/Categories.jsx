@@ -105,14 +105,19 @@ const Categories = () => {
         {categories.map((category) => (
           <div
             key={category._id}
-            className="flex relative items-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
+            className="flex relative items-center justify-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
           >
             <img
-              src="https://picsum.photos/200/300"
-              className="absolute inset-0 z-10 w-full h-full object-cover transition-all duration-500 ease-in-out transform hover:scale-110 opacity-25	"
+              src={category.categor_image}
+              className="absolute inset-0 z-10 w-full h-full object-cover opacity-25	"
               alt=""
             />
-            {category.category_name}- {category.category_description}-{" "}
+            <div className=" w-full h-5/6 flex items-center justify-center flex-col gap-4 hover:scale-110 transition-all duration-500 ease-in-out transform z-20 ">
+              <h2 className="text-xs focus:text-lg font-bold text-white  ">
+                {category.category_name}
+              </h2>
+              <p className="text-white z-20">{category.category_description}</p>
+            </div>
           </div>
         ))}
       </div>
