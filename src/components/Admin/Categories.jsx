@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import axios from "axios";
+// import motion
+import { motion } from "framer-motion";
 
 import Axios from "axios";
+import CategoryCard from "../CustomCarts/CategoryCard";
 
 const Categories = () => {
   const [categories, setCategories] = React.useState([]);
@@ -127,29 +129,10 @@ const Categories = () => {
         </form>
       </div>
 
-      <div className="flex w-4/5 h-auto bg-slate-300 gap-12 p-3 flex-wrap justify-center">
-        {categories.length > 0 &&
-          categories.map((category) => (
-            <div
-              key={category._id}
-              className="flex relative items-center justify-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
-            >
-              <img
-                src={category.categor_image}
-                className="absolute inset-0 z-10 w-full h-full object-cover opacity-25	"
-                alt=""
-              />
-              <div className=" w-full h-5/6 flex items-center justify-center flex-col gap-4 hover:scale-110 transition-all duration-500 ease-in-out transform z-20 ">
-                <h2 className="text-xs focus:text-lg font-bold text-white  ">
-                  {category.category_name}
-                </h2>
-                <p className="text-white z-20">
-                  {category.category_description}
-                </p>
-              </div>
-            </div>
-          ))}
+      <div className="flex w-4/5 h-auto bg-gray-100 gap-12 p-3 flex-wrap justify-center">
+        <CategoryCard categories={categories} />
       </div>
+
       <div className="flex w-4/5 h-auto bg-slate-600 gap-12 p-3 flex-wrap justify-center">
         <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
           Düzenle
