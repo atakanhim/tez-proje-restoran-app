@@ -15,6 +15,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
 import CategoryCard from "../CustomCarts/CategoryCard";
 import Loader from "../CustomCarts/Loader";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../../firebase.config";
 
 const Categories = () => {
   //global state
@@ -22,12 +29,65 @@ const Categories = () => {
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
+
   const uploadImage = (e) => {
     setIsLoading(true);
     const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // upload Progress
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.log(error);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
+      },
+      () => {
+        // upload işlemi bittikten sonra
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageAsset(downloadURL);
+          setIsLoading(false);
+          console.log("File available at scces", downloadURL);
+        });
+      }
+    );
+
     console.log(imageFile);
   };
-  const deleteImage = () => {};
+
+  const deleteImage = () => {
+    setIsLoading(true);
+    const deleteRef = ref(storage, imageAsset);
+    deleteObject(deleteRef)
+      .then(() => {
+        setImageAsset(null);
+        setIsLoading(false);
+        console.log("File deleted successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
 
   const dispatch = useDispatch();
   const getCategory = async () => {
@@ -48,10 +108,17 @@ const Categories = () => {
       console.log(res);
     });
   };
-  const setCategory = async (category_name, category_description) => {
-    const response = await addCategory(category_name, category_description);
+  const setCategory = async (
+    category_name,
+    category_description,
+    category_image
+  ) => {
+    const response = await addCategory(
+      category_name,
+      category_description,
+      category_image
+    );
     getCategory();
-    console.log(response);
   };
   // schema for yup
   const schema = yup
@@ -74,6 +141,7 @@ const Categories = () => {
   const onSubmit = (data) => {
     const category_name = data.category_name;
     const category_description = data.category_description;
+    const category_image = imageAsset;
     // filter ile aynı isimde kategori eklenmesin
 
     var category = categories.filter(
@@ -82,8 +150,10 @@ const Categories = () => {
 
     if (category.length > 0 || categories === null) {
       alert("aynı isimde kategori eklenemez");
+    } else if (category_image === false) {
+      alert("resim ekle");
     } else {
-      setCategory(category_name, category_description);
+      setCategory(category_name, category_description, category_image);
     }
 
     // clear input
@@ -130,8 +200,9 @@ const Categories = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
             />
-            <p>{errors.category_description?.message}</p>
           </div>
+
+          <p>{errors.category_description?.message}</p>
           <div className="flex justify-center items-center">
             <div
               className="flex justify-center items-center flex-col border-2 border-dotted

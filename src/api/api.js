@@ -15,13 +15,14 @@ export const deleteAllCategories = async () => {
   return response.data;
 };
 
-export const addCategory = async (x, y) => {
+export const addCategory = async (x, y, z) => {
   console.log("add category " + x, y);
 
   const response = await axios
     .post("http://localhost:5000/api/category", {
       category_name: x,
       category_description: y,
+      category_image: z,
     })
     .then((res) => {
       console.log(res);
