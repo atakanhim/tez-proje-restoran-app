@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
 
 const Categories = () => {
+  const [categories, setCategories] = React.useState([]);
+  // axios get req
+  useEffect(() => {
+    getCategory();
+  }, []);
+
+  const getCategory = async () => {
+    const response = await Axios.get("http://localhost:5000/api/category");
+    setCategories(response.data);
+    console.log(response.data);
+  };
+
   const schema = yup
     .object({
       category_name: yup.string().required("ad gereklidir"),
@@ -23,16 +35,18 @@ const Categories = () => {
     resolver: yupResolver(schema),
   });
 
+  // data gönderiliyor    //axios post
   const onSubmit = (data) => {
     const category_name = data.category_name;
     const category_description = data.category_description;
-    //axios post
+
     Axios.post("http://localhost:5000/api/category/add", {
       category_name,
       category_description,
     })
       .then((res) => {
         console.log(res);
+        getCategory();
       })
       .catch((err) => {
         console.log(err);
@@ -40,8 +54,8 @@ const Categories = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-slate-400">
-      <div className="flex flex-col items-center justify-center w-1/2 h-1/2 bg-gray-400 rounded-lg shadow-lg">
+    <div className="flex items-center w-full h-[1200px] gap-7 bg-slate-400 flex-col">
+      <div className="flex flex-col  items-center justify-center w-1/2 h-370 bg-gray-400 rounded-lg shadow-lg mt-36">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
             <label
@@ -86,6 +100,21 @@ const Categories = () => {
             Ekle
           </button>
         </form>
+      </div>
+      <div className="flex w-4/5 h-auto bg-slate-300 gap-12 p-3 flex-wrap justify-center">
+        {categories.map((category) => (
+          <div
+            key={category._id}
+            className="flex relative items-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
+          >
+            <img
+              src="https://picsum.photos/200/300"
+              className="absolute inset-0 z-10 w-full h-full object-cover transition-all duration-500 ease-in-out transform hover:scale-110 opacity-25	"
+              alt=""
+            />
+            {category.category_name}- {category.category_description}-{" "}
+          </div>
+        ))}
       </div>
     </div>
   );
