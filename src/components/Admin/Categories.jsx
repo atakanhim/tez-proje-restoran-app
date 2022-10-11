@@ -18,7 +18,27 @@ const Categories = () => {
     setCategories(response.data);
     console.log(response.data);
   };
-
+  const deleteAll = async () => {
+    const response = await Axios.delete(
+      "http://localhost:5000/api/category/clear"
+    );
+    setCategories([]);
+    console.log(response.data);
+  };
+  const setCategory = async (category_name, category_description) => {
+    Axios.post("http://localhost:5000/api/category/add", {
+      category_name,
+      category_description,
+    })
+      .then((res) => {
+        console.log(res);
+        getCategory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // schema for yup
   const schema = yup
     .object({
       category_name: yup.string().required("ad gereklidir"),
@@ -39,18 +59,23 @@ const Categories = () => {
   const onSubmit = (data) => {
     const category_name = data.category_name;
     const category_description = data.category_description;
+    // filter ile aynı isimde kategori eklenmesin
 
-    Axios.post("http://localhost:5000/api/category/add", {
-      category_name,
-      category_description,
-    })
-      .then((res) => {
-        console.log(res);
-        getCategory();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    var category = categories.filter(
+      (category) => category.category_name === category_name
+    );
+
+    if (category.length > 0 || categories === null) {
+      alert("aynı isimde kategori eklenemez");
+    } else {
+      setCategory(category_name, category_description);
+    }
+
+    // clear input
+    document.getElementById("category_name").value = "";
+    document.getElementById("category_description").value = "";
+    // daha sonra bu töntem use ref ile degişecek
+    //use ref ile inputları temizleme
   };
 
   return (
@@ -66,7 +91,7 @@ const Categories = () => {
             </label>
             <input
               type="text"
-              id="text"
+              id="category_name"
               {...register("category_name")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Category name"
@@ -85,7 +110,7 @@ const Categories = () => {
             <input
               placeholder="Description"
               type="description"
-              id="description"
+              id="category_description"
               {...register("category_description")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
@@ -101,25 +126,40 @@ const Categories = () => {
           </button>
         </form>
       </div>
+
       <div className="flex w-4/5 h-auto bg-slate-300 gap-12 p-3 flex-wrap justify-center">
-        {categories.map((category) => (
-          <div
-            key={category._id}
-            className="flex relative items-center justify-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
-          >
-            <img
-              src={category.categor_image}
-              className="absolute inset-0 z-10 w-full h-full object-cover opacity-25	"
-              alt=""
-            />
-            <div className=" w-full h-5/6 flex items-center justify-center flex-col gap-4 hover:scale-110 transition-all duration-500 ease-in-out transform z-20 ">
-              <h2 className="text-xs focus:text-lg font-bold text-white  ">
-                {category.category_name}
-              </h2>
-              <p className="text-white z-20">{category.category_description}</p>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <div
+              key={category._id}
+              className="flex relative items-center justify-center bg-slate-800 w-1/5 h-225 p-3  overflow-hidden 	"
+            >
+              <img
+                src={category.categor_image}
+                className="absolute inset-0 z-10 w-full h-full object-cover opacity-25	"
+                alt=""
+              />
+              <div className=" w-full h-5/6 flex items-center justify-center flex-col gap-4 hover:scale-110 transition-all duration-500 ease-in-out transform z-20 ">
+                <h2 className="text-xs focus:text-lg font-bold text-white  ">
+                  {category.category_name}
+                </h2>
+                <p className="text-white z-20">
+                  {category.category_description}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
+      <div className="flex w-4/5 h-auto bg-slate-600 gap-12 p-3 flex-wrap justify-center">
+        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          Düzenle
+        </button>
+        <button
+          onClick={deleteAll}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Hepsini Sil
+        </button>
       </div>
     </div>
   );
