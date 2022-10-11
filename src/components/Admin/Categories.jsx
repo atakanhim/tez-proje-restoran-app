@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { setCategories } from "../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
+import { MdCloudUpload, MdDelete } from "react-icons/md";
 import {
   getCategories,
   deleteCategory,
@@ -13,9 +14,17 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
 import CategoryCard from "../CustomCarts/CategoryCard";
-ad;
+import Loader from "../CustomCarts/Loader";
+
 const Categories = () => {
+  //global state
   const { categories } = useSelector((state) => state.restoran);
+  // local state
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageAsset, setImageAsset] = useState(false);
+  const uploadImage = (e) => {};
+  const deleteImage = () => {};
+
   const dispatch = useDispatch();
   const getCategory = async () => {
     const response = await getCategories();
@@ -81,9 +90,9 @@ const Categories = () => {
   };
 
   return (
-    <div className="flex items-center w-full h-[1200px] gap-7 bg-slate-400 flex-col">
-      <div className="flex flex-col  items-center justify-center w-1/2 h-370 bg-gray-400 rounded-lg shadow-lg mt-36">
-        <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex items-center w-full gap-7 bg-slate-400 flex-col">
+      <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-400 rounded-lg shadow-lg mt-36">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-3/5">
           <div className="mb-6">
             <label
               htmlFor="text"
@@ -119,13 +128,64 @@ const Categories = () => {
             />
             <p>{errors.category_description?.message}</p>
           </div>
+          <div className="flex justify-center items-center">
+            <div
+              className="flex justify-center items-center flex-col border-2 border-dotted
+           border-gray-200 hover:border-gray-700 transition-all ease-in-out duration-200 w-full lg:w-4/5 xl:w-3/5 h-225 md:h-225 cursor-pointer"
+            >
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <>
+                  {!imageAsset ? (
+                    <>
+                      <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                        <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer gap-2">
+                          <MdCloudUpload className="w-10 h-10 text-gray-500 text-3xl hover:text-gray-700" />
+                          <p className=" text-gray-500  hover:text-gray-700">
+                            Click here to upload
+                          </p>
+                        </div>
+                        <input
+                          type="file"
+                          name="uploadimage"
+                          accept="image/*"
+                          onChange={uploadImage}
+                          className="hidden"
+                        />
+                      </label>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative h-full">
+                        <img
+                          src={imageAsset}
+                          alt="uploaded"
+                          className="h-full w-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          className="absolute top-3 right-3 p-3 rounded-full text-xl bg-red-400 cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out "
+                          onClick={deleteImage}
+                        >
+                          <MdDelete className="text-white" />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
 
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Ekle
-          </button>
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              className="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Ekle
+            </button>
+          </div>
         </form>
       </div>
 
