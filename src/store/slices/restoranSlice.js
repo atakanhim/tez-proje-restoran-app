@@ -5,7 +5,7 @@ const initialState = {
   masaNo: localMasaNo,
   cart: [],
   total: 0,
-  user: "musteri",
+  user: "admin",
   categories: [],
   currentCategory: "all",
 };

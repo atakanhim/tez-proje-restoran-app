@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 //import setCategories
 import { setCategories } from "./store/slices/restoranSlice";
 import { getCategories } from "./api/api";
+import Products from "./components/Admin/Products";
 
 const App = () => {
   const navigate = useNavigate();
@@ -29,9 +30,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/restoran/table/*" element={<Loading />} />
           <Route path="/admin/categories/*" element={<Categories />} />
+          <Route path="/admin/products/*" element={<Products />} />
           <Route path="/*" element={<Home />} />
         </Routes>
-        <Home />
       </div>
     </AnimatePresence>
   );

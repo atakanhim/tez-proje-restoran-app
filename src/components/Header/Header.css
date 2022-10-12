@@ -9,7 +9,7 @@
     transform: scale(1.3);
     margin-top: 20px;
     cursor: pointer;
-    rotate: 360deg;
+    rotate: 360deg; 
     
 }
 .sepetLogo{
@@ -137,7 +137,7 @@ padding-left: 70px;
     transition: all .5s ease-in-out;
     
 }
-.menu-btn__links li{
+.menu-btn__link{
     transition: all .3s ease-in-out;
     list-style: none;
 
@@ -150,15 +150,16 @@ padding-left: 70px;
 
 
 }
-.menu-btn__links li:hover{
+.menu-btn__link:hover{
     cursor: pointer;
 }
-.menu-btn__links li a{
+.menu-btn__link p{
     text-decoration: none;
     color: wheat;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 14px;
+
     transition: all .5s ease-in-out;
+  
 }
 @media (max-width: 768px) {
     .sepetLogo {

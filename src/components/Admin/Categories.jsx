@@ -42,6 +42,7 @@ const Categories = () => {
         // upload Progress
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
         console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
@@ -121,6 +122,7 @@ const Categories = () => {
     getCategory();
     setImageAsset(false);
   };
+
   // schema for yup
   const schema = yup
     .object({
