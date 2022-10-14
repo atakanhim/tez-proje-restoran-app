@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Header, Home, Loading, Login } from "./components";
 //import axios
 import { AnimatePresence } from "framer-motion";
@@ -7,8 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 //import setCategories
 import { setCategories } from "./store/slices/restoranSlice";
 import { getCategories } from "./api/api";
-import { Categories, Products, Dashboard } from "./components/Admin";
-import { ChefScreen } from "./components/Chef";
+import {
+  Categories,
+  Products,
+  Dashboard,
+  AdminHeader,
+} from "./components/Admin";
+import { ChefScreen, ChefHeader } from "./components/Chef";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -55,13 +60,21 @@ const App = () => {
       element: <Products />,
     },
     {
-      path: "admin/dashboard",
+      path: "admin/dashboard/",
+      element: <Dashboard />,
+    },
+    {
+      path: "admin/*",
       element: <Dashboard />,
     },
   ];
   const chefRoutes = [
     {
       path: "chef/chefscreen",
+      element: <ChefScreen />,
+    },
+    {
+      path: "chef/*",
       element: <ChefScreen />,
     },
   ];
@@ -78,6 +91,9 @@ const App = () => {
           </>
         ) : (
           <>
+            {/* admin özel header olacak */}
+            {isAdmin && <AdminHeader />}
+            {isChef && <ChefHeader />}
             <Routes>
               <Route path="/*" element={<Login />} />
               <Route path="/restoran/table/*" element={<Loading />} />

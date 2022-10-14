@@ -13,24 +13,12 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // global states
-  const { masaNo, cart, total, user, categories, currentCategory } =
-    useSelector((state) => state.restoran);
+  const { cart, total, categories, currentCategory } = useSelector(
+    (state) => state.restoran
+  );
 
   // local states
   const [menuOpen, setMenuOpen] = React.useState(false); // hamburger menu
-
-  const [showAdminBar, setShowAdminBar] = React.useState(false); // search bar
-
-  // this.url
-  var url = window.location.href;
-  url = url.split("/"); // url aldım ve böldüm
-  useEffect(() => {
-    if (user === "admin") {
-      setShowAdminBar(true);
-    } else {
-      setShowAdminBar(false);
-    }
-  }, [url]);
 
   //hamburge menu bitiş
   const changeCategory = (category) => {
@@ -86,36 +74,6 @@ const Header = () => {
               <p>{category.category_name}</p>
             </li>
           ))}
-
-        <hr className="mt-3" />
-        {showAdminBar ? (
-          <>
-            <li
-              className={`menu-btn__link ${
-                currentCategory === "kategoriler" ? "active" : ""
-              }`}
-              onClick={() => {
-                changeCategory("kategoriler");
-                changePage("/admin/categories");
-              }}
-            >
-              <p>Kategori Paneli</p>
-            </li>
-            <li
-              className={`menu-btn__link ${
-                currentCategory === "urunler" ? "active" : ""
-              }`}
-              onClick={() => {
-                changeCategory("urunler");
-                changePage("/admin/products");
-              }}
-            >
-              <p className="w-full h-full text-6xl">Ürün Paneli</p>
-            </li>
-          </>
-        ) : (
-          <></>
-        )}
       </ul>
       {/* for mobile : h-screen */}
     </div>
