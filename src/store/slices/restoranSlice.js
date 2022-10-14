@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { nanoid } from "@reduxjs/toolkit";
 const localMasaNo = Number(sessionStorage.getItem("masaNo")) || null;
+const user = sessionStorage.getItem("user") || null;
 const initialState = {
   masaNo: localMasaNo,
   cart: [],
   total: 0,
-  user: "admin",
+  user: user,
   categories: [],
   currentCategory: "all",
 };
@@ -29,10 +30,15 @@ const restoranSlice = createSlice({
         return { ...state, currentCategory: action.payload };
       },
     },
+    setUser: {
+      reducer: (state, action) => {
+        return { ...state, user: action.payload };
+      },
+    },
   },
 });
 console.log(restoranSlice);
-export const { setMasaNo, setCategories, setCurrentCategory } =
+export const { setMasaNo, setCategories, setCurrentCategory, setUser } =
   restoranSlice.actions;
 
 export default restoranSlice.reducer;

@@ -4,9 +4,9 @@ import { BsCart2 } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrentCategory } from "../../store/slices/restoranSlice";
+import { setCurrentCategory } from "../../../store/slices/restoranSlice";
 import { useNavigate } from "react-router-dom";
-import lospolos from "../../img/lospolos.png";
+import lospolos from "../../../img/lospolos.png";
 import "./Header.css";
 
 const Header = () => {
