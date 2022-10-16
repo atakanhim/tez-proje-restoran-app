@@ -141,21 +141,17 @@ const Categories = () => {
 
   // data gönderiliyor    //axios post
   const onSubmit = (data) => {
-    const category_name = data.category_name;
-    const category_description = data.category_description;
-    const category_image = imageAsset;
     // filter ile aynı isimde kategori eklenmesin
-
     var category = categories.filter(
-      (category) => category.category_name === category_name
+      (category) => category.category_name === data.category_name
     );
 
     if (category.length > 0 || categories === null) {
       alert("aynı isimde kategori eklenemez");
-    } else if (category_image === false) {
+    } else if (imageAsset === false) {
       alert("resim ekle");
     } else {
-      setCategory(category_name, category_description, category_image);
+      setCategory(data.category_name, data.category_description, imageAsset);
     }
 
     // clear input
@@ -166,13 +162,19 @@ const Categories = () => {
   };
 
   return (
-    <div className="flex items-center w-full gap-7 bg-slate-400 flex-col">
-      <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-400 rounded-lg shadow-lg mt-36">
+    <div className="absolute top-16 z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 ">
+      <div className="w-full  mt-16 flex items-center justify-center p-3">
+        <p className="text-gray-800 text-3xl italic">
+          {" "}
+          Kategori Ekle / Sil / Güncelle
+        </p>
+      </div>
+      <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
         <form onSubmit={handleSubmit(onSubmit)} className="w-3/5">
           <div className="mb-6">
             <label
               htmlFor="text"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Kategori adı
             </label>
@@ -190,10 +192,11 @@ const Categories = () => {
           <div className="mb-6">
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Your description
+              Kategori açıklaması
             </label>
+
             <input
               placeholder="Description"
               type="description"
