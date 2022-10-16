@@ -11,7 +11,7 @@ const logout = () => {
 const AdminHeader = () => {
   return (
     <div>
-      <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6 z-40 ">
+      <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6 z-30   ">
         <div className="flex items-center">
           <div className="text-white font-bold text-2xl">Admin</div>
         </div>

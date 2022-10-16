@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
@@ -21,6 +22,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase.config";
 import { CategoryCard, Loader } from "../CustomCarts";
+import { motion } from "framer-motion";
 
 const Categories = () => {
   //global state
@@ -28,6 +30,7 @@ const Categories = () => {
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const uploadImage = (e) => {
     setIsLoading(true);
@@ -101,6 +104,9 @@ const Categories = () => {
       console.log(res);
     });
   };
+  const updateCategoryWithId = async (id) => {
+    setShowPopup(true);
+  };
 
   const deleteAll = async () => {
     deleteAllCategories().then((res) => {
@@ -163,6 +169,18 @@ const Categories = () => {
 
   return (
     <div className="absolute top-16 z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 ">
+      {showPopup && (
+        <div className="absolute w-full h-full top-0 z-50 bg-darkOverlay flex items-center justify-center">
+          <div className="bg-gray-300  p-3 w-1/3 h-600 flex flex-col absolute bottom-10 ">
+            <div className="flex justify-end items-center w-full bg-gray-100 p-3">
+              <ExitToAppIcon
+                className="cursor-pointer hover:scale-105 transition-all duration-150 ease-in-out "
+                onClick={() => setShowPopup(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="w-full  mt-16 flex items-center justify-center p-3">
         <p className="text-gray-800 text-3xl italic">
           {" "}
@@ -273,6 +291,7 @@ const Categories = () => {
         <CategoryCard
           categories={categories}
           deleteCategory={deleteCategoryWithId}
+          updateCategory={updateCategoryWithId}
         />
       </div>
 
