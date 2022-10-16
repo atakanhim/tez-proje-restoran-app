@@ -1,6 +1,4 @@
-export { default as Home } from "./Home";
+export { default as Home } from "./Customers/Home";
 export { default as Login } from "./Login";
-export { default as Header } from "./Header/Header";
-export { default as Loading } from "./Loading";
-export { default as Categories } from "./Admin/Categories";
-export { default as Products } from "./Admin/Products";
+export { default as Header } from "./Customers/Header/Header";
+export { default as Loading } from "./Customers/Loading";

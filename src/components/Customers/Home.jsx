@@ -7,12 +7,7 @@ url = url.split("/"); // url aldım ve böldüm
 const Home = () => {
   const navigate = useNavigate();
   const { masaNo } = useSelector((state) => state.restoran);
-  React.useEffect(() => {
-    // masa numarası zaten state te varsa hiçbişey istemeyecek
-    if (sessionStorage.getItem("masaNo") === null) {
-      navigate("/restoran/table", { replace: true });
-    }
-  }, [navigate]);
+
   return (
     <div className="relative w-full h-800 bg-black top-24 text-slate-50">
       Home {masaNo}

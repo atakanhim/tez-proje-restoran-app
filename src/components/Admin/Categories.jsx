@@ -13,8 +13,6 @@ import {
 } from "../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
-import CategoryCard from "../CustomCarts/CategoryCard";
-import Loader from "../CustomCarts/Loader";
 import {
   deleteObject,
   getDownloadURL,
@@ -22,6 +20,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../../firebase.config";
+import { CategoryCard, Loader } from "../CustomCarts";
 
 const Categories = () => {
   //global state
