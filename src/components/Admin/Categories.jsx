@@ -170,8 +170,8 @@ const Categories = () => {
   return (
     <div className="absolute top-16 z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 ">
       {showPopup && (
-        <div className="absolute w-full h-full top-0 z-50 bg-darkOverlay flex items-center justify-center">
-          <div className="bg-gray-300  p-3 w-1/3 h-600 flex flex-col absolute bottom-10 ">
+        <div className="absolute w-full h-full overflow-y-hidden scroll-m-0 	 top-0 z-50 bg-darkOverlay flex items-center justify-center">
+          <div className="bg-gray-300  p-3 w-1/4 h-420 flex flex-col absolute bottom-32 ">
             <div className="flex justify-end items-center w-full bg-gray-100 p-3">
               <ExitToAppIcon
                 className="cursor-pointer hover:scale-105 transition-all duration-150 ease-in-out "

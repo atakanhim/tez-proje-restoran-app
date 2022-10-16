@@ -128,7 +128,6 @@ const Categories = () => {
       isFeatured
     );
 
-    console.log(response);
     getProductFunction();
     setImageAsset(null);
     reset();
@@ -139,7 +138,12 @@ const Categories = () => {
     .object({
       product_name: yup.string().required("ad gereklidir"),
       product_description: yup.string().required("aciklama gereklidir"),
-      product_price: yup.string().required("price gereklidir"),
+      product_price: yup
+        .number()
+        .positive()
+        .integer()
+        .required("price gereklidir")
+        .max(10000),
       product_category: yup.string().required("category gereklidir"),
 
       // category_description: yup.number().positive().integer().required(),
