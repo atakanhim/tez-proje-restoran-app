@@ -118,13 +118,6 @@ const Categories = () => {
     product_price,
     product_category
   ) => {
-    console.log(
-      product_name,
-      product_description,
-      product_image,
-      product_price,
-      product_category
-    );
     const response = await addProductDB(
       product_name,
       product_description,
@@ -133,10 +126,8 @@ const Categories = () => {
       product_category
     );
 
-    if (response) {
-      getProductFunction();
-      setImageAsset(false);
-    }
+    console.log(response);
+    getProductFunction();
   };
 
   // schema for yup
@@ -161,7 +152,6 @@ const Categories = () => {
   // data gönderiliyor    //axios post
   const onSubmit = (data) => {
     // filter ile aynı isimde product eklenmesin
-    console.log(data);
     var product = products.filter(
       (product) => product.product_name === data.product_nameValue
     );
@@ -181,6 +171,10 @@ const Categories = () => {
     }
 
     // clear input
+    document.getElementById("product_name").value = "";
+    document.getElementById("product_description").value = "";
+    document.getElementById("product_price").value = "";
+    document.getElementById("product_category").value = "";
 
     // daha sonra bu töntem use ref ile degişecek
     //use ref ile inputları temizleme
