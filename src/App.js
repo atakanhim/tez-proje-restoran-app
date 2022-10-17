@@ -12,6 +12,7 @@ import {
   Products,
   Dashboard,
   AdminHeader,
+  UpdatePage,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 
@@ -58,8 +59,16 @@ const App = () => {
       element: <Categories />,
     },
     {
+      path: "admin/category-update/:id",
+      element: <UpdatePage />,
+    },
+    {
       path: "admin/products",
       element: <Products />,
+    },
+    {
+      path: "admin/product-update/:id",
+      element: <UpdatePage />,
     },
     {
       path: "admin/dashboard/",
@@ -83,7 +92,7 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className=" w-screen bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
+      <div className="w-full bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
         {masaNo ? (
           <>
             <Header />

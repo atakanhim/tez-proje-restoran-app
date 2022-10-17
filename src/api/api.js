@@ -15,11 +15,14 @@ export const deleteAllCategories = async () => {
   const response = await axios.delete(`http://localhost:5000/api/category`);
   return response.data;
 };
-export const updateCategory = async (category) => {
-  const response = await axios.put(
-    `http://localhost:5000/api/category/${category._id}`,
-    category
-  );
+export const updateCategoryDB = async (category) => {
+  console.log(category);
+  const response = await axios
+    .put(`http://localhost:5000/api/category/${category._id}`, category)
+    .catch((err) => {
+      console.log(err);
+    });
+
   return response.data;
 };
 export const addCategory = async (x, y, z) => {

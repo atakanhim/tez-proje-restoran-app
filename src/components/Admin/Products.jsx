@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { setProducts } from "../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+
 import {
   getProductsFromDB,
   addProductDB,
@@ -23,8 +25,10 @@ import {
 } from "firebase/storage";
 import { storage } from "../../firebase.config";
 import { CategoryCard, Loader } from "../CustomCarts";
+import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
+  const navigate = useNavigate();
   //global state
   const { products, categories } = useSelector((state) => state.restoran);
   // local state
@@ -104,7 +108,9 @@ const Categories = () => {
       getProductFunction();
     });
   };
-
+  const updateProductWithId = async (id) => {
+    navigate("/admin/product-update/" + id);
+  };
   const deleteAll = async () => {
     deleteAllProductsDB().then((res) => {
       getProductFunction();
@@ -381,7 +387,7 @@ const Categories = () => {
               <p className="text-base text-headingColor font-semibold my-2">
                 {product.product_name.length > 25
                   ? `${product.category_name.slice(0, 25)}..`
-                  : product.product_name}
+                  : product.product_name + " - " + product.product_price + "₺"}
               </p>
 
               <div>
@@ -391,6 +397,17 @@ const Categories = () => {
                   className="w-full absolute bottom-2 right-2 flex items-center justify-between px-4"
                 >
                   <DeleteOutlineOutlinedIcon
+                    className="text-base text-red-400 drop-shadow-md hover:text-red-600
+                "
+                  />
+                </motion.i>
+              </div>
+              <div>
+                <motion.i
+                  onClick={() => updateProductWithId(product._id)}
+                  className="w-full absolute bottom-2 left-40   flex items-center justify-between px-4 hover:scale-95 transition-all duration-150 ease-in-out"
+                >
+                  <ModeEditOutlineIcon
                     className="text-base text-red-400 drop-shadow-md hover:text-red-600
                 "
                   />
