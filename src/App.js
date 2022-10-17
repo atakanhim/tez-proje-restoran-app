@@ -12,7 +12,8 @@ import {
   Products,
   Dashboard,
   AdminHeader,
-  UpdatePage,
+  CategoryUpdate,
+  ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 
@@ -60,7 +61,7 @@ const App = () => {
     },
     {
       path: "admin/category-update/:id",
-      element: <UpdatePage />,
+      element: <CategoryUpdate />,
     },
     {
       path: "admin/products",
@@ -68,7 +69,7 @@ const App = () => {
     },
     {
       path: "admin/product-update/:id",
-      element: <UpdatePage />,
+      element: <ProductUpdate />,
     },
     {
       path: "admin/dashboard/",

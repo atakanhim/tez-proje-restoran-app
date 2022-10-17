@@ -44,7 +44,17 @@ export const addCategory = async (x, y, z) => {
   return response;
 };
 // products
+export const updateProductDB = async (product) => {
+  console.log(product);
 
+  const response = await axios
+    .put(`http://localhost:5000/api/product/${product._id}`, product)
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response.data;
+};
 export const getProductsFromDB = async () => {
   const response = await axios.get("http://localhost:5000/api/product");
   return response.data;
