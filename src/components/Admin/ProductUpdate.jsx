@@ -311,8 +311,13 @@ const ProductUpdate = () => {
                 id="product_isFeatured"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                onChange={(e) => setIsFeatured(e.target.value)}
-                value={isFeatured}
+                onChange={(e) => {
+                  setProduct({
+                    ...product,
+                    product_isFeatured: e.target.value,
+                  });
+                }}
+                value={product.product_isFeatured || "null"}
               >
                 <option value={false}>false</option>
                 <option value={true}>true</option>
@@ -374,7 +379,7 @@ const ProductUpdate = () => {
                 type="submit"
                 className="mt-4  w-full md:w-auto border-none outline-none bg-emerald-400 px-12 py-2 rounded-lg text-lg text-white font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300  hover:bg-emerald-800  transition-all ease-in-out duration-500"
               >
-                Urun ekle
+                Urun Güncelle
               </button>
             </div>
           </form>
