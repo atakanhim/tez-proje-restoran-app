@@ -7,14 +7,14 @@ const AddToCard = ({ selectedProduct }) => {
   return (
     <div className="absolute top-0 left-0 flex w-full min-h-screen h-auto z-50 bg-slate-100">
       <div className="flex flex-col p-1 w-full items-center gap-2">
-        <div className="relative flex w-full h-56 p-6 border-slate-700 border ">
+        <div className="relative flex w-full h-56 p-6  ">
           <img
             src={selectedProduct.product_image}
             alt="uploaded"
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="flex flex-col w-full px-3 border border-slate-900">
+        <div className="flex flex-col w-full px-3 ">
           <div className="flex flex-row p-2 items-center justify-between">
             <h1 className="text-2xl font-bold">
               {selectedProduct.product_name}
@@ -27,7 +27,7 @@ const AddToCard = ({ selectedProduct }) => {
             aciklama{selectedProduct.product_description}
           </h1>
         </div>
-        <div className="relative flex flex-col mt-auto p-2 h-64 border border-slate-600  w-full">
+        <div className="relative flex flex-col mt-auto p-2 h-64   w-full">
           <h1 className="text-lg font-bold">Ürün Notu</h1>
           <textarea
             onChange={(e) => setUrunNotu(e.target.value)}
@@ -39,11 +39,11 @@ const AddToCard = ({ selectedProduct }) => {
             {urunNotu.length}/250
           </h4>
         </div>
-        <div className="flex flex-row p-2 mt-auto gap-2 h-20 border border-slate-600 w-full">
-          <button className="flex flex-row items-center justify-center w-1/2 h-full border border-slate-600 hover:bg-slate-600 hover:text-white transition duration-500 ease-in-out">
+        <div className="flex flex-row p-2 mt-auto gap-2 h-24 w-full border border-t-slate-400 ">
+          <button className="flex flex-row items-center justify-center border border-slate-400 rounded-xl w-1/2 h-full hover:bg-slate-600 hover:text-white transition duration-500 ease-in-out">
             <h1 className="text-lg font-bold">Sepete Ekle</h1>
           </button>
-          <div className="flex flex-row items-center justify-between p-3 w-1/2 h-full border border-slate-600 hover:bg-slate-600 hover:text-white transition duration-500 ease-in-out">
+          <div className="flex flex-row items-center justify-between p-3 w-1/2 h-full ">
             <div className="bg-gray-500 w-10 h-10  rounded-full flex items-center justify-center">
               <h1 className=" text-2xl font-smallbold">-</h1>
             </div>
