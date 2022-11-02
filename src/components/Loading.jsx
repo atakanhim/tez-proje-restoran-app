@@ -2,7 +2,7 @@ import React from "react";
 // import restoran slice
 import { useDispatch } from "react-redux";
 
-import { setMasaNo } from "../../store/slices/restoranSlice";
+import { setMasaNo } from "../store/slices/restoranSlice";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 

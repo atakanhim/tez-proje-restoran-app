@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Header, Home, Loading, Login } from "./components";
+import { Loading, Login } from "./components";
 //import axios
 import { AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import {
   ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
+import { Header, Home } from "./components/Customers";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);

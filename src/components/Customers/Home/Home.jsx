@@ -2,14 +2,14 @@ import React from "react";
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
-import AddToCard from "../CustomCarts/AddToCard";
+import AddToCart from "../../CustomCarts/AddToCart";
 
 const Home = () => {
-  const { masaNo, currentCategory, categories, products } = useSelector(
+  const { masaNo, currentCategory, products } = useSelector(
     (state) => state.restoran
   );
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  const [showModal, setShowModal] = useState(false);
   const handleProductDetail = (product) => {
     console.log(product);
     setSelectedProduct(product);
@@ -48,12 +48,11 @@ const Home = () => {
           </div>
         ))}
       </div>
-      {selectedProduct && (
-        <AddToCard
-          selectedProduct={selectedProduct}
-          setSelectedProduct={setSelectedProduct}
-        />
-      )}
+
+      <AddToCart
+        selectedProduct={selectedProduct}
+        setSelectedProduct={setSelectedProduct}
+      />
     </div>
   );
 };
