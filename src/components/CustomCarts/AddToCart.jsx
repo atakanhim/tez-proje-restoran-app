@@ -4,6 +4,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import Button from "@mui/material/Button";
+import "./AddToCart.css";
 const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
   const [urunNotu, setUrunNotu] = useState("");
   const [urunAdet, setUrunAdet] = useState(1);
