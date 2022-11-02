@@ -18,8 +18,8 @@ const Home = () => {
   return (
     <div className="  w-full mt-16 bg-gray-300 flex flex-col gap-3 items-center  ">
       <div className="flex flex-col  text-yellow-600  items-center w-full">
-        <h1 className="text-5xl font-bold">Masa No: {masaNo}</h1>
-        <h1 className="text-5xl font-bold">Kategori: {currentCategory}</h1>
+        <h1 className="text-5xl font-bold"> {masaNo}</h1>
+        <h1 className="text-5xl font-bold">{currentCategory}</h1>
       </div>
       <div className="flex flex-col items-center justify-between w-full md:w-1/2 h-1/2 gap-1 p-1">
         {/* URUNLER BURADA LISTELENECEK DİKEY OLARAK SOLDA KUCUK FOFOTGRAF SAG TARAFTAÜRÜN FİYATI */}

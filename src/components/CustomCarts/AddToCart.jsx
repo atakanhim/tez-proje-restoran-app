@@ -15,12 +15,9 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
       setUrunAdet(urunAdet - 1);
     }
   };
-  const addToCartButton = () => {
-    console.log("eklendi");
-  };
+  const addToCartButton = () => {};
   const closeWindow = () => {
     setSelectedProduct(null);
-    console.log("çıkış");
   };
   return (
     <>
