@@ -68,7 +68,7 @@ const Header = () => {
               }`}
               onClick={() => {
                 changeCategory(category.category_name);
-                changePage(`/category/${category._id}`);
+                changePage(`/category/${category.category_name}`);
               }}
             >
               <p>{category.category_name}</p>

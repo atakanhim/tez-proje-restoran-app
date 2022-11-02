@@ -1,39 +1,44 @@
-import React, { useEffect, useState } from "react";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { setCategories } from "../../store/slices/restoranSlice";
-import { useSelector } from "react-redux";
-import { MdCloudUpload, MdDelete } from "react-icons/md";
-import {
-  getCategories,
-  deleteCategory,
-  addCategory,
-  deleteAllCategories,
-  updateCategoryDB,
-} from "../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import motion
+import * as yup from "yup";
+
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { storage } from "../../firebase.config";
-import { CategoryCard, Loader } from "../CustomCarts";
+import { Loader } from "../CustomCarts";
+import { MdCloudUpload, MdDelete } from "react-icons/md";
+import { updateCategoryDB, getCategories } from "../../api/api";
+import { setCategories } from "../../store/slices/restoranSlice";
 
-import { useNavigate } from "react-router-dom";
+// import dispaych
+import { useDispatch } from "react-redux";
+const CategoryUpdate = () => {
+  const dispatch = useDispatch();
+  // param ile id alma
+  const params = useParams();
+  const { id } = params;
+  // local states
+  const [category, setCategory] = useState({
+    category_name: "",
+    category_image: "",
+    category_id: "",
+    category_description: "",
+  });
 
-const Categories = () => {
-  //global state
+  // global stateden veri çekme
   const { categories } = useSelector((state) => state.restoran);
-  // local state
+  // image update states
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
-
-  const navigate = useNavigate();
 
   const uploadImage = (e) => {
     setIsLoading(true);
@@ -71,6 +76,7 @@ const Categories = () => {
         // upload işlemi bittikten sonra
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageAsset(downloadURL);
+          setCategory({ ...category, category_image: downloadURL });
           setIsLoading(false);
           console.log("File available at scces", downloadURL);
         });
@@ -85,61 +91,60 @@ const Categories = () => {
     const deleteRef = ref(storage, imageAsset);
     deleteObject(deleteRef)
       .then(() => {
-        setImageAsset(null);
+        setImageAsset(false);
         setIsLoading(false);
         console.log("File deleted successfully");
+        setCategory({
+          ...category,
+          category_image: "",
+        });
       })
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
       });
   };
-
-  const dispatch = useDispatch();
   const getCategory = async () => {
     const response = await getCategories();
     dispatch(setCategories(response));
   };
+  const updateCategory = async () => {
+    updateCategoryDB(category)
+      .then((res) => {
+        console.log(res);
+        getCategory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const deleteCategoryWithId = async (id) => {
-    deleteCategory(id).then((res) => {
-      getCategory();
-      console.log(res);
-    });
-  };
-  const updateCategoryWithId = async (id) => {
-    navigate("/admin/category-update/" + id);
-  };
-
-  const deleteAll = async () => {
-    deleteAllCategories().then((res) => {
-      getCategory();
-      console.log(res);
-    });
-  };
-  const setCategory = async (
-    category_name,
-    category_description,
-    category_image
-  ) => {
-    const response = await addCategory(
-      category_name,
-      category_description,
-      category_image
+  const onSubmit = (data) => {
+    // filter ile aynı isimde kategori eklenmesin
+    var category1 = categories.filter(
+      (category) =>
+        category.category_name === data.category_name && category._id !== id
     );
-    getCategory();
-    setImageAsset(false);
+    console.log(data);
+
+    if (category1.length > 0 || categories === null) {
+      alert("aynı isimde kategori eklenemez");
+    } else if (imageAsset === false) {
+      alert("resim ekle");
+    } else {
+      updateCategory();
+    }
   };
 
-  // schema for yup
+  // schema
+
   const schema = yup
     .object({
       category_name: yup.string().required("ad gereklidir"),
       category_description: yup.string().required("aciklama gereklidir"),
-
-      // category_description: yup.number().positive().integer().required(),
     })
     .required();
+
   const {
     register,
     handleSubmit,
@@ -147,39 +152,27 @@ const Categories = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  //
 
-  // data gönderiliyor    //axios post
-  const onSubmit = (data) => {
-    // filter ile aynı isimde kategori eklenmesin
-    var category = categories.filter(
-      (category) => category.category_name === data.category_name
-    );
-
-    if (category.length > 0 || categories === null) {
-      alert("aynı isimde kategori eklenemez");
-    } else if (imageAsset === false) {
-      alert("resim ekle");
-    } else {
-      setCategory(data.category_name, data.category_description, imageAsset);
-    }
-
-    // clear input
-    document.getElementById("category_name").value = "";
-    document.getElementById("category_description").value = "";
-    // daha sonra bu töntem use ref ile degişecek
-    //use ref ile inputları temizleme
-  };
+  useEffect(() => {
+    // get the last part of the url
+    var categori = categories.find((category) => category._id === id);
+    setCategory({
+      category_name: categori.category_name,
+      category_image: categori.category_image,
+      _id: categori._id,
+      category_description: categori.category_description,
+    });
+    setImageAsset(categori.category_image);
+  }, [categories, id]);
 
   return (
-    <div className="absolute top-16 z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 ">
-      <div className="w-full  mt-16 flex items-center justify-center p-3">
-        <p className="text-gray-800 text-3xl italic">
-          {" "}
-          Kategori Ekle / Sil / Güncelle
-        </p>
-      </div>
-      <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
-        <form onSubmit={handleSubmit(onSubmit)} className="w-3/5">
+    <div className="absolute flex z-10 items-center justify-center bg-gray-200 text-black w-full h-auto">
+      <div className="flex flex-col  items-center justify-center w-2/5 min-w-210 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg mt-20 ">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={"flex flex-col gap-4"}
+        >
           <div className="mb-6">
             <label
               htmlFor="text"
@@ -193,6 +186,13 @@ const Categories = () => {
               {...register("category_name")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Category name"
+              value={category.category_name}
+              onChange={(e) =>
+                setCategory({
+                  ...category,
+                  category_name: e.target.value,
+                })
+              }
               required=""
             />
             <p>{errors.category_name?.message}</p>
@@ -213,6 +213,13 @@ const Categories = () => {
               {...register("category_description")}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
+              value={category.category_description}
+              onChange={(e) =>
+                setCategory({
+                  ...category,
+                  category_description: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -220,7 +227,7 @@ const Categories = () => {
           <div className="flex justify-center items-center">
             <div
               className="flex justify-center items-center flex-col border-2 border-dotted
-           border-gray-200 hover:border-gray-700 transition-all ease-in-out duration-200 w-full lg:w-4/5 xl:w-3/5 h-225 md:h-225 cursor-pointer"
+           border-gray-200 hover:border-gray-700 transition-all ease-in-out duration-200 w-2/5 md:w-4/5 h-100 md:h-225 cursor-pointer"
             >
               {isLoading ? (
                 <Loader />
@@ -254,7 +261,7 @@ const Categories = () => {
                         />
                         <button
                           type="button"
-                          className="absolute top-3 right-3 p-3 rounded-full text-xl bg-red-400 cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out "
+                          className="relative md:absolute top-3 right-3 p-3 rounded-full text-sm md:text-xl bg-red-400 cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out "
                           onClick={deleteImage}
                         >
                           <MdDelete className="text-white" />
@@ -272,30 +279,13 @@ const Categories = () => {
               type="submit"
               className="mt-4  w-full md:w-auto border-none outline-none bg-emerald-400 px-12 py-2 rounded-lg text-lg text-white font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300  hover:bg-emerald-800  transition-all ease-in-out duration-500"
             >
-              Kategori Ekle
+              Kategori Güncelle
             </button>
           </div>
         </form>
-      </div>
-
-      <div className="flex w-3/5 h-auto gap-12 p-3 flex-wrap justify-center">
-        <CategoryCard
-          categories={categories}
-          deleteCategory={deleteCategoryWithId}
-          updateCategory={updateCategoryWithId}
-        />
-      </div>
-
-      <div className="flex w-4/5 h-auto bg-slate-600 gap-12 p-3 flex-wrap justify-center">
-        <button
-          onClick={deleteAll}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Hepsini Sil
-        </button>
       </div>
     </div>
   );
 };
 
-export default Categories;
+export default CategoryUpdate;

@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-const CategoryCard = ({ categories, deleteCategory }) => {
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+const CategoryCard = ({ categories, deleteCategory, updateCategory }) => {
   return (
     <>
       {categories.length > 0 &&
@@ -30,6 +31,17 @@ const CategoryCard = ({ categories, deleteCategory }) => {
                 className="w-full absolute bottom-2 right-2 flex items-center justify-between px-4"
               >
                 <DeleteOutlineOutlinedIcon
+                  className="text-base text-red-400 drop-shadow-md hover:text-red-600
+                "
+                />
+              </motion.i>
+            </div>
+            <div>
+              <motion.i
+                onClick={() => updateCategory(category._id)}
+                className="w-full absolute bottom-2 left-40   flex items-center justify-between px-4 hover:scale-95 transition-all duration-150 ease-in-out"
+              >
+                <ModeEditOutlineIcon
                   className="text-base text-red-400 drop-shadow-md hover:text-red-600
                 "
                 />

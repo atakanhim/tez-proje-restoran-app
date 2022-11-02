@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { Header, Home, Loading, Login } from "./components";
+import { Loading, Login } from "./components";
 //import axios
 import { AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 //import setCategories
-import { setCategories } from "./store/slices/restoranSlice";
-import { getCategories } from "./api/api";
+import { setCategories, setProducts } from "./store/slices/restoranSlice";
+import { getCategories, getProductsFromDB } from "./api/api";
 import {
   Categories,
   Products,
   Dashboard,
   AdminHeader,
+  CategoryUpdate,
+  ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
+import { Header, Home } from "./components/Customers";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -48,6 +51,8 @@ const App = () => {
   const getCategory = async () => {
     const response = await getCategories();
     dispatch(setCategories(response));
+    const respons2 = await getProductsFromDB();
+    dispatch(setProducts(respons2));
   };
 
   const adminRoutes = [
@@ -56,8 +61,16 @@ const App = () => {
       element: <Categories />,
     },
     {
+      path: "admin/category-update/:id",
+      element: <CategoryUpdate />,
+    },
+    {
       path: "admin/products",
       element: <Products />,
+    },
+    {
+      path: "admin/product-update/:id",
+      element: <ProductUpdate />,
     },
     {
       path: "admin/dashboard/",
@@ -81,7 +94,7 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className=" w-screen bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
+      <div className="w-full bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
         {masaNo ? (
           <>
             <Header />
