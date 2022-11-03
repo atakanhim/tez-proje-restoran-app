@@ -23,7 +23,7 @@ const Header = () => {
   //hamburge menu bitiş
   const changeCategory = (category) => {
     if (category === currentCategory) {
-      dispatch(setCurrentCategory("all"));
+      dispatch(setCurrentCategory("Hepsini Göster"));
     } else {
       dispatch(setCurrentCategory(category));
     }

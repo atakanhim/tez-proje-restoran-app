@@ -29,7 +29,8 @@ const Home = () => {
         {/* URUNLER BURADA LISTELENECEK DİKEY OLARAK SOLDA KUCUK FOFOTGRAF SAG TARAFTAÜRÜN FİYATI */}
         {products.map(
           (products) =>
-            products.product_category === currentCategory && (
+            (products.product_category === currentCategory ||
+              currentCategory === "Hepsini Göster") && (
               <div
                 className="flex flex-col  border-2 border-b-gray-400 rounded-lg w-full hover:scale-105  transform transition duration-500 ease-in-out "
                 onClick={() => handleProductDetail(products)}
