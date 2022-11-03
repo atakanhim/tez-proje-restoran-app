@@ -21,10 +21,14 @@ const Home = () => {
 
   return (
     <div className="  w-full mt-16 bg-gray-300 flex flex-col gap-3 items-center  ">
-      <div className="flex flex-col  text-yellow-600  items-center w-full">
-        <h1 className="text-5xl font-bold"> {masaNo}</h1>
-        <h1 className="text-5xl font-bold">{currentCategory}</h1>
+      <div className="w-full flex  mt-4 px-3 flex-row gap-3 items-center">
+        <div className="w-auto h-10 bg-black flex">
+          <p className="text-white text-2xl font-bold m-auto">
+            Masa No: {masaNo}
+          </p>
+        </div>
       </div>
+
       <div className="flex flex-col items-center justify-between w-full md:w-1/2 h-1/2 gap-1 p-1">
         {/* URUNLER BURADA LISTELENECEK DİKEY OLARAK SOLDA KUCUK FOFOTGRAF SAG TARAFTAÜRÜN FİYATI */}
         {products.map(
