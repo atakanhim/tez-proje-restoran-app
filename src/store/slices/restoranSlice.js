@@ -9,7 +9,7 @@ const initialState = {
   user: user,
   categories: [],
   products: [],
-  currentCategory: "all",
+  currentCategory: "Hepsini Göster",
 };
 
 const restoranSlice = createSlice({

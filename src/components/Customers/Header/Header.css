@@ -55,7 +55,7 @@ padding-left: 70px;
 /* hamnurgermen css */
 .menu-btn{
     
-    position: relative;
+    position: relative; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,7 +119,7 @@ padding-left: 70px;
     
   .menu-btn__links{
     
-    width: 140px;
+    width: 145px;
     position: absolute;
     top: 63px;
     left: -200px;
@@ -192,7 +192,7 @@ padding-left: 70px;
     .menu-btn__links.open {
           
           left:-195px;
-          top: 0;
+          top: 50;
            width: 100%;
 
     }
