@@ -23,7 +23,7 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
   return (
     <>
       {selectedProduct && (
-        <div className="absolute  top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-50 bg-slate-100 ">
+        <div className="absolute  top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-50 bg-white ">
           <div className="flex flex-col p-1 w-full items-center gap-2 md:w-1/2">
             <div className="flex   absolute left-0 top-0 p-3">
               <ClearOutlinedIcon
@@ -78,7 +78,7 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
                 <RemoveCircleOutlinedIcon
                   onClick={deCrease}
                   color={`${urunAdet > 1 ? "primary" : "disabled"}`}
-                  className="animate-pulse cursor-pointer  h-14 hover:scale-105 transform transition-all ease-in-out duration-300"
+                  className=" cursor-pointer  h-14 hover:scale-105 transform transition-all ease-in-out duration-300"
                 />
 
                 <div className=" w-10 h-10  rounded-full flex items-center justify-center">
@@ -87,7 +87,7 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
                 <AddCircleOutlinedIcon
                   color="primary"
                   onClick={inCrease}
-                  className="animate-pulse cursor-pointer  h-14 hover:scale-105 transform transition-all ease-in-out duration-300"
+                  className="cursor-pointer  h-14 transform transition-all ease-in-out duration-300"
                 />
               </div>
             </div>

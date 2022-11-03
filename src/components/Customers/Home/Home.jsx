@@ -20,7 +20,7 @@ const Home = () => {
   };
 
   return (
-    <div className="  w-full mt-16 bg-gray-300 flex flex-col gap-3 items-center  ">
+    <div className="  w-full mt-16 bg-white flex flex-col gap-3 items-center  ">
       <div className="w-full flex  mt-4 px-3 flex-row gap-3 items-center">
         <div className="w-auto h-10 bg-black flex">
           <p className="text-white text-2xl font-bold m-auto">
