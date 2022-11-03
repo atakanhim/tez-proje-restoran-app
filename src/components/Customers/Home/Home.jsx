@@ -20,7 +20,7 @@ const Home = () => {
   };
 
   return (
-    <div className="  w-full mt-16 bg-white flex flex-col gap-3 items-center  ">
+    <div className="  w-full mt-16 bg-white flex items-center flex-col gap-3   ">
       <div className="w-full flex  mt-4 px-3 flex-row gap-3 items-center">
         <div className="w-auto h-10 bg-black flex">
           <p className="text-white text-2xl font-bold m-auto">
@@ -28,13 +28,13 @@ const Home = () => {
           </p>
         </div>
       </div>
-
-      <div className="flex flex-col items-center justify-between w-full md:w-1/2 h-1/2 gap-1 p-1">
+      <div className="flex flex-col justify-between w-full md:w-1/2 h-1/2 gap-1 p-1">
         {/* URUNLER BURADA LISTELENECEK DİKEY OLARAK SOLDA KUCUK FOFOTGRAF SAG TARAFTAÜRÜN FİYATI */}
+        <p className="text-lg text-slate-400 ml-5">{currentCategory}</p>
         {products.map(
           (products) =>
             (products.product_category === currentCategory ||
-              currentCategory === "Hepsini Göster") && (
+              currentCategory === "Tüm Ürünler") && (
               <div
                 className="flex flex-col  border-b border-b-gray-400  w-full hover:scale-105   transition duration-500 ease-in-out "
                 onClick={() => handleProductDetail(products)}
@@ -52,7 +52,7 @@ const Home = () => {
                       {products.product_price} TL
                     </h1>
                   </div>
-                  <div className=" flex justify-center items-center flex-col hover:scale-110 transform transition duration-500 ease-in-out  w-1/5 h-full">
+                  <div className=" flex justify-center items-center flex-col hover:scale-110 transform transition duration-500 ease-in-out  w-1/5 h-3/5">
                     <img
                       src={products.product_image}
                       alt="uploaded"
