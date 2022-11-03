@@ -36,7 +36,7 @@ const Home = () => {
             (products.product_category === currentCategory ||
               currentCategory === "Hepsini Göster") && (
               <div
-                className="flex flex-col  border-2 border-b-gray-400 rounded-lg w-full hover:scale-105  transform transition duration-500 ease-in-out "
+                className="flex flex-col  border-b border-b-gray-400  w-full hover:scale-105   transition duration-500 ease-in-out "
                 onClick={() => handleProductDetail(products)}
                 key={products.product_id}
               >
