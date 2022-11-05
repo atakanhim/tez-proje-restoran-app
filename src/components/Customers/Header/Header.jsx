@@ -23,7 +23,7 @@ const Header = () => {
   //hamburge menu bitiş
   const changeCategory = (category) => {
     if (category === currentCategory) {
-      dispatch(setCurrentCategory("Hepsini Göster"));
+      dispatch(setCurrentCategory("Tüm Ürünler"));
     } else {
       dispatch(setCurrentCategory(category));
     }
