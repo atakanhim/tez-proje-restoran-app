@@ -24,7 +24,7 @@ const Home = () => {
       <div className="w-full flex  mt-4 px-3 flex-row gap-3 items-center">
         <div className="w-auto h-10 bg-black flex">
           <p className="text-white text-2xl font-bold m-auto">
-            Masa No: {masaNo}
+            Masa No: {masaNo} *
           </p>
         </div>
       </div>
