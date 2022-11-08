@@ -13,11 +13,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { storage } from "../../firebase.config";
-import { Loader } from "../CustomCarts";
+import { storage } from "../../../firebase.config";
+import { Loader } from "../../CustomCarts";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
-import { getProductsFromDB, updateProductDB } from "../../api/api";
-import { setProducts } from "../../store/slices/restoranSlice";
+import { getProductsFromDB, updateProductDB } from "../../../api/api";
+import { setProducts } from "../../../store/slices/restoranSlice";
 
 // import dispaych
 import { useDispatch } from "react-redux";

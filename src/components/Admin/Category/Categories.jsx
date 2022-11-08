@@ -3,7 +3,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { setCategories } from "../../store/slices/restoranSlice";
+import { setCategories } from "../../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
 import {
@@ -12,7 +12,7 @@ import {
   addCategory,
   deleteAllCategories,
   updateCategoryDB,
-} from "../../api/api";
+} from "../../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
 import {
@@ -21,8 +21,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { storage } from "../../firebase.config";
-import { CategoryCard, Loader } from "../CustomCarts";
+import { storage } from "../../../firebase.config";
+import { CategoryCard, Loader } from "../../CustomCarts";
 
 import { useNavigate } from "react-router-dom";
 

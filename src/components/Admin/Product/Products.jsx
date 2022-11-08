@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { motion } from "framer-motion";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDispatch } from "react-redux";
-import { setProducts } from "../../store/slices/restoranSlice";
+import { setProducts } from "../../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
@@ -14,7 +14,7 @@ import {
   addProductDB,
   deleteProductDB,
   deleteAllProductsDB,
-} from "../../api/api";
+} from "../../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
 // import motion
 import {
@@ -23,8 +23,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { storage } from "../../firebase.config";
-import { CategoryCard, Loader } from "../CustomCarts";
+import { storage } from "../../../firebase.config";
+import { CategoryCard, Loader } from "../../CustomCarts";
 import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
