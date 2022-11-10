@@ -14,10 +14,10 @@ import {
   AdminHeader,
   CategoryUpdate,
   ProductUpdate,
-  CategoryCrud,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 import { Header, Home } from "./components/Customers";
+import "alertifyjs/build/css/alertify.css";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -61,10 +61,7 @@ const App = () => {
       path: "admin/categories",
       element: <Categories />,
     },
-    {
-      path: "admin/CategoryCrud",
-      element: <CategoryCrud />,
-    },
+
     {
       path: "admin/category-update/:id",
       element: <CategoryUpdate />,
