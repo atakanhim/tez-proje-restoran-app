@@ -1,17 +1,17 @@
 import axios from "axios";
 // categories
 
-export const getCategories = async () => {
+export const getCategoriesFromDB = async () => {
   const response = await axios.get("http://localhost:5000/api/category");
   return response.data;
 };
-export const deleteCategory = async (id) => {
+export const deleteCategoryDB = async (id) => {
   const response = await axios.delete(
     `http://localhost:5000/api/category/${id}`
   );
   return response.data;
 };
-export const deleteAllCategories = async () => {
+export const deleteAllCategoriesDB = async () => {
   const response = await axios.delete(`http://localhost:5000/api/category`);
   return response.data;
 };
@@ -25,7 +25,7 @@ export const updateCategoryDB = async (category) => {
 
   return response.data;
 };
-export const addCategory = async (x, y, z) => {
+export const addCategoryDB = async (x, y, z) => {
   console.log("add category " + x, y);
 
   const response = await axios

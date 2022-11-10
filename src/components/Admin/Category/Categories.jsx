@@ -7,10 +7,10 @@ import { setCategories } from "../../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
 import {
-  getCategories,
-  deleteCategory,
-  addCategory,
-  deleteAllCategories,
+  getCategoriesFromDB,
+  deleteCategoryDB,
+  addCategoryDB,
+  deleteAllCategoriesDB,
   updateCategoryDB,
 } from "../../../api/api";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,6 +27,8 @@ import { CategoryCard, Loader } from "../../CustomCarts";
 import { useNavigate } from "react-router-dom";
 
 const Categories = () => {
+  // dispatch
+  const dispatch = useDispatch();
   //global state
   const { categories } = useSelector((state) => state.restoran);
   // local state
@@ -95,14 +97,13 @@ const Categories = () => {
       });
   };
 
-  const dispatch = useDispatch();
   const getCategory = async () => {
-    const response = await getCategories();
+    const response = await getCategoriesFromDB();
     dispatch(setCategories(response));
   };
 
   const deleteCategoryWithId = async (id) => {
-    deleteCategory(id).then((res) => {
+    deleteCategoryDB(id).then((res) => {
       getCategory();
       console.log(res);
     });
@@ -112,7 +113,7 @@ const Categories = () => {
   };
 
   const deleteAll = async () => {
-    deleteAllCategories().then((res) => {
+    deleteAllCategoriesDB().then((res) => {
       getCategory();
       console.log(res);
     });
@@ -122,7 +123,7 @@ const Categories = () => {
     category_description,
     category_image
   ) => {
-    const response = await addCategory(
+    const response = await addCategoryDB(
       category_name,
       category_description,
       category_image

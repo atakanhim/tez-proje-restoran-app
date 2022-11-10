@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import { storage } from "../../../firebase.config";
 import { Loader } from "../../CustomCarts";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
-import { updateCategoryDB, getCategories } from "../../../api/api";
+import { updateCategoryDB, getCategoriesFromDB } from "../../../api/api";
 import { setCategories } from "../../../store/slices/restoranSlice";
 
 // import dispaych
@@ -105,7 +105,7 @@ const CategoryUpdate = () => {
       });
   };
   const getCategory = async () => {
-    const response = await getCategories();
+    const response = await getCategoriesFromDB();
     dispatch(setCategories(response));
   };
   const updateCategory = async () => {

@@ -24,7 +24,7 @@ const AdminHeader = () => {
               <NavLink to="/admin/products">Ürünler</NavLink>
             </li>
             <li className="text-white font-bold text-xl italic border-b border-white hover:border-[dcfce7] hover:scale-110   hover:text-[#dcfce7] rounded-lg p-2  transition-all duration-300 ease-in-out">
-              <NavLink to="/admin/menuler">Menüler</NavLink>
+              <NavLink to="/admin/CategoryCrud">Category Crud</NavLink>
             </li>
           </ul>
         </div>

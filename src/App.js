@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 //import setCategories
 import { setCategories, setProducts } from "./store/slices/restoranSlice";
-import { getCategories, getProductsFromDB } from "./api/api";
+import { getCategoriesFromDB, getProductsFromDB } from "./api/api";
 import {
   Categories,
   Products,
@@ -14,6 +14,7 @@ import {
   AdminHeader,
   CategoryUpdate,
   ProductUpdate,
+  CategoryCrud,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 import { Header, Home } from "./components/Customers";
@@ -49,7 +50,7 @@ const App = () => {
     getCategory();
   }, []);
   const getCategory = async () => {
-    const response = await getCategories();
+    const response = await getCategoriesFromDB();
     dispatch(setCategories(response));
     const respons2 = await getProductsFromDB();
     dispatch(setProducts(respons2));
@@ -61,9 +62,14 @@ const App = () => {
       element: <Categories />,
     },
     {
+      path: "admin/CategoryCrud",
+      element: <CategoryCrud />,
+    },
+    {
       path: "admin/category-update/:id",
       element: <CategoryUpdate />,
     },
+
     {
       path: "admin/products",
       element: <Products />,
