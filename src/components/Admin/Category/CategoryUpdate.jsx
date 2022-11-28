@@ -164,8 +164,6 @@ const CategoryUpdate = () => {
                     category.category_name.trim() ===
                       values.category_name.trim() && category._id !== id
                 );
-                console.log(category1.length);
-                console.log(value);
                 if (category1.length > 0 || categories === null) {
                   alertify.error("Bu kategori zaten mevcut.");
                 } else if (imageAsset === false || imageAsset === null) {

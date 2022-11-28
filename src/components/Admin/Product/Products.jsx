@@ -33,20 +33,19 @@ import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 
 const Products = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   //global state
   const { products, categories } = useSelector((state) => state.restoran);
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
   const [values, setValues] = useState({
     product_name: "",
     product_price: "",
     product_description: "",
     product_image: "",
     product_category: "",
-    product_featured: false,
   });
 
   // api yardımıyla kategori ekleme
@@ -110,7 +109,6 @@ const Products = () => {
       });
   };
 
-  const dispatch = useDispatch();
   const getProductFunction = async () => {
     const response = await getProductsFromDB(); // apiden gelen verileri response değişkenine atadık
     dispatch(setProducts(response)); // response değişkenini global state e atadık
@@ -133,14 +131,12 @@ const Products = () => {
     product_price,
     product_category
   ) => {
-    console.log(isFeatured);
     const response = await addProductDB(
       product_name,
       product_description,
       product_image,
       product_price,
-      product_category,
-      isFeatured
+      product_category
     );
 
     getProductFunction();
@@ -163,9 +159,6 @@ const Products = () => {
             product_description: Yup.string().required(
               "Ürün açıklaması zorunludur"
             ),
-            product_isFeatured: Yup.boolean().required(
-              "Ürünün özellikli olup olmadığı zorunludur"
-            ),
             product_category: Yup.string().required(
               "Ürünün kategorisi zorunludur"
             ),
@@ -179,16 +172,17 @@ const Products = () => {
             } else if (imageAsset === false || imageAsset === null) {
               alertify.error("Lütfen resim ekleyiniz");
             } else {
-              // setProduct(
-              //   values.product_name,
-              //   values.product_description,
-              //   imageAsset,
-              //   values.product_price,
-              //   values.product_category
-              // );
+              setProduct(
+                values.product_name,
+                values.product_description,
+                imageAsset,
+                values.product_price,
+                values.product_category
+              );
               console.log(values);
               setTimeout(() => {
                 resetForm();
+                setImageAsset(null);
               }, 1000);
             }
             setTimeout(() => {
@@ -272,6 +266,7 @@ const Products = () => {
                       </option>
                     ))}
                 </select>
+
                 {formik.touched.product_category &&
                 formik.errors.product_category ? (
                   <div className="text-red-500">
@@ -279,30 +274,7 @@ const Products = () => {
                   </div>
                 ) : null}
               </div>
-              <div className="flex flex-col items-center justify-center w-full gap-2">
-                <label htmlFor="product_isFeatured">
-                  Ürün Öne çıkarılsın mı
-                </label>
-                <select
-                  placeholder="product_isFeatured"
-                  type="text"
-                  id="product_isFeatured"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required=""
-                  onChange={formik.handleChange}
-                  value={formik.values.product_isFeatured}
-                >
-                  <option value="">Öne çıkarılsın mı ?</option>
-                  <option value={false}>false</option>
-                  <option value={true}>true</option>
-                </select>
-                {formik.touched.product_isFeatured &&
-                formik.errors.product_isFeatured ? (
-                  <div className="text-red-500">
-                    {formik.errors.product_isFeatured}
-                  </div>
-                ) : null}
-              </div>
+
               <div className="flex justify-center items-center w-2/5">
                 <div
                   className="flex justify-center items-center flex-col border-2 border-dotted
