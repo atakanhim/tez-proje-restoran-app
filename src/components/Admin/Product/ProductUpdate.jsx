@@ -1,5 +1,6 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 import {
   deleteObject,
@@ -10,7 +11,7 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { storage } from "../../../firebase.config";
@@ -18,6 +19,9 @@ import { Loader } from "../../CustomCarts";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
 import { getProductsFromDB, updateProductDB } from "../../../api/api";
 import { setProducts } from "../../../store/slices/restoranSlice";
+
+//alertfy
+import alertify from "alertifyjs";
 
 // import dispaych
 import { useDispatch } from "react-redux";
@@ -32,7 +36,6 @@ const ProductUpdate = () => {
     product_description: "",
     product_price: "",
     product_category: "",
-    product_image: "",
     _id: "",
   });
 
@@ -41,13 +44,13 @@ const ProductUpdate = () => {
   // image update states
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
+  const [show, setShow] = useState(false);
 
   const uploadImage = (e) => {
     setIsLoading(true);
     const imageFile = e.target.files[0];
     const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
-
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -78,14 +81,12 @@ const ProductUpdate = () => {
         // upload işlemi bittikten sonra
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageAsset(downloadURL);
-          setProduct({ ...product, product_image: downloadURL });
           setIsLoading(false);
+          alertify.success("Resim yükleme işlemi başarılı");
           console.log("File available at scces", downloadURL);
         });
       }
     );
-
-    console.log(imageFile);
   };
 
   const deleteImage = () => {
@@ -95,11 +96,8 @@ const ProductUpdate = () => {
       .then(() => {
         setImageAsset(false);
         setIsLoading(false);
-        console.log("File deleted successfully");
-        setProduct({
-          ...product,
-          product_image: "",
-        });
+
+        alertify.success("Resim silme işlemi başarılı");
       })
       .catch((error) => {
         console.log(error);
@@ -110,279 +108,240 @@ const ProductUpdate = () => {
     const response = await getProductsFromDB();
     dispatch(setProducts(response));
   };
-  const updateProduct = async () => {
-    updateProductDB(product)
+  const updateProduct = async (values) => {
+    updateProductDB({
+      product_name: values.product_name.trim(),
+      product_description: values.product_description.trim(),
+      product_price: values.product_price,
+      product_category: values.product_category.trim(),
+      _id: id,
+      product_image: imageAsset,
+    })
       .then((res) => {
         console.log(res);
         getProduct();
+        alertify.success("Ürün güncelleme işlemi başarılı");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const onSubmit = (data) => {
-    // filter ile aynı isimde kategori eklenmesin
-    var product1 = products.filter(
-      (prdct) => prdct.product_name === product.product_name && prdct._id !== id
-    );
-
-    if (product1.length > 0 || products === null) {
-      alert("aynı isimde product eklenemez");
-    } else if (imageAsset === false) {
-      alert("resim ekle");
-    } else {
-      updateProduct();
-    }
+  const doldurInput = () => {
+    const product = products.find((item) => item._id === id);
+    setProduct({
+      product_name: product.product_name,
+      product_description: product.product_description,
+      product_price: product.product_price,
+      product_category: product.product_category,
+      _id: product._id,
+    });
+    setImageAsset(product.product_image);
   };
-
-  const schema = yup
-    .object({
-      product_name: yup.string().required("ad gereklidir"),
-      product_description: yup.string().required("aciklama gereklidir"),
-      product_price: yup.number().required("price gereklidir"),
-
-      product_category: yup.string().required("category gereklidir"),
-
-      // category_description: yup.number().positive().integer().required(),
-    })
-    .required();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
 
   useEffect(() => {
     // get the last part of the url
-    var productu = products.find((product) => product._id === id);
-    try {
-      setProduct({
-        product_name: productu.product_name,
-        product_description: productu.product_description,
-        product_price: productu.product_price,
-        product_category: productu.product_category,
-        product_isFeatured: productu.product_isFeatured,
-        product_image: productu.product_image,
-        _id: productu._id,
-      });
-      setImageAsset(productu.product_image);
-    } catch (error) {
-      console.log(error);
-    }
+    doldurInput();
+    console.log("useEffect çalıştı");
+    setShow(true);
   }, [products, id]);
 
   return (
-    <div className="absolute flex z-10 items-center justify-center bg-gray-200 text-black w-full h-auto">
-      <div className="flex flex-col  items-center justify-center w-3/5 min-w-210 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg mt-20 ">
-        <div>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="w-full flex flex-col g-4  justify-center overflow-hidden overflow-y-auto"
-          >
-            <div className="mb-6">
-              <label
-                htmlFor="product_name"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Urun adı
-              </label>
-              <input
-                type="text"
-                id="product_name"
-                {...register("product_name")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="product_name"
-                value={product.product_name}
-                onChange={(e) =>
-                  setProduct({
-                    ...product,
-                    product_name: e.target.value,
-                  })
+    <>
+      {show ? (
+        <div className="relative z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 h-full ">
+          <div className="w-full  mt-16 flex items-center justify-center p-3">
+            <p className="text-gray-800 text-3xl italic">
+              {" "}
+              Ürün Ekle / Sil / Güncelle
+            </p>
+          </div>
+          <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
+            <Formik
+              initialValues={product}
+              validationSchema={Yup.object({
+                product_name: Yup.string().required("Ürün adı zorunludur"),
+                product_price: Yup.number().required("Ürün fiyatı zorunludur"),
+                product_description: Yup.string().required(
+                  "Ürün açıklaması zorunludur"
+                ),
+                product_category: Yup.string().required(
+                  "Ürünün kategorisi zorunludur"
+                ),
+              })}
+              onSubmit={(values, { setSubmitting, resetForm }) => {
+                var product1 = products.filter(
+                  (product) =>
+                    product.product_name.trim() ===
+                      values.product_name.trim() && product._id !== id
+                );
+                if (product1.length > 0 || categories === null) {
+                  alertify.error("Bu ürün zaten mevcut.");
+                } else if (imageAsset === false || imageAsset === null) {
+                  alertify.error("Lütfen resim yükleyiniz.");
+                } else {
+                  updateProduct(values);
                 }
-                required=""
-              />
-              <p>{errors.product_name?.message}</p>
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="product_description"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Ürün açıklaması
-              </label>
-
-              <input
-                placeholder="Description"
-                type="text"
-                id="product_description"
-                {...register("product_description")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                value={product.product_description}
-                onChange={(e) =>
-                  setProduct({
-                    ...product,
-                    product_description: e.target.value,
-                  })
-                }
-              />
-              <p>{errors.product_description?.message}</p>
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="product_price"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Ürün fiyatı
-              </label>
-
-              <input
-                placeholder="product_price"
-                type="text"
-                id="product_price"
-                {...register("product_price")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                value={product.product_price}
-                onChange={(e) =>
-                  setProduct({
-                    ...product,
-                    product_price: e.target.value,
-                  })
-                }
-              />
-              <p>{errors.product_price?.message}</p>
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="product_category"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Ürün categoriesi
-              </label>
-
-              <select
-                placeholder="product_category"
-                type="text"
-                id="product_category"
-                {...register("product_category")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                value={product.product_category}
-                onChange={(e) =>
-                  setProduct({
-                    ...product,
-                    product_category: e.target.value,
-                  })
-                }
-              >
-                <option value={""}>Kategori seçiniz</option>
-                {categories.length > 0 &&
-                  categories.map((category) => (
-                    <option key={category._id} value={category.category_name}>
-                      {category.category_name}
-                    </option>
-                  ))}
-              </select>
-              <p>{errors.product_category?.message}</p>
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="product_isFeatured"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Öne çıkarılsın mı
-              </label>
-
-              <select
-                placeholder="product_isFeatured"
-                type="text"
-                id="product_isFeatured"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                onChange={(e) => {
-                  setProduct({
-                    ...product,
-                    product_isFeatured: e.target.value,
-                  });
-                }}
-                value={product.product_isFeatured || "null"}
-              >
-                <option value={false}>false</option>
-                <option value={true}>true</option>
-              </select>
-            </div>
-
-            <div className="flex justify-center items-center">
-              <div
-                className="flex justify-center items-center flex-col border-2 border-dotted
-           border-gray-200 hover:border-gray-700 transition-all ease-in-out duration-200 w-full lg:w-4/5 xl:w-3/5 h-225 md:h-225 cursor-pointer"
-              >
-                {isLoading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    {!imageAsset ? (
-                      <>
-                        <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                          <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer gap-2">
-                            <MdCloudUpload className="w-10 h-10 text-gray-500 text-3xl hover:text-gray-700" />
-                            <p className=" text-gray-500  hover:text-gray-700">
-                              Click here to upload
-                            </p>
-                          </div>
-                          <input
-                            type="file"
-                            name="uploadimage"
-                            accept="image/*"
-                            onChange={uploadImage}
-                            className="hidden"
-                          />
-                        </label>
-                      </>
-                    ) : (
-                      <>
-                        <div className="relative h-full">
-                          <img
-                            src={imageAsset}
-                            alt="uploaded"
-                            className="h-full w-full object-cover"
-                          />
-                          <button
-                            type="button"
-                            className="absolute top-3 right-3 p-3 rounded-full text-xl bg-red-400 cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out "
-                            onClick={deleteImage}
+                setTimeout(() => {
+                  setSubmitting(false);
+                }, 1000);
+              }}
+            >
+              {(formik) => (
+                <form
+                  onSubmit={formik.handleSubmit}
+                  className="flex flex-col items-center justify-center w-full gap-5"
+                >
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_name">Ürün Adı</label>
+                    <input
+                      type="text"
+                      id="product_name"
+                      name="product_name"
+                      placeholder="Ürün Adı"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={formik.handleChange}
+                      value={formik.values.product_name}
+                    />
+                    {formik.touched.product_name &&
+                    formik.errors.product_name ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_name}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_description">Ürün Açıklaması</label>
+                    <input
+                      type="text"
+                      id="product_description"
+                      name="product_description"
+                      placeholder="Ürün Açıklaması"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={formik.handleChange}
+                      value={formik.values.product_description}
+                    />
+                    {formik.touched.product_description &&
+                    formik.errors.product_description ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_description}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_price">Ürün Fiyatı</label>
+                    <input
+                      type="text"
+                      id="product_price"
+                      name="product_price"
+                      placeholder="Ürün Fiyatı"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={formik.handleChange}
+                      value={formik.values.product_price}
+                    />
+                    {formik.touched.product_price &&
+                    formik.errors.product_price ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_price}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_category">Ürün Kategorisi</label>
+                    <select
+                      placeholder="product_category"
+                      type="text"
+                      id="product_category"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required=""
+                      onChange={formik.handleChange}
+                      value={formik.values.product_category}
+                    >
+                      <option value={""}>Kategori seçiniz</option>
+                      {categories.length > 0 &&
+                        categories.map((category) => (
+                          <option
+                            key={category._id}
+                            value={category.category_name}
                           >
-                            <MdDelete className="text-white" />
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+                            {category.category_name}
+                          </option>
+                        ))}
+                    </select>
 
-            <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="mt-4  w-full md:w-auto border-none outline-none bg-emerald-400 px-12 py-2 rounded-lg text-lg text-white font-semibold focus:ring-4 focus:outline-none focus:ring-blue-300  hover:bg-emerald-800  transition-all ease-in-out duration-500"
-              >
-                Urun Güncelle
-              </button>
-            </div>
-          </form>
+                    {formik.touched.product_category &&
+                    formik.errors.product_category ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_category}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex justify-center items-center w-2/5">
+                    <div
+                      className="flex justify-center items-center flex-col border-2 border-dotted
+         border-gray-200 hover:border-gray-700 transition-all ease-in-out duration-200 w-full h-225 md:h-225 cursor-pointer"
+                    >
+                      {isLoading ? (
+                        <Loader />
+                      ) : (
+                        <>
+                          {!imageAsset ? (
+                            <>
+                              <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                                <div className="w-full h-full flex flex-col items-center justify-center cursor-pointer gap-2">
+                                  <MdCloudUpload className="w-10 h-10 text-gray-500 text-3xl hover:text-gray-700" />
+                                  <p className=" text-gray-500  hover:text-gray-700">
+                                    Click here to upload
+                                  </p>
+                                </div>
+                                <input
+                                  type="file"
+                                  name="uploadimage"
+                                  accept="image/*"
+                                  onChange={uploadImage}
+                                  className="hidden"
+                                />
+                              </label>
+                            </>
+                          ) : (
+                            <>
+                              <div className="relative h-full">
+                                <img
+                                  src={imageAsset}
+                                  alt="uploaded"
+                                  className="h-full w-full object-cover"
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute top-3 right-3 p-3 rounded-full text-xl bg-red-400 cursor-pointer outline-none hover:shadow-md duration-500 transition-all ease-in-out "
+                                  onClick={deleteImage}
+                                >
+                                  <MdDelete className="text-white" />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <button
+                      type="submit"
+                      className="w-full px-3 py-2 text-white bg-indigo-700 rounded-md disabled:bg-indigo-400 focus:outline-none"
+                    >
+                      Ürün Güncelle
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Formik>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 
