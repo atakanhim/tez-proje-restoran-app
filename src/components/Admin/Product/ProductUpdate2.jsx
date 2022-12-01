@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -12,14 +11,15 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { storage } from "../../../firebase.config";
 import { Loader } from "../../CustomCarts";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
-import { updateCategoryDB, getCategoriesFromDB } from "../../../api/api";
-import { setCategories } from "../../../store/slices/restoranSlice";
+import { getProductsFromDB, updateProductDB } from "../../../api/api";
+import { setProducts } from "../../../store/slices/restoranSlice";
+
 //alertfy
 import alertify from "alertifyjs";
 
@@ -30,15 +30,17 @@ const CategoryUpdate = () => {
   // param ile id alma
   const params = useParams();
   const { id } = params;
-  // local states
 
-  const [value, setValue] = useState({
-    category_name: "",
-    category_description: "",
+  const [product, setProduct] = useState({
+    product_name: "",
+    product_description: "",
+    product_price: "",
+    product_category: "",
+    _id: "",
   });
 
   // global stateden veri çekme
-  const { categories } = useSelector((state) => state.restoran);
+  const { products, categories } = useSelector((state) => state.restoran);
   // image update states
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
@@ -102,21 +104,22 @@ const CategoryUpdate = () => {
         setIsLoading(false);
       });
   };
-  const getCategory = async () => {
-    const response = await getCategoriesFromDB(); // apiden veri çekme
-    dispatch(setCategories(response)); // redux store a veri gönderme
+  const getProduct = async () => {
+    const response = await getProductsFromDB();
+    dispatch(setProducts(response));
   };
-  const updateCategory = async (values) => {
-    updateCategoryDB({
+  const updateProduct = async (values) => {
+    updateProductDB({
+      product_name: values.product_name.trim(),
+      product_description: values.product_description.trim(),
+      product_price: values.product_price,
+      product_category: values.product_category.trim(),
       _id: id,
-      category_name: values.category_name.trim(),
-      category_description: values.category_description.trim(),
-      category_image: imageAsset,
+      product_image: imageAsset,
     })
       .then((res) => {
-        console.log(values);
-        getCategory();
-        alertify.success("Kategori güncelleme işlemi başarılı");
+        console.log(res);
+        getProduct();
       })
       .catch((err) => {
         console.log(err);
@@ -124,19 +127,23 @@ const CategoryUpdate = () => {
   };
 
   const doldurInput = () => {
-    const category = categories.find((item) => item._id === id);
-    setValue({
-      category_name: category.category_name,
-      category_description: category.category_description,
+    const product = products.find((item) => item._id === id);
+    setProduct({
+      product_name: product.product_name,
+      product_description: product.product_description,
+      product_price: product.product_price,
+      product_category: product.product_category,
+      _id: product._id,
     });
-    setImageAsset(category.category_image);
+    setImageAsset(product.product_image);
   };
 
   useEffect(() => {
     // get the last part of the url
     doldurInput();
+    console.log("useEffect çalıştı");
     setShow(true);
-  }, [categories]);
+  }, [products, id]);
 
   return (
     <>
@@ -145,30 +152,34 @@ const CategoryUpdate = () => {
           <div className="w-full  mt-16 flex items-center justify-center p-3">
             <p className="text-gray-800 text-3xl italic">
               {" "}
-              Kategori Ekle / Sil / Güncelle
+              Ürün Ekle / Sil / Güncelle
             </p>
           </div>
           <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
             <Formik
-              initialValues={value}
+              initialValues={product}
               validationSchema={Yup.object({
-                category_name: Yup.string().required("Kategori adı zorunludur"),
-                category_description: Yup.string().required(
-                  "Kategori açıklaması zorunludur"
+                product_name: Yup.string().required("Ürün adı zorunludur"),
+                product_price: Yup.number().required("Ürün fiyatı zorunludur"),
+                product_description: Yup.string().required(
+                  "Ürün açıklaması zorunludur"
+                ),
+                product_category: Yup.string().required(
+                  "Ürünün kategorisi zorunludur"
                 ),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
-                var category1 = categories.filter(
-                  (category) =>
-                    category.category_name.trim() ===
-                      values.category_name.trim() && category._id !== id
+                var product1 = products.filter(
+                  (product) =>
+                    product.product_name.trim() ===
+                      values.product_name.trim() && product._id !== id
                 );
-                if (category1.length > 0 || categories === null) {
-                  alertify.error("Bu kategori zaten mevcut.");
+                if (product1.length > 0 || categories === null) {
+                  alertify.error("Bu ürün zaten mevcut.");
                 } else if (imageAsset === false || imageAsset === null) {
                   alertify.error("Lütfen resim yükleyiniz.");
                 } else {
-                  updateCategory(values);
+                  updateProduct(values);
                 }
                 setTimeout(() => {
                   setSubmitting(false);
@@ -181,40 +192,86 @@ const CategoryUpdate = () => {
                   className="flex flex-col items-center justify-center w-full gap-5"
                 >
                   <div className="flex flex-col items-center justify-center w-full gap-2">
-                    <label htmlFor="category_name">Kategori Adı</label>
+                    <label htmlFor="product_name">Ürün Adı</label>
                     <input
                       type="text"
-                      id="category_name"
-                      name="category_name"
-                      placeholder="Kategori Adı"
+                      id="product_name"
+                      name="product_name"
+                      placeholder="Ürün Adı"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                       onChange={formik.handleChange}
-                      value={formik.values.category_name}
+                      value={formik.values.product_name}
                     />
-                    {formik.touched.category_name &&
-                    formik.errors.category_name ? (
+                    {formik.touched.product_name &&
+                    formik.errors.product_name ? (
                       <div className="text-red-500">
-                        {formik.errors.category_name}
+                        {formik.errors.product_name}
                       </div>
                     ) : null}
                   </div>
                   <div className="flex flex-col items-center justify-center w-full gap-2">
-                    <label htmlFor="category_description">
-                      Kategori Açıklaması
-                    </label>
+                    <label htmlFor="product_description">Ürün Açıklaması</label>
                     <input
                       type="text"
-                      id="category_description"
-                      name="category_description"
-                      placeholder="Kategori Açıklaması"
+                      id="product_description"
+                      name="product_description"
+                      placeholder="Ürün Açıklaması"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
                       onChange={formik.handleChange}
-                      value={formik.values.category_description}
+                      value={formik.values.product_description}
                     />
-                    {formik.touched.category_description &&
-                    formik.errors.category_description ? (
+                    {formik.touched.product_description &&
+                    formik.errors.product_description ? (
                       <div className="text-red-500">
-                        {formik.errors.category_description}
+                        {formik.errors.product_description}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_price">Ürün Fiyatı</label>
+                    <input
+                      type="text"
+                      id="product_price"
+                      name="product_price"
+                      placeholder="Ürün Fiyatı"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={formik.handleChange}
+                      value={formik.values.product_price}
+                    />
+                    {formik.touched.product_price &&
+                    formik.errors.product_price ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_price}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_category">Ürün Kategorisi</label>
+                    <select
+                      placeholder="product_category"
+                      type="text"
+                      id="product_category"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      required=""
+                      onChange={formik.handleChange}
+                      value={formik.values.product_category}
+                    >
+                      <option value={""}>Kategori seçiniz</option>
+                      {categories.length > 0 &&
+                        categories.map((category) => (
+                          <option
+                            key={category._id}
+                            value={category.category_name}
+                          >
+                            {category.category_name}
+                          </option>
+                        ))}
+                    </select>
+
+                    {formik.touched.product_category &&
+                    formik.errors.product_category ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_category}
                       </div>
                     ) : null}
                   </div>
@@ -272,7 +329,7 @@ const CategoryUpdate = () => {
                       type="submit"
                       className="w-full px-3 py-2 text-white bg-indigo-700 rounded-md disabled:bg-indigo-400 focus:outline-none"
                     >
-                      Kategori Güncelle
+                      Ürün Güncelle
                     </button>
                   </div>
                 </form>

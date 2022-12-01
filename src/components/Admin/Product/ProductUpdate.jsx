@@ -32,7 +32,6 @@ const ProductUpdate = () => {
     product_description: "",
     product_price: "",
     product_category: "",
-    product_isFeatured: null,
     product_image: "",
     _id: "",
   });
@@ -42,7 +41,6 @@ const ProductUpdate = () => {
   // image update states
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
-  const [isFeatured, setIsFeatured] = useState(false);
 
   const uploadImage = (e) => {
     setIsLoading(true);
@@ -172,7 +170,6 @@ const ProductUpdate = () => {
         _id: productu._id,
       });
       setImageAsset(productu.product_image);
-      setIsFeatured(productu.product_isFeatured);
     } catch (error) {
       console.log(error);
     }
