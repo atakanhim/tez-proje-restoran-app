@@ -23,12 +23,12 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
   return (
     <>
       {selectedProduct && (
-        <div className="absolute  top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-50 bg-white ">
+        <div className="absolute  top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-50 ">
           <div className="flex flex-col p-1 w-full items-center gap-2 md:w-1/2">
             <div className="flex   absolute left-0 top-0 p-3">
               <ClearOutlinedIcon
                 onClick={closeWindow}
-                className="cursor-pointer hover:scale-105 transform transition-all ease-in-out duration-300"
+                className="cursor-pointer hover:scale-105 transform transition-all ease-in-out"
               />
             </div>
             <div className="relative flex w-full h-56 p-6">

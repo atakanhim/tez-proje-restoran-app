@@ -1,17 +1,17 @@
 import axios from "axios";
 // categories
 
-export const getCategories = async () => {
+export const getCategoriesFromDB = async () => {
   const response = await axios.get("http://localhost:5000/api/category");
   return response.data;
 };
-export const deleteCategory = async (id) => {
+export const deleteCategoryDB = async (id) => {
   const response = await axios.delete(
     `http://localhost:5000/api/category/${id}`
   );
   return response.data;
 };
-export const deleteAllCategories = async () => {
+export const deleteAllCategoriesDB = async () => {
   const response = await axios.delete(`http://localhost:5000/api/category`);
   return response.data;
 };
@@ -25,7 +25,7 @@ export const updateCategoryDB = async (category) => {
 
   return response.data;
 };
-export const addCategory = async (x, y, z) => {
+export const addCategoryDB = async (x, y, z) => {
   console.log("add category " + x, y);
 
   const response = await axios
@@ -64,10 +64,8 @@ export const addProductDB = async (
   product_descriptionValue,
   product_imageValue,
   product_priceValue,
-  product_categoryValue,
-  product_isFeaturedValue
+  product_categoryValue
 ) => {
-  console.log("add product " + product_isFeaturedValue);
   const response = await axios
     .post("http://localhost:5000/api/product", {
       product_name: product_nameValue,
@@ -75,7 +73,6 @@ export const addProductDB = async (
       product_description: product_descriptionValue,
       product_category: product_categoryValue,
       product_price: product_priceValue,
-      product_isFeatured: product_isFeaturedValue,
     })
     .then((res) => {
       console.log(res.data);
