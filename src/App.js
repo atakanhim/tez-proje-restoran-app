@@ -16,7 +16,7 @@ import {
   ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
-import { Header, Home } from "./components/Customers";
+import { Footer, Header, Home } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
 
 const App = () => {
@@ -97,13 +97,13 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className="w-full bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
+      <div className="w-full  gap-2  flex  flex-col  text-base font-bold  ">
         {masaNo ? (
           <>
-            <Header />
             <Routes>
               <Route path="/*" element={<Home />} />
             </Routes>
+            <Footer />
           </>
         ) : (
           <>
