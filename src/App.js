@@ -16,7 +16,7 @@ import {
   ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
-import { Footer, Header, Home } from "./components/Customers";
+import { Cart, Footer, Home, Orders } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
 
 const App = () => {
@@ -102,6 +102,8 @@ const App = () => {
           <>
             <Routes>
               <Route path="/*" element={<Home />} />
+              <Route path="/Orders" element={<Orders />} />
+              <Route path="/Cart" element={<Cart />} />
             </Routes>
             <Footer />
           </>
