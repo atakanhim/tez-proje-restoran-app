@@ -18,7 +18,6 @@ const Footer = () => {
   const activeStyle = {
     fontSize: 50,
     color: customPurple,
-    fontWeight: "italic",
     borderBottom: "3px solid purple",
     radius: "50%",
     padding: "5px",
@@ -28,29 +27,42 @@ const Footer = () => {
   const deActiveStyle = {
     fontSize: 35,
     color: "gray",
-    fontWeight: "italic",
-      TransitionEvent: "all 0.5s ease",
+    TransitionEvent: "all 0.5s ease",
     duration: "500ms",
   };
-
-  const shoppingCartStyle = {
-    fontSize: 30,
-    color: "white",
-    fontWeight: "italic",
+  const activeShoppingCartStyle = {
+    ...deActiveStyle,
+    color: "yellow",
+    fontSize: 35,
   };
+  const deactiveShoppingCartStyle = {
+    ...deActiveStyle,
+    color: "white",
+    fontSize: 30,
+  };
+
+  var shoppingCartStyle;
   var homeStyle;
   var historyStyle;
 
   switch (window.location.pathname) {
     case "/":
+      shoppingCartStyle = deactiveShoppingCartStyle;
       homeStyle = activeStyle;
       historyStyle = deActiveStyle;
       break;
     case "/Orders":
+      shoppingCartStyle = deactiveShoppingCartStyle;
       homeStyle = deActiveStyle;
       historyStyle = activeStyle;
       break;
+    case "/Cart":
+      shoppingCartStyle = activeShoppingCartStyle;
+      homeStyle = deActiveStyle;
+      historyStyle = deActiveStyle;
+      break;
     default:
+      shoppingCartStyle = deactiveShoppingCartStyle;
       homeStyle = deActiveStyle;
       historyStyle = deActiveStyle;
       break;
@@ -68,10 +80,10 @@ const Footer = () => {
         </div>
         <div className="relative flex flex-col w-16 h-16  justify-center items-center">
           <div
-            className=" flex items-center justify-center w-full h-full rounded-full border border-purple-500 bg-purple-600 absolute bottom-4 "
+            className=" flex items-center justify-center w-full h-full rounded-full border-4 border-slate-100 bg-purple-600 absolute bottom-4 "
             onClick={() => changePage("/Cart")}
           >
-            <p className="absolute bottom-11 right-4 text-xs text-white">0</p>
+            <p className="absolute bottom-10 right-4 text-xs text-white">0</p>
             <ShoppingCartIcon
               className="flex flex-row w-full h-full justify-center items-center"
               style={shoppingCartStyle}
