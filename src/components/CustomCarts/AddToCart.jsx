@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
@@ -8,6 +8,23 @@ import "./AddToCart.css";
 const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
   const [urunNotu, setUrunNotu] = useState("");
   const [urunAdet, setUrunAdet] = useState(1);
+  useEffect(() => {
+    // get windows position
+    const scrollY =
+      document.documentElement.style.getPropertyValue("--scroll-y");
+    const body = document.body;
+    // set position fixed
+    if (selectedProduct) {
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}`;
+    }
+    // remove position fixed
+    return () => {
+      body.style.position = "";
+      body.style.top = `-${scrollY}`;
+    };
+  }, [selectedProduct]);
+
   const inCrease = () => {
     setUrunAdet(urunAdet + 1);
   };
@@ -16,20 +33,28 @@ const AddToCart = ({ selectedProduct, setSelectedProduct }) => {
       setUrunAdet(urunAdet - 1);
     }
   };
-  const addToCartButton = () => {};
+  const addToCartButton = () => {
+    const urun = {
+      urunAdi: selectedProduct.product_name,
+      urunFiyat: selectedProduct.product_price,
+      urunAdet: urunAdet,
+      urunNotu: urunNotu,
+    };
+    console.log(urun);
+  };
   const closeWindow = () => {
     setSelectedProduct(null);
   };
   return (
     <>
       {selectedProduct && (
-        <div className="absolute  top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-50 ">
+        <div className="absolute   top-0 left-0 flex w-full min-h-screen items-center justify-center h-auto z-40 ">
           <div className="flex flex-col p-1 w-full items-center gap-2 md:w-1/2">
-            <div className="flex   absolute left-0 top-0 p-3">
-              <ClearOutlinedIcon
-                onClick={closeWindow}
-                className="cursor-pointer hover:scale-105 transform transition-all ease-in-out"
-              />
+            <div
+              className="flex   absolute left-0 top-0 p-3 z-50"
+              onClick={closeWindow}
+            >
+              <ClearOutlinedIcon className="cursor-pointer hover:scale-105 transform transition-all ease-in-out" />
             </div>
             <div className="relative flex w-full h-56 p-6">
               <img
