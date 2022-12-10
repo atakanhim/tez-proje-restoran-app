@@ -16,8 +16,9 @@ import {
   ProductUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
-import { Header, Home } from "./components/Customers";
+import { Cart, Footer, Home, Orders } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
+import { AddToCart } from "./components/CustomCarts";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -97,13 +98,16 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className="w-full bg-slate-100 gap-2  flex  flex-col  text-base font-bold  ">
+      <div className="w-full  gap-2  flex  flex-col  text-base font-bold  ">
         {masaNo ? (
           <>
-            <Header />
             <Routes>
               <Route path="/*" element={<Home />} />
+              <Route path="/Orders" element={<Orders />} />
+              <Route path="/Cart" element={<Cart />} />
+              <Route path="/add-to-cart/:id" element={<AddToCart />} />
             </Routes>
+            <Footer />
           </>
         ) : (
           <>

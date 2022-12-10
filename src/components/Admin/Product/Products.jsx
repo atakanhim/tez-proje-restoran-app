@@ -44,6 +44,7 @@ const Products = () => {
     product_name: "",
     product_price: "",
     product_description: "",
+    product_content: "",
     product_image: "",
     product_category: "",
   });
@@ -129,14 +130,16 @@ const Products = () => {
     product_description,
     product_image,
     product_price,
-    product_category
+    product_category,
+    product_content
   ) => {
     const response = await addProductDB(
       product_name,
       product_description,
       product_image,
       product_price,
-      product_category
+      product_category,
+      product_content
     );
 
     getProductFunction();
@@ -147,7 +150,7 @@ const Products = () => {
       <div className="w-full  mt-16 flex items-center justify-center p-3">
         <p className="text-gray-800 text-3xl italic">
           {" "}
-          Product Ekle / Sil / Güncelle
+          Ürün Ekle / Sil / Güncelle
         </p>
       </div>
       <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
@@ -159,6 +162,7 @@ const Products = () => {
             product_description: Yup.string().required(
               "Ürün açıklaması zorunludur"
             ),
+            product_content: Yup.string().required("Ürün içeriği zorunludur"),
             product_category: Yup.string().required(
               "Ürünün kategorisi zorunludur"
             ),
@@ -177,7 +181,8 @@ const Products = () => {
                 values.product_description,
                 imageAsset,
                 values.product_price,
-                values.product_category
+                values.product_category,
+                values.product_content
               );
               console.log(values);
               setTimeout(() => {
@@ -212,6 +217,7 @@ const Products = () => {
                   </div>
                 ) : null}
               </div>
+
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_description">Ürün açıklaması</label>
                 <input
@@ -231,7 +237,32 @@ const Products = () => {
                 ) : null}
               </div>
               <div className="flex flex-col items-center justify-center w-full gap-2">
+                <label htmlFor="product_content">Ürün İçindekiler</label>
+                <p className="text-xs text-gray-600">
+                  Virgül ' , ' işaretini kullanarak malzemeleri
+                  ayırabilirsiniz.(Örnek:Soğan,Domates,Patates)
+                </p>
+                <input
+                  type="text"
+                  id="product_content"
+                  name="product_content"
+                  placeholder="Ürün İçindekiler"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                  onChange={formik.handleChange}
+                  value={formik.values.product_content}
+                />
+                {formik.touched.product_content &&
+                formik.errors.product_content ? (
+                  <div className="text-red-500">
+                    {formik.errors.product_content}
+                  </div>
+                ) : null}
+              </div>
+              <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_price">Ürün Fiyati</label>
+                <p className="text-xs text-gray-600">
+                  TL Üzerinden giriniz.(Örnek: 10.99)
+                </p>
                 <input
                   type="text"
                   id="product_price"
@@ -342,7 +373,7 @@ const Products = () => {
           products.map((product) => (
             <motion.div
               key={product._id}
-              className="relative rounded-lg  w-40 min-w-210 px-4 py-4 h-225 cursor-pointer hover:bg-card bg-gray-100 shadow-md  flex flex-col items-center "
+              className="relative rounded-lg  w-40 min-w-210 px-4 py-4 h-[270px] cursor-pointer hover:bg-card bg-gray-100 shadow-md  flex flex-col items-center "
             >
               <div className="w-40 min-w-[160px] h-40 min-h-[160px] rounded-lg drop-shadow-lg relative overflow-hidden">
                 <motion.img
