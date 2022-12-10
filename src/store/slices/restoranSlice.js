@@ -41,6 +41,11 @@ const restoranSlice = createSlice({
         return { ...state, user: action.payload };
       },
     },
+    addToCart: {
+      reducer: (state, action) => {
+        return { ...state, cart: action.payload };
+      },
+    },
   },
 });
 console.log(restoranSlice);
@@ -50,6 +55,7 @@ export const {
   setCurrentCategory,
   setUser,
   setProducts,
+  addToCart,
 } = restoranSlice.actions;
 
 export default restoranSlice.reducer;

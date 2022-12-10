@@ -18,6 +18,7 @@ import {
 import { ChefScreen, ChefHeader } from "./components/Chef";
 import { Cart, Footer, Home, Orders } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
+import { AddToCart } from "./components/CustomCarts";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -104,6 +105,7 @@ const App = () => {
               <Route path="/*" element={<Home />} />
               <Route path="/Orders" element={<Orders />} />
               <Route path="/Cart" element={<Cart />} />
+              <Route path="/add-to-cart/:id" element={<AddToCart />} />
             </Routes>
             <Footer />
           </>

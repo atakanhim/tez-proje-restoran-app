@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import AddToCart from "../../CustomCarts/AddToCart";
 import "./Home.css";
 
@@ -10,10 +11,10 @@ const Home = () => {
   const { masaNo, currentCategory, products, categories } = useSelector(
     (state) => state.restoran
   );
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate = useNavigate();
 
   const handleProductDetail = (product) => {
-    setSelectedProduct(product);
+    navigate("/add-to-cart/" + product._id);
   };
 
   return (
@@ -59,12 +60,6 @@ const Home = () => {
             </div>
           );
         })}
-      </div>
-      <div className={`modal ${selectedProduct ? "open" : ""}`}>
-        <AddToCart
-          selectedProduct={selectedProduct}
-          setSelectedProduct={setSelectedProduct}
-        />
       </div>
     </div>
   );

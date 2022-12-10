@@ -7,6 +7,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import HistoryIcon from "@mui/icons-material/History";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const Footer = () => {
       historyStyle = deActiveStyle;
       break;
   }
+  const { cart } = useSelector((state) => state.restoran);
 
   return (
     <div className=" flex items-center flex-row w-full h-20 pt-4 bg-slate-100 bottom-0 fixed">
@@ -83,7 +85,9 @@ const Footer = () => {
             className=" flex items-center justify-center w-full h-full rounded-full border-4 border-slate-100 bg-purple-600 absolute bottom-4 "
             onClick={() => changePage("/Cart")}
           >
-            <p className="absolute bottom-10 right-4 text-xs text-white">0</p>
+            <p className="absolute bottom-10 right-4 text-xs text-white">
+              {cart.length < 9 ? cart.length : "9+"}
+            </p>
             <ShoppingCartIcon
               className="flex flex-row w-full h-full justify-center items-center"
               style={shoppingCartStyle}
