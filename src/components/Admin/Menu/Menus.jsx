@@ -350,7 +350,7 @@ const Menus = () => {
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_price">Menü Fiyati</label>
                 <p className="text-xs text-gray-600">
-                  TL Üzerinden giriniz.(Örnek: 10.99)
+                  TL Üzerinden giriniz.(Örnek: 10.99) - Onerilen fiyat: 15.99
                 </p>
                 <input
                   type="text"
