@@ -145,6 +145,7 @@ const Products = () => {
     getProductFunction();
     setImageAsset(null);
   };
+
   return (
     <div className="relative z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 h-full ">
       <div className="w-full  mt-16 flex items-center justify-center p-3">
