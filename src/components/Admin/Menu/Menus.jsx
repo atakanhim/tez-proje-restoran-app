@@ -68,7 +68,7 @@ const Menus = () => {
     for (let i = 0; i < valuesArray.menu_snacks_selection.length; i++) {
       if (
         valuesArray.menu_snacks_selection[i] &&
-        valuesArray.menu_snacks_selection[i][2]
+        valuesArray.menu_snacks_selection[i][2] > 0
       ) {
         total += valuesArray.menu_snacks_selection[i][2];
       }
@@ -172,7 +172,7 @@ const Menus = () => {
   };
   // resim ekleme işlemleri için gerekli fonksiyonlar
   const updateMenuWithId = async (id) => {
-    //navigate("/admin/product-update/" + id);
+    navigate("/admin/menu-update/" + id);
   };
   const setMenu = async (
     menu_name,
@@ -251,8 +251,6 @@ const Menus = () => {
                   prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
-
-                console.log(valuesArray);
               }
               setEstimatedTotalAmountFunction();
             }}
@@ -302,8 +300,6 @@ const Menus = () => {
                   prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
-
-                console.log(valuesArray);
               }
               setEstimatedTotalAmountFunction();
             }}
@@ -352,8 +348,6 @@ const Menus = () => {
                   prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
-
-                console.log(valuesArray);
               }
               setEstimatedTotalAmountFunction();
             }}
@@ -411,7 +405,6 @@ const Menus = () => {
                 setValuesArray(newValuesArray);
               }
               setEstimatedTotalAmountFunction();
-              console.log(valuesArray);
             }}
             value={
               valuesArray.menu_snacks_selection[i]

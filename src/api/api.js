@@ -89,7 +89,6 @@ export const addMenuDB = async (
       menu_image: menu_image,
     })
     .then((res) => {
-      console.log(res);
       console.log(res.data);
     })
     .catch((err) => {

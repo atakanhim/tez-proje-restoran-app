@@ -23,6 +23,7 @@ import {
   CategoryUpdate,
   ProductUpdate,
   Menus,
+  MenuUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 import { Cart, Footer, Home, Orders } from "./components/Customers";
@@ -87,6 +88,10 @@ const App = () => {
     {
       path: "/admin/menus",
       element: <Menus />,
+    },
+    {
+      path: "admin/menu-update/:id",
+      element: <MenuUpdate />,
     },
     {
       path: "admin/product-update/:id",
