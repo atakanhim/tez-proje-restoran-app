@@ -40,15 +40,43 @@ const Menus = () => {
   const { products, categories, menus } = useSelector(
     (state) => state.restoran
   );
-  // for icin degeler
-
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
-  // local states 2
+  const [estimatedTotalAmount, setEstimatedTotalAmount] = useState(0);
+  // for icin degeler
 
-  // Atistirmaliklar
-  const [secondSnack, setSnack] = useState("");
+  const setEstimatedTotalAmountFunction = () => {
+    var total = 0;
+
+    for (let i = 0; i < valuesArray.menu_burger_selection.length; i++) {
+      if (valuesArray.menu_burger_selection[i]) {
+        total += valuesArray.menu_burger_selection[i][2];
+      }
+    }
+
+    for (let i = 0; i < valuesArray.menu_cips_selection.length; i++) {
+      if (valuesArray.menu_cips_selection[i]) {
+        total += valuesArray.menu_cips_selection[i][2];
+      }
+    }
+    for (let i = 0; i < valuesArray.menu_drink_selection.length; i++) {
+      if (valuesArray.menu_drink_selection[i]) {
+        total += valuesArray.menu_drink_selection[i][2];
+      }
+    }
+    for (let i = 0; i < valuesArray.menu_snacks_selection.length; i++) {
+      if (
+        valuesArray.menu_snacks_selection[i] &&
+        valuesArray.menu_snacks_selection[i][2]
+      ) {
+        total += valuesArray.menu_snacks_selection[i][2];
+      }
+    }
+
+    console.log(total);
+    setEstimatedTotalAmount(total);
+  };
 
   // values for yup
   const [values, setValues] = useState({
@@ -220,11 +248,13 @@ const Menus = () => {
                 newValuesArray.menu_burger_selection[i] = [
                   prdt.product_name,
                   prdt._id,
+                  prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
 
                 console.log(valuesArray);
               }
+              setEstimatedTotalAmountFunction();
             }}
             value={
               valuesArray.menu_burger_selection[i]
@@ -246,6 +276,7 @@ const Menus = () => {
         </div>
       );
     }
+
     return content;
   };
   const renderCips = () => {
@@ -268,11 +299,13 @@ const Menus = () => {
                 newValuesArray.menu_cips_selection[i] = [
                   prdt.product_name,
                   prdt._id,
+                  prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
 
                 console.log(valuesArray);
               }
+              setEstimatedTotalAmountFunction();
             }}
             value={
               valuesArray.menu_cips_selection[i]
@@ -316,11 +349,13 @@ const Menus = () => {
                 newValuesArray.menu_drink_selection[i] = [
                   prdt.product_name,
                   prdt._id,
+                  prdt.product_price,
                 ];
                 setValuesArray(newValuesArray);
 
                 console.log(valuesArray);
               }
+              setEstimatedTotalAmountFunction();
             }}
             value={
               valuesArray.menu_drink_selection[i]
@@ -365,13 +400,17 @@ const Menus = () => {
                 newValuesArray.menu_snacks_selection[i] = [
                   prdt.product_name,
                   prdt._id,
+                  prdt.product_price,
                 ];
+
                 setValuesArray(newValuesArray);
               } else {
                 const newValuesArray = { ...valuesArray };
                 newValuesArray.menu_snacks_selection[i] = e.target.value;
+
                 setValuesArray(newValuesArray);
               }
+              setEstimatedTotalAmountFunction();
               console.log(valuesArray);
             }}
             value={
@@ -463,7 +502,6 @@ const Menus = () => {
               setTimeout(() => {
                 resetForm();
                 setImageAsset(null);
-                setSnack("");
               }, 1000);
             }
             setTimeout(() => {
@@ -591,7 +629,8 @@ const Menus = () => {
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_price">Menü Fiyati</label>
                 <p className="text-xs text-gray-600">
-                  TL Üzerinden giriniz.(Örnek: 10.99) - Onerilen fiyat: 15.99
+                  TL Üzerinden giriniz.(Örnek: 10.99) - Toplam fiyat:{" "}
+                  {estimatedTotalAmount} TL
                 </p>
                 <input
                   type="text"

@@ -53,7 +53,7 @@ const AddToCartForMenus = () => {
     const menu = menus.find((item) => item._id === id);
     // create await function for filter
     const product = products.find(
-      (item) => item._id === menu.menu_burger_selection[0]
+      (item) => item._id === menu.menu_burger_selection[0][1]
     );
     setMenu({
       menu_name: menu.menu_name,
