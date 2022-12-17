@@ -367,20 +367,20 @@ const Menus = () => {
                   prdt._id,
                 ];
                 setValuesArray(newValuesArray);
-
-                console.log(valuesArray);
+              } else {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_snacks_selection[i] = e.target.value;
+                setValuesArray(newValuesArray);
               }
+              console.log(valuesArray);
             }}
             value={
               valuesArray.menu_snacks_selection[i]
                 ? valuesArray.menu_snacks_selection[i][1]
-                : ""
+                : "Eklenmedi"
             }
           >
-            <option value="">{i + 1}.Atıştırmalık Seçiniz</option>
-            <option value="Eklenmedi">
-              {i + 1}.Atıştırmalık Eklemeyecegim
-            </option>
+            <option value="Eklenmedi">Atıştırmalık Eklemeyecegim</option>
             {products.map((product) => {
               if (product.product_category === "Atıştırmalıklar") {
                 return (
@@ -420,13 +420,7 @@ const Menus = () => {
         }
       }
     }
-    if (valuesArray.menu_snacks_selection.length >= 0) {
-      for (let i = 0; i < valuesArray.menu_snacks_selection.length; i++) {
-        if (valuesArray.menu_snacks_selection[i] === "" || null) {
-          return false;
-        }
-      }
-    }
+
     return control;
   };
 
