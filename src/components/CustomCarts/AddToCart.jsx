@@ -83,6 +83,7 @@ const AddToCart = () => {
       urunFiyat: product.product_price,
       urunAdet: urunAdet,
       urunNotu: urunNotu,
+      siparisToplamTutar: urunAdet * product.product_price,
     };
     if (deletedItems.length > 0) {
       urun.urunNotu =
