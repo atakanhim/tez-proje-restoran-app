@@ -19,6 +19,7 @@ const Home = () => {
   const handleMenuDetail = (menu) => {
     navigate("/add-to-cart-for-menus/" + menu._id);
   };
+
   return (
     <div className="  w-full bg-white flex items-center flex-col gap-3 mb-[110px]  ">
       <div className="flex flex-col justify-between w-full md:w-1/2 h-1/2 gap-5 p-1">
@@ -76,10 +77,14 @@ const Home = () => {
                   <div className=" flex justify-center  flex-col   w-4/5 h-full">
                     <h1 className="text-sm font-bold">{menu.menu_name}</h1>
                     <h1 className="text-xs font-bold text-textColor w-4/5 h-9 overflow-hidden">
-                      {menu.menu_burger_selection[1]} +{" "}
-                      {menu.menu_drink_selection} +{" "}
-                      {menu.menu_snacks_selection.map((snack) => {
-                        return snack + " + ";
+                      {menu.menu_burger_selection.map((burger) => {
+                        return burger[0] + " + ";
+                      })}
+                      {menu.menu_cips_selection.map((burger) => {
+                        return burger[0] + " + ";
+                      })}
+                      {menu.menu_drink_selection.map((burger) => {
+                        return burger[0] + " + ";
                       })}
                     </h1>
                     <h1 className="text-xs mt-3">{menu.menu_price} TL</h1>
