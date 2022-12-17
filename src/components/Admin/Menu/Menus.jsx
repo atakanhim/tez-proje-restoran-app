@@ -44,6 +44,8 @@ const Menus = () => {
   // local state
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(false);
+  // local states 2
+  const [burgerCount, setBurgerCount] = useState(0);
 
   // Atistirmaliklar
   const [secondSnack, setSnack] = useState("");
@@ -274,7 +276,9 @@ const Menus = () => {
                 <label htmlFor="menu_snacks_selection">
                   1.Atıştırmalık seçimi
                 </label>
-                <p className="text-xs text-gray-600">(Patates Seçimi)</p>
+                <p className="text-xs text-gray-600">
+                  (Patates Kizartması Seçimi)
+                </p>
                 <select
                   id="menu_snacks_selection"
                   name="menu_snacks_selection"
