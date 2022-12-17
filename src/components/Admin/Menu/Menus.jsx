@@ -344,6 +344,58 @@ const Menus = () => {
     }
     return content;
   };
+  const renderSnacks = () => {
+    let content = [];
+
+    for (let i = 0; i < counts.snackCount; i++) {
+      content.push(
+        <div key={i} className=" ">
+          <p className="text-xs text-gray-600">Zorunlu Degildir</p>
+          <select
+            id="menu_snack_selection"
+            name="menu_snack_selection"
+            className="flex flex-col w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            onChange={(e) => {
+              var prdt = products.find(
+                (product) => product._id === e.target.value
+              );
+
+              if (prdt) {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_snacks_selection[i] = [
+                  prdt.product_name,
+                  prdt._id,
+                ];
+                setValuesArray(newValuesArray);
+
+                console.log(valuesArray);
+              }
+            }}
+            value={
+              valuesArray.menu_snacks_selection[i]
+                ? valuesArray.menu_snacks_selection[i][1]
+                : ""
+            }
+          >
+            <option value="">{i + 1}.Atıştırmalık Seçiniz</option>
+            <option value="Eklenmedi">
+              {i + 1}.Atıştırmalık Eklemeyecegim
+            </option>
+            {products.map((product) => {
+              if (product.product_category === "Atıştırmalıklar") {
+                return (
+                  <option key={product._id} value={product._id}>
+                    {product.product_name} - {product.product_price} TL
+                  </option>
+                );
+              }
+            })}
+          </select>
+        </div>
+      );
+    }
+    return content;
+  };
   const valuesArraycontrol = () => {
     let control = true;
 
@@ -368,7 +420,13 @@ const Menus = () => {
         }
       }
     }
-
+    if (valuesArray.menu_snacks_selection.length >= 0) {
+      for (let i = 0; i < valuesArray.menu_snacks_selection.length; i++) {
+        if (valuesArray.menu_snacks_selection[i] === "" || null) {
+          return false;
+        }
+      }
+    }
     return control;
   };
 
@@ -511,6 +569,30 @@ const Menus = () => {
                   {renderOption()}
                 </select>
                 {counts.drinkCount > 0 ? renderDrinks() : null}
+              </div>
+              <div className="flex flex-col items-center justify-center w-full gap-2">
+                <label htmlFor="menu_burger_selection">
+                  Eklenecek Atıştırmalık sayısını seciniz
+                </label>
+                <select
+                  className="w-12 h-6  border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                  onChange={(e) => {
+                    setCounts({
+                      ...counts,
+                      snackCount: e.target.value,
+                    });
+                    setValuesArray({
+                      ...valuesArray,
+                      menu_snacks_selection: new Array(
+                        parseInt(e.target.value)
+                      ).fill(""),
+                    });
+                  }}
+                  value={counts.snackCount}
+                >
+                  {renderOption()}
+                </select>
+                {counts.snackCount > 0 ? renderSnacks() : null}
               </div>
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_price">Menü Fiyati</label>
