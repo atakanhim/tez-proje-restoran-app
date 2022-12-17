@@ -29,9 +29,10 @@ const AddToCart = () => {
     product_image: "",
     _id: "",
   });
+
+  // icindikler silerken
   const [productContentArray, setProductContentArray] = useState([]);
   const [deletedItems, setDeletedItems] = useState([]);
-  //get id from url
 
   const handleDelete = (item) => {
     const newProductContentArray = productContentArray.filter(
@@ -104,7 +105,7 @@ const AddToCart = () => {
   return (
     <>
       <div
-        className={`relative flex w-full  items-center justify-center h-screen mb-32  transition-all duration-500 ease-in-out  ${
+        className={`relative flex w-full  items-center justify-center h-auto mb-32  transition-all duration-500 ease-in-out  ${
           show ? "opacity-100" : "opacity-0"
         }`}
       >

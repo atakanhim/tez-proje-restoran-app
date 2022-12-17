@@ -76,8 +76,8 @@ const Home = () => {
                   <div className=" flex justify-center  flex-col   w-4/5 h-full">
                     <h1 className="text-sm font-bold">{menu.menu_name}</h1>
                     <h1 className="text-xs font-bold text-textColor w-4/5 h-9 overflow-hidden">
-                      {menu.menu_burger_selection} + {menu.menu_drink_selection}{" "}
-                      +{" "}
+                      {menu.menu_burger_selection[1]} +{" "}
+                      {menu.menu_drink_selection} +{" "}
                       {menu.menu_snacks_selection.map((snack) => {
                         return snack + " + ";
                       })}

@@ -18,6 +18,7 @@ const Cart = () => {
             <h1>fiyat {item.urunFiyat}</h1>
             <h1>adet {item.urunAdet}</h1>
             <h1>not {item.urunNotu}</h1>
+            <h1>kategori {item.urunKategori}</h1>
             <h4>total: {item.siparisToplamTutar}</h4>
           </div>
         ))

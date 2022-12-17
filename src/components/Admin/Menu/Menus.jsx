@@ -147,10 +147,18 @@ const Menus = () => {
     if (secondSnack !== "") {
       menu_snacks_selection_array.push(secondSnack);
     }
+    const selectedBurger = products.find(
+      (product) => product._id === menu_burger_selection
+    );
+
+    const menu_burger_selection_array = [
+      selectedBurger._id,
+      selectedBurger.product_name,
+    ]; // bu idsi
 
     const response = await addMenuDB(
       menu_name,
-      menu_burger_selection,
+      menu_burger_selection_array,
       menu_snacks_selection_array,
       menu_drink_selection,
       menu_price,
@@ -246,7 +254,7 @@ const Menus = () => {
                   {products.map((product) => {
                     if (product.product_category === "Burgerler") {
                       return (
-                        <option key={product._id} value={product.product_name}>
+                        <option key={product._id} value={product._id}>
                           {product.product_name}
                         </option>
                       );
@@ -266,7 +274,7 @@ const Menus = () => {
                 <label htmlFor="menu_snacks_selection">
                   1.Atıştırmalık seçimi
                 </label>
-
+                <p className="text-xs text-gray-600">(Patates Seçimi)</p>
                 <select
                   id="menu_snacks_selection"
                   name="menu_snacks_selection"
@@ -276,7 +284,10 @@ const Menus = () => {
                 >
                   <option value="">Atıştırmalık seçiniz</option>
                   {products.map((product) => {
-                    if (product.product_category === "Atıştırmalıklar") {
+                    if (
+                      product.product_category === "Atıştırmalıklar" &&
+                      product.product_description === "patates kızartması"
+                    ) {
                       return (
                         <option key={product._id} value={product.product_name}>
                           {product.product_name}
