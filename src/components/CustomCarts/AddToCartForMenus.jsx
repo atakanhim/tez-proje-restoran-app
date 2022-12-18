@@ -214,22 +214,27 @@ const AddToCartForMenus = () => {
     };
     if (deletedItems.length > 0) {
       urun.istenmeyenMalzemeler +=
-        "1. Hamburger için Çıkarılacak Malzemeler : " + deletedItems.join(", ");
+        "1. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems.join(", ") +
+        " | ";
     }
     if (deletedItems2.length > 0) {
       urun.istenmeyenMalzemeler +=
-        " | 2. Hamburger için Çıkarılacak Malzemeler : " +
-        deletedItems2.join(", ");
+        " 2. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems2.join(", ") +
+        " | ";
     }
     if (deletedItems3.length > 0) {
       urun.istenmeyenMalzemeler +=
-        " | 3. Hamburger için Çıkarılacak Malzemeler : " +
-        deletedItems3.join(", ");
+        " 3. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems3.join(", ") +
+        " | ";
     }
     if (deletedItems4.length > 0) {
       urun.istenmeyenMalzemeler +=
-        " | 4. Hamburger için Çıkarılacak Malzemeler : " +
-        deletedItems4.join(", ");
+        " 4. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems4.join(", ") +
+        " | ";
     }
     var newCart = [...cart, urun];
     dispatch(addToCart(newCart));
@@ -243,7 +248,74 @@ const AddToCartForMenus = () => {
     // window.history.back();
     window.history.go(-1);
   };
+  // icecek ekleniyor
+  const icecekSecim = () => {
+    let icecekler = [];
+    for (let i = 0; i < menu.menu_drink_selection.length; i++) {
+      icecekler.push(
+        <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
+          <h1 className="text-lg font-bold ">{i + 1}. İçecek Seçimi</h1>
+          <select
+            className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
+            onChange={(e) => {
+              let prdt = products.find((item) => item._id === e.target.value);
 
+              let secilenIcecekFiyati = prdt.product_price;
+              let simdikiIcecekFiyati = menu.menu_drink_selection[i][2];
+
+              if (secilenIcecekFiyati >= simdikiIcecekFiyati) {
+                let fark = secilenIcecekFiyati - simdikiIcecekFiyati;
+
+                setMenu({
+                  ...menu,
+                  menu_drink_selection: [
+                    ...menu.menu_drink_selection.slice(0, i),
+                    [prdt.product_name, prdt._id, prdt.product_price],
+                    ...menu.menu_drink_selection.slice(i + 1),
+                  ],
+                  menu_price: menu.menu_price + fark,
+                });
+              }
+              if (secilenIcecekFiyati < simdikiIcecekFiyati) {
+                let fark = secilenIcecekFiyati - simdikiIcecekFiyati;
+
+                setMenu({
+                  ...menu,
+                  menu_drink_selection: [
+                    ...menu.menu_drink_selection.slice(0, i),
+                    [prdt.product_name, prdt._id, prdt.product_price],
+                    ...menu.menu_drink_selection.slice(i + 1),
+                  ],
+                  menu_price: menu.menu_price + fark,
+                });
+              }
+            }}
+            value={menu.menu_drink_selection[i][1]}
+          >
+            {icecekSecenekleri(firstMenuValues.menu_drink_selection[i][2])}
+          </select>
+        </div>
+      );
+    }
+
+    return icecekler;
+  };
+  const icecekSecenekleri = (currentPrice) => {
+    let icecekler = [];
+    products.map((product) => {
+      if (
+        product.product_category === "İçecekler" &&
+        product.product_price >= currentPrice
+      ) {
+        icecekler.push(
+          <option key={product._id} value={product._id}>
+            {product.product_name} - {product.product_price} TL
+          </option>
+        );
+      }
+    });
+    return icecekler;
+  };
   // sos ekleniyor
   const sosSecim = () => {
     let soslar = [];
@@ -336,7 +408,7 @@ const AddToCartForMenus = () => {
               let choosingCipsPrice = prdt.product_price;
               let currentCipsPrice = menu.menu_cips_selection[i][2];
 
-              if (choosingCipsPrice > currentCipsPrice) {
+              if (choosingCipsPrice >= currentCipsPrice) {
                 let fark = choosingCipsPrice - currentCipsPrice;
 
                 setMenu({
@@ -350,9 +422,7 @@ const AddToCartForMenus = () => {
                 });
               }
               if (choosingCipsPrice < currentCipsPrice) {
-                console.log("choosing cips price is bigger");
                 let fark = choosingCipsPrice - currentCipsPrice;
-                console.log("fark", fark);
                 setMenu({
                   ...menu,
                   menu_cips_selection: [
@@ -613,7 +683,7 @@ const AddToCartForMenus = () => {
               })}
             </h1>
           </div>
-          {/* buraya sleeect box koyulacak. */}
+          {/* menu icerigi */}
           <div className="flex flex-col w-full p-2">
             <h1 className="text-lg font-bold">Menu Icerigi</h1>
             <p className="text-sm font-bold m-auto p-2">Hamburger Secimi</p>
@@ -635,6 +705,8 @@ const AddToCartForMenus = () => {
                 </h1>
               )}
             </div>
+            <p className="text-sm font-bold m-auto p-2 ">İçecek Secimi</p>
+            <div className="flex flex-col w-full h-auto ">{icecekSecim()}</div>
           </div>
 
           <div className="relative flex flex-col mt-auto p-2 h-60   w-full">
