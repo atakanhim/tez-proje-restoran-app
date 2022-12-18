@@ -24,6 +24,13 @@ const AddToCartForMenus = () => {
     menu_sos1: "",
     menu_sos2: "",
   });
+  const [firstMenuValues, setFirstMenuValues] = useState({
+    menu_burger_selection: [],
+    menu_snacks_selection: [],
+    menu_drink_selection: [],
+    menu_cips_selection: [],
+    menu_sauce_selection: [],
+  });
 
   const { products, categories, cart, menus } = useSelector(
     (state) => state.restoran
@@ -165,6 +172,13 @@ const AddToCartForMenus = () => {
       menu_image: menu.menu_image,
       _id: menu._id,
     });
+    setFirstMenuValues({
+      menu_burger_selection: menu.menu_burger_selection,
+      menu_snacks_selection: menu.menu_snacks_selection,
+      menu_drink_selection: menu.menu_drink_selection,
+      menu_cips_selection: menu.menu_cips_selection,
+      menu_sauce_selection: menu.menu_sauce_selection,
+    });
   };
 
   // menu sayısı arttırlıp azaltıulıyor
@@ -179,6 +193,7 @@ const AddToCartForMenus = () => {
 
   // menu sepete ekleniyor
   const addToCartButton = () => {
+    let istenmeyenMalzemelerText = "";
     const urun = {
       __id: Math.random(),
       urunId: menu._id,
@@ -186,6 +201,9 @@ const AddToCartForMenus = () => {
       urunFiyat: menu.menu_price,
       urunAdet: menuAdet,
       urunNotu: menuNotu,
+      siparisToplamTutar: menuAdet * menu.menu_price,
+      istenmeyenMalzemeler: istenmeyenMalzemelerText,
+
       menu: {
         menu_burger_selection: menu.menu_burger_selection,
         menu_snacks_selection: menu.menu_snacks_selection,
@@ -193,29 +211,23 @@ const AddToCartForMenus = () => {
         menu_cips_selection: menu.menu_cips_selection,
         menu_sauce_selection: menu.menu_sauce_selection,
       },
-      siparisToplamTutar: menuAdet * menu.menu_price,
     };
     if (deletedItems.length > 0) {
-      urun.urunNotu =
-        urun.urunNotu +
-        " -->  1. Hamburger için Çıkarılacak Malzemeler : " +
-        deletedItems.join(", ");
+      urun.istenmeyenMalzemeler +=
+        "1. Hamburger için Çıkarılacak Malzemeler : " + deletedItems.join(", ");
     }
     if (deletedItems2.length > 0) {
-      urun.urunNotu =
-        urun.urunNotu +
+      urun.istenmeyenMalzemeler +=
         " | 2. Hamburger için Çıkarılacak Malzemeler : " +
         deletedItems2.join(", ");
     }
     if (deletedItems3.length > 0) {
-      urun.urunNotu =
-        urun.urunNotu +
+      urun.istenmeyenMalzemeler +=
         " | 3. Hamburger için Çıkarılacak Malzemeler : " +
         deletedItems3.join(", ");
     }
     if (deletedItems4.length > 0) {
-      urun.urunNotu =
-        urun.urunNotu +
+      urun.istenmeyenMalzemeler +=
         " | 4. Hamburger için Çıkarılacak Malzemeler : " +
         deletedItems4.join(", ");
     }
@@ -253,7 +265,7 @@ const AddToCartForMenus = () => {
                 let secilenSosFiyati = prdt.product_price;
                 let suankiSosunFiyati = menu.menu_sauce_selection[i][2];
 
-                if (secilenSosFiyati > suankiSosunFiyati) {
+                if (secilenSosFiyati >= suankiSosunFiyati) {
                   let fark = secilenSosFiyati - suankiSosunFiyati;
 
                   setMenu({
@@ -281,7 +293,7 @@ const AddToCartForMenus = () => {
               }}
               value={menu.menu_sauce_selection[i][1]}
             >
-              {sosSecimSecenekleri()}
+              {sosSecimSecenekleri(firstMenuValues.menu_sauce_selection[i][2])}
             </select>
           </div>
         );
@@ -290,10 +302,13 @@ const AddToCartForMenus = () => {
 
     return soslar;
   };
-  const sosSecimSecenekleri = (i) => {
+  const sosSecimSecenekleri = (currentPrice) => {
     let soslar = [];
     products.map((product) => {
-      if (product.product_category === "Soslar") {
+      if (
+        product.product_category === "Soslar" &&
+        product.product_price >= currentPrice
+      ) {
         soslar.push(
           <option key={product._id} value={product._id}>
             {product.product_name} - {product.product_price} TL
@@ -301,12 +316,12 @@ const AddToCartForMenus = () => {
         );
       }
     });
-
     return soslar;
   };
   // patates kızartması seçimi yapılıyor
   const patatesKizartmalari = () => {
     let patatesKizartmalari = [];
+
     for (let i = 0; i < menu.menu_cips_selection.length; i++) {
       patatesKizartmalari.push(
         <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
@@ -351,17 +366,22 @@ const AddToCartForMenus = () => {
             }}
             value={menu.menu_cips_selection[i][1]}
           >
-            {patatesKizartmasiSecenekleri()}
+            {patatesKizartmasiSecenekleri(
+              firstMenuValues.menu_cips_selection[i][2]
+            )}
           </select>
         </div>
       );
     }
     return patatesKizartmalari;
   };
-  const patatesKizartmasiSecenekleri = (i) => {
+  const patatesKizartmasiSecenekleri = (currentPrice) => {
     let patatesKizartmasiSecenekleri = [];
     products.map((product) => {
-      if (product.product_category === "Patates Cipsi") {
+      if (
+        product.product_category === "Patates Cipsi" &&
+        product.product_price >= currentPrice
+      ) {
         patatesKizartmasiSecenekleri.push(
           <option key={product._id} value={product._id}>
             {product.product_name} - {product.product_price} TL

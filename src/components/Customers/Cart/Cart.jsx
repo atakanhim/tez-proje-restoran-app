@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Cart = () => {
@@ -8,6 +9,9 @@ const Cart = () => {
   const cartTotal = cart.reduce((total, item) => {
     return (total += item.siparisToplamTutar);
   }, 0);
+  useEffect(() => {
+    console.log(cart);
+  }, []);
 
   return (
     <div>
