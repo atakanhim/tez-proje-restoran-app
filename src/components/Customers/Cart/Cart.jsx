@@ -13,12 +13,14 @@ const Cart = () => {
     <div>
       {cart.length > 0 ? (
         cart.map((item) => (
-          <div key={item.__id}>
-            <h1>ad {item.urunAdi}</h1>
-            <h1>fiyat {item.urunFiyat}</h1>
-            <h1>adet {item.urunAdet}</h1>
-            <h1>not {item.urunNotu}</h1>
-            <h1>kategori {item.urunKategori}</h1>
+          <div
+            key={item.__id}
+            className="relative border border-black p-5 flex flex-col items-start justify-center"
+          >
+            <h1>ad: {item.urunAdi}</h1>
+            <h1>fiyat: {item.urunFiyat}</h1>
+            <h1>adet: {item.urunAdet}</h1>
+            <h1>not: {item.urunNotu}</h1>
             <h4>total: {item.siparisToplamTutar}</h4>
           </div>
         ))

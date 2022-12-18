@@ -27,47 +27,136 @@ const AddToCartForMenus = () => {
     menu_name: "",
     menu_burger_selection: [],
     menu_snacks_selection: [],
-    menu_drink_selection: "",
+    menu_drink_selection: [],
+    menu_cips_selection: [],
     menu_price: "",
     menu_image: "",
     _id: "",
   });
-  const [productContentArray, setProductContentArray] = useState([]);
-  const [deletedItems, setDeletedItems] = useState([]);
 
-  const handleDelete = (item) => {
-    const newProductContentArray = productContentArray.filter(
-      (content) => content !== item
-    );
-    setProductContentArray(newProductContentArray);
-    setDeletedItems([...deletedItems, item]);
+  const [productContentArray, setProductContentArray] = useState([]);
+  const [productContentArray2, setProductContentArray2] = useState([]);
+
+  const [productContentArray3, setProductContentArray3] = useState([]);
+  const [productContentArray4, setProductContentArray4] = useState([]);
+
+  const [deletedItems, setDeletedItems] = useState([]);
+  const [deletedItems2, setDeletedItems2] = useState([]);
+  const [deletedItems3, setDeletedItems3] = useState([]);
+  const [deletedItems4, setDeletedItems4] = useState([]);
+
+  const handleDelete = (item, i) => {
+    switch (i) {
+      case 0:
+        const newProductContentArray = productContentArray.filter(
+          (content) => content !== item
+        );
+        setProductContentArray(newProductContentArray);
+        setDeletedItems([...deletedItems, item]);
+        break;
+
+      case 1:
+        const newProductContentArray1 = productContentArray2.filter(
+          (content) => content !== item
+        );
+        setProductContentArray2(newProductContentArray1);
+        setDeletedItems2([...deletedItems2, item]);
+        break;
+      case 2:
+        const newProductContentArray2 = productContentArray3.filter(
+          (content) => content !== item
+        );
+        setProductContentArray3(newProductContentArray2);
+        setDeletedItems3([...deletedItems3, item]);
+        break;
+
+      case 3:
+        const newProductContentArray3 = productContentArray4.filter(
+          (content) => content !== item
+        );
+        setProductContentArray4(newProductContentArray3);
+        setDeletedItems4([...deletedItems4, item]);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleAdd = (item) => {
-    setProductContentArray([...productContentArray, item]);
-    const newDeletedItems = deletedItems.filter((content) => content !== item);
-    setDeletedItems(newDeletedItems);
+  const handleAdd = (item, i) => {
+    switch (i) {
+      case 0:
+        setProductContentArray([...productContentArray, item]);
+        const newDeletedItems = deletedItems.filter(
+          (content) => content !== item
+        );
+        setDeletedItems(newDeletedItems);
+        break;
+      case 1:
+        setProductContentArray2([...productContentArray2, item]);
+        const newDeletedItems2 = deletedItems2.filter(
+          (content) => content !== item
+        );
+        setDeletedItems2(newDeletedItems2);
+        break;
+      case 2:
+        setProductContentArray3([...productContentArray3, item]);
+        const newDeletedItems3 = deletedItems3.filter(
+          (content) => content !== item
+        );
+        setDeletedItems3(newDeletedItems3);
+        break;
+      case 3:
+        setProductContentArray4([...productContentArray4, item]);
+        const newDeletedItems4 = deletedItems4.filter(
+          (content) => content !== item
+        );
+        setDeletedItems4(newDeletedItems4);
+        break;
+      default:
+        break;
+    }
   };
 
   const initSetMenu = () => {
     const menu = menus.find((item) => item._id === id);
     // create await function for filter
-    const product = products.find(
-      (item) => item._id === menu.menu_burger_selection[0][1]
-    );
+    if (menu.menu_burger_selection.length > 0) {
+      for (let i = 0; i < menu.menu_burger_selection.length; i++) {
+        let product = products.find(
+          (item) => item._id === menu.menu_burger_selection[i][1]
+        );
+        let productContentArrayI = product.product_content.split(",");
+        switch (i) {
+          case 0:
+            setProductContentArray(productContentArrayI);
+            break;
+          case 1:
+            setProductContentArray2(productContentArrayI);
+            break;
+          case 2:
+            setProductContentArray3(productContentArrayI);
+            break;
+          case 3:
+            setProductContentArray4(productContentArrayI);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+
     setMenu({
       menu_name: menu.menu_name,
       menu_burger_selection: menu.menu_burger_selection,
       menu_snacks_selection: menu.menu_snacks_selection,
       menu_drink_selection: menu.menu_drink_selection,
+      menu_cips_selection: menu.menu_cips_selection,
       menu_price: menu.menu_price,
       menu_image: menu.menu_image,
       _id: menu._id,
     });
-
-    var productContentArrayI = product.product_content.split(",");
-    setProductContentArray(productContentArrayI);
   };
+
   const inCrease = () => {
     setMenuAdet(menuAdet + 1);
   };
@@ -104,14 +193,33 @@ const AddToCartForMenus = () => {
         menu_burger_selection: menu.menu_burger_selection,
         menu_snacks_selection: menu.menu_snacks_selection,
         menu_drink_selection: menu.menu_drink_selection,
+        menu_cips_selection: menu.menu_cips_selection,
       },
       siparisToplamTutar: menuAdet * menu.menu_price,
     };
     if (deletedItems.length > 0) {
       urun.urunNotu =
         urun.urunNotu +
-        " Hamburger için Çıkarılacak Malzemeler : " +
+        " -->  1. Hamburger için Çıkarılacak Malzemeler : " +
         deletedItems.join(", ");
+    }
+    if (deletedItems2.length > 0) {
+      urun.urunNotu =
+        urun.urunNotu +
+        " | 2. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems2.join(", ");
+    }
+    if (deletedItems3.length > 0) {
+      urun.urunNotu =
+        urun.urunNotu +
+        " | 3. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems3.join(", ");
+    }
+    if (deletedItems4.length > 0) {
+      urun.urunNotu =
+        urun.urunNotu +
+        " | 4. Hamburger için Çıkarılacak Malzemeler : " +
+        deletedItems4.join(", ");
     }
     var newCart = [...cart, urun];
     dispatch(addToCart(newCart));
@@ -123,6 +231,182 @@ const AddToCartForMenus = () => {
     setShow(false);
     // window.history.back();
     window.history.go(-1);
+  };
+  const icindekiler = () => {
+    let icindekiler = [];
+    for (let i = 0; i < menu.menu_burger_selection.length; i++) {
+      icindekiler.push(
+        <div
+          key={i}
+          className="relative flex flex-col mt-auto  h-auto p-4   w-full"
+        >
+          <h1 className="text-lg font-bold ">
+            {menu.menu_burger_selection[i][0]} İçindekiler
+          </h1>
+          <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
+            {fonksiyonPozitif(i)}
+            {fonksiyonNegatif(i)}
+          </ul>
+        </div>
+      );
+    }
+    return icindekiler;
+  };
+  const fonksiyonPozitif = (i) => {
+    let array = [];
+    if (i === 0) {
+      productContentArray.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleDelete(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className="text-xs  m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+          </li>
+        )
+      );
+    }
+    if (i === 1) {
+      productContentArray2.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleDelete(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className="text-xs  m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+          </li>
+        )
+      );
+    }
+    if (i === 2) {
+      productContentArray3.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleDelete(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className="text-xs  m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+          </li>
+        )
+      );
+    }
+    if (i === 3) {
+      productContentArray4.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleDelete(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className="text-xs  m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+          </li>
+        )
+      );
+    }
+    return array;
+  };
+  const fonksiyonNegatif = (i) => {
+    let array = [];
+    if (i === 0) {
+      deletedItems.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleAdd(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className=" m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+            <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
+          </li>
+        )
+      );
+    }
+    if (i === 1) {
+      deletedItems2.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleAdd(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className=" m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+            <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
+          </li>
+        )
+      );
+    }
+    if (i === 2) {
+      deletedItems3.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleAdd(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className=" m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+            <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
+          </li>
+        )
+      );
+    }
+    if (i === 3) {
+      deletedItems4.map((item, index) =>
+        array.push(
+          <li
+            key={index}
+            onClick={() => {
+              handleAdd(item, i);
+            }}
+            className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
+          >
+            <h1 className="text-xs font-bold m-auto">{item}</h1>
+            <h1 className=" m-auto">
+              <CloseIcon fontSize="xs" />
+            </h1>
+            <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
+          </li>
+        )
+      );
+    }
+    return array;
   };
   useEffect(() => {
     initSetMenu();
@@ -158,49 +442,19 @@ const AddToCartForMenus = () => {
               </h1>
             </div>
             <h1 className="text-xs flex font-bold p-2 text-textColor w-4/5 h-auto overflow-hidden">
-              {menu.menu_burger_selection[1] +
-                " + " +
-                menu.menu_snacks_selection.map((item) => item + " + ") +
-                menu.menu_drink_selection}
+              {menu.menu_burger_selection.map((burger) => {
+                return burger[0] + " + ";
+              })}
+              {menu.menu_cips_selection.map((burger) => {
+                return burger[0] + " + ";
+              })}
+              {menu.menu_drink_selection.map((burger) => {
+                return burger[0] + " + ";
+              })}
             </h1>
           </div>
           {/* buraya sleeect box koyulacak. */}
-          <div className="relative flex flex-col mt-auto  h-auto p-4   w-full">
-            <h1 className="text-lg font-bold ">
-              {menu.menu_burger_selection[1]} İçindekiler
-            </h1>
-            <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
-              {productContentArray.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    handleDelete(item);
-                  }}
-                  className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
-                >
-                  <h1 className="text-xs font-bold m-auto">{item}</h1>
-                  <h1 className="text-xs  m-auto">
-                    <CloseIcon fontSize="xs" />
-                  </h1>
-                </li>
-              ))}
-              {deletedItems.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    handleAdd(item);
-                  }}
-                  className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
-                >
-                  <h1 className="text-xs font-bold m-auto">{item}</h1>
-                  <h1 className=" m-auto">
-                    <CloseIcon fontSize="xs" />
-                  </h1>
-                  <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {icindekiler()}
           <div className="relative flex flex-col p-2 w-full h-60 border border-gray-600">
             <div>
               <label htmlFor="menu_drink_selection" className="m-3">
