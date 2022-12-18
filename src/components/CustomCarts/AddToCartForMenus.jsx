@@ -34,6 +34,7 @@ const AddToCartForMenus = () => {
     menu_snacks_selection: [],
     menu_drink_selection: [],
     menu_cips_selection: [],
+    menu_sauce_selection: [],
     menu_price: "",
     menu_image: "",
     _id: "",
@@ -159,6 +160,7 @@ const AddToCartForMenus = () => {
       menu_snacks_selection: menu.menu_snacks_selection,
       menu_drink_selection: menu.menu_drink_selection,
       menu_cips_selection: menu.menu_cips_selection,
+      menu_sauce_selection: menu.menu_sauce_selection,
       menu_price: menu.menu_price,
       menu_image: menu.menu_image,
       _id: menu._id,
@@ -189,6 +191,7 @@ const AddToCartForMenus = () => {
         menu_snacks_selection: menu.menu_snacks_selection,
         menu_drink_selection: menu.menu_drink_selection,
         menu_cips_selection: menu.menu_cips_selection,
+        menu_sauce_selection: menu.menu_sauce_selection,
       },
       siparisToplamTutar: menuAdet * menu.menu_price,
     };
@@ -228,21 +231,79 @@ const AddToCartForMenus = () => {
     // window.history.back();
     window.history.go(-1);
   };
+
   // sos ekleniyor
-  const sosSecimleri = () => {
-    let sosSecimleri = [];
-    products.map((item) => {
-      if (item.product_category === "Soslar") {
-        sosSecimleri.push(
-          <option key={item._id} value={item._id}>
-            {item.product_name}
+  const sosSecim = () => {
+    let soslar = [];
+    for (let i = 0; i < menu.menu_sauce_selection.length; i++) {
+      if (
+        menu.menu_sauce_selection[i] === "Eklenmedi" ||
+        !menu.menu_sauce_selection[i][0] ||
+        menu.menu_sauce_selection[i][0] === " "
+      ) {
+      } else {
+        soslar.push(
+          <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
+            <h1 className="text-lg font-bold ">{i + 1}. Sos Seçimi</h1>
+            <select
+              className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
+              onChange={(e) => {
+                let prdt = products.find((item) => item._id === e.target.value);
+
+                let secilenSosFiyati = prdt.product_price;
+                let suankiSosunFiyati = menu.menu_sauce_selection[i][2];
+
+                if (secilenSosFiyati > suankiSosunFiyati) {
+                  let fark = secilenSosFiyati - suankiSosunFiyati;
+
+                  setMenu({
+                    ...menu,
+                    menu_sauce_selection: [
+                      ...menu.menu_sauce_selection.slice(0, i),
+                      [prdt.product_name, prdt._id, prdt.product_price],
+                      ...menu.menu_sauce_selection.slice(i + 1),
+                    ],
+                    menu_price: menu.menu_price + fark,
+                  });
+                }
+                if (secilenSosFiyati < suankiSosunFiyati) {
+                  let fark = secilenSosFiyati - suankiSosunFiyati;
+                  setMenu({
+                    ...menu,
+                    menu_sauce_selection: [
+                      ...menu.menu_sauce_selection.slice(0, i),
+                      [prdt.product_name, prdt._id, prdt.product_price],
+                      ...menu.menu_sauce_selection.slice(i + 1),
+                    ],
+                    menu_price: menu.menu_price + fark,
+                  });
+                }
+              }}
+              value={menu.menu_sauce_selection[i][1]}
+            >
+              {sosSecimSecenekleri()}
+            </select>
+          </div>
+        );
+      }
+    }
+
+    return soslar;
+  };
+  const sosSecimSecenekleri = (i) => {
+    let soslar = [];
+    products.map((product) => {
+      if (product.product_category === "Soslar") {
+        soslar.push(
+          <option key={product._id} value={product._id}>
+            {product.product_name} - {product.product_price} TL
           </option>
         );
       }
     });
-    return sosSecimleri;
-  };
 
+    return soslar;
+  };
   // patates kızartması seçimi yapılıyor
   const patatesKizartmalari = () => {
     let patatesKizartmalari = [];
@@ -256,7 +317,6 @@ const AddToCartForMenus = () => {
             className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
             onChange={(e) => {
               let prdt = products.find((item) => item._id === e.target.value);
-              let newMenu = { ...menu };
 
               let choosingCipsPrice = prdt.product_price;
               let currentCipsPrice = menu.menu_cips_selection[i][2];
@@ -544,8 +604,17 @@ const AddToCartForMenus = () => {
             <div className="flex flex-col w-full h-auto ">
               {patatesKizartmalari()}
             </div>
+
             <p className="text-sm font-bold m-auto p-2 ">Sos Secimi</p>
-            <div className="flex flex-col w-full h-auto ">{sosSecimleri()}</div>
+            <div className="flex flex-col w-full h-auto ">
+              {menu.menu_sauce_selection.length > 0 ? (
+                sosSecim()
+              ) : (
+                <h1 className="text-xs font-bold text-textColor">
+                  Sos secimi bulunmamaktadir.
+                </h1>
+              )}
+            </div>
           </div>
 
           <div className="relative flex flex-col mt-auto p-2 h-60   w-full">

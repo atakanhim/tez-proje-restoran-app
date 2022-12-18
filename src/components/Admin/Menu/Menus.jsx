@@ -73,6 +73,14 @@ const Menus = () => {
         total += valuesArray.menu_snacks_selection[i][2];
       }
     }
+    for (let i = 0; i < valuesArray.menu_sauce_selection.length; i++) {
+      if (
+        valuesArray.menu_sauce_selection[i] &&
+        valuesArray.menu_sauce_selection[i][2] > 0
+      ) {
+        total += valuesArray.menu_sauce_selection[i][2];
+      }
+    }
 
     console.log(total);
     setEstimatedTotalAmount(total);
@@ -90,12 +98,14 @@ const Menus = () => {
     menu_snacks_selection: [],
     menu_cips_selection: [],
     menu_drink_selection: [],
+    menu_sauce_selection: [],
   });
   const [counts, setCounts] = useState({
     burgerCount: 1,
     drinkCount: 1,
     snackCount: 1,
     cipsCount: 1,
+    sauceCount: 1,
   });
 
   // api yardımıyla kategori ekleme
@@ -180,6 +190,7 @@ const Menus = () => {
     menu_snacks_selection,
     menu_drink_selection,
     menu_cips_selection,
+    menu_sauce_selection,
     menu_price,
     menu_image
   ) => {
@@ -189,6 +200,7 @@ const Menus = () => {
       menu_snacks_selection,
       menu_drink_selection,
       menu_cips_selection,
+      menu_sauce_selection,
       menu_price,
       menu_image
     );
@@ -205,6 +217,7 @@ const Menus = () => {
       drinkCount: 1,
       snackCount: 1,
       cipsCount: 1,
+      sauceCount: 1,
     });
     setValuesArray({
       ...valuesArray,
@@ -212,6 +225,7 @@ const Menus = () => {
       menu_snacks_selection: new Array(parseInt(1)).fill(""),
       menu_drink_selection: new Array(parseInt(1)).fill(""),
       menu_cips_selection: new Array(parseInt(1)).fill(""),
+      menu_sauce_selection: new Array(parseInt(1)).fill(""),
     });
     renderOption();
   };
@@ -428,6 +442,61 @@ const Menus = () => {
     }
     return content;
   };
+  const renderSauces = () => {
+    let content = [];
+
+    for (let i = 0; i < counts.sauceCount; i++) {
+      content.push(
+        <div key={i} className=" ">
+          <p className="text-xs text-gray-600">Zorunlu Degildir</p>
+          <select
+            id="menu_sauce_selection"
+            name="menu_sauce_selection"
+            className="flex flex-col w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            onChange={(e) => {
+              var prdt = products.find(
+                (product) => product._id === e.target.value
+              );
+
+              if (prdt) {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_sauce_selection[i] = [
+                  prdt.product_name,
+                  prdt._id,
+                  prdt.product_price,
+                ];
+
+                setValuesArray(newValuesArray);
+              } else {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_sauce_selection[i] = e.target.value;
+
+                setValuesArray(newValuesArray);
+              }
+              setEstimatedTotalAmountFunction();
+            }}
+            value={
+              valuesArray.menu_sauce_selection[i]
+                ? valuesArray.menu_sauce_selection[i][1]
+                : "Eklenmedi"
+            }
+          >
+            <option value="Eklenmedi">Sos Eklemeyecegim</option>
+            {products.map((product) => {
+              if (product.product_category === "Soslar") {
+                return (
+                  <option key={product._id} value={product._id}>
+                    {product.product_name} - {product.product_price} TL
+                  </option>
+                );
+              }
+            })}
+          </select>
+        </div>
+      );
+    }
+    return content;
+  };
   const valuesArraycontrol = () => {
     let control = true;
 
@@ -488,6 +557,7 @@ const Menus = () => {
                 valuesArray.menu_snacks_selection,
                 valuesArray.menu_drink_selection,
                 valuesArray.menu_cips_selection,
+                valuesArray.menu_sauce_selection,
                 values.menu_price,
                 imageAsset
               );
@@ -507,6 +577,7 @@ const Menus = () => {
               onSubmit={formik.handleSubmit}
               className="flex flex-col items-center justify-center w-full gap-5"
             >
+              {/* menü adı */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="menu_name">Menü Adı</label>
                 <input
@@ -522,7 +593,7 @@ const Menus = () => {
                   <div className="text-red-500">{formik.errors.menu_name}</div>
                 ) : null}
               </div>
-
+              {/* eklenen burgerler */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="menu_burger_selection">
                   Eklenecek Hamburger sayısını seciniz
@@ -547,6 +618,7 @@ const Menus = () => {
                 </select>
                 {counts.burgerCount > 0 ? renderBurgers() : null}
               </div>
+              {/* eklenen cipsler */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="menu_cips_selection">
                   Eklenecek Cips sayısını seciniz
@@ -571,6 +643,7 @@ const Menus = () => {
                 </select>
                 {counts.cipsCount > 0 ? renderCips() : null}
               </div>
+              {/* eklenen icecekler */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="menu_drink_selection">
                   Eklenecek İçecek sayısını seciniz
@@ -595,8 +668,9 @@ const Menus = () => {
                 </select>
                 {counts.drinkCount > 0 ? renderDrinks() : null}
               </div>
+              {/* eklenen atıştırmalıklar */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
-                <label htmlFor="menu_burger_selection">
+                <label htmlFor="menu_snacks_selection">
                   Eklenecek Atıştırmalık sayısını seciniz
                 </label>
                 <select
@@ -619,6 +693,32 @@ const Menus = () => {
                 </select>
                 {counts.snackCount > 0 ? renderSnacks() : null}
               </div>
+              {/* eklenen soslar */}
+              <div className="flex flex-col items-center justify-center w-full gap-2">
+                <label htmlFor="menu_sauce_selection">
+                  Eklenecek Sos sayısını seciniz
+                </label>
+                <select
+                  className="w-12 h-6  border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                  onChange={(e) => {
+                    setCounts({
+                      ...counts,
+                      sauceCount: e.target.value,
+                    });
+                    setValuesArray({
+                      ...valuesArray,
+                      menu_sauce_selection: new Array(
+                        parseInt(e.target.value)
+                      ).fill(""),
+                    });
+                  }}
+                  value={counts.sauceCount}
+                >
+                  {renderOption()}
+                </select>
+                {counts.sauceCount > 0 ? renderSauces() : null}
+              </div>
+              {/* menu fiyati */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <label htmlFor="product_price">Menü Fiyati</label>
                 <p className="text-xs text-gray-600">
@@ -638,6 +738,7 @@ const Menus = () => {
                   <div className="text-red-500">{formik.errors.menu_price}</div>
                 ) : null}
               </div>
+              {/* menu resimi */}
               <div className="flex justify-center items-center w-2/5">
                 <div
                   className="flex justify-center items-center flex-col border-2 border-dotted
@@ -687,7 +788,7 @@ const Menus = () => {
                   )}
                 </div>
               </div>
-
+              {/* menu ekleme butonu */}
               <div className="flex flex-col items-center justify-center w-full gap-2">
                 <button
                   type="submit"

@@ -75,6 +75,7 @@ export const addMenuDB = async (
   menu_snacks_selection,
   menu_drink_selection,
   menu_cips_selection,
+  menu_sauce_selection,
   menu_price,
   menu_image
 ) => {
@@ -85,6 +86,7 @@ export const addMenuDB = async (
       menu_snacks_selection: menu_snacks_selection,
       menu_drink_selection: menu_drink_selection,
       menu_cips_selection: menu_cips_selection,
+      menu_sauce_selection: menu_sauce_selection,
       menu_price: menu_price,
       menu_image: menu_image,
     })
