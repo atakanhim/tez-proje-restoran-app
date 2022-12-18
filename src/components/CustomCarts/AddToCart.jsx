@@ -29,9 +29,10 @@ const AddToCart = () => {
     product_image: "",
     _id: "",
   });
+
+  // icindikler silerken
   const [productContentArray, setProductContentArray] = useState([]);
   const [deletedItems, setDeletedItems] = useState([]);
-  //get id from url
 
   const handleDelete = (item) => {
     const newProductContentArray = productContentArray.filter(
@@ -83,6 +84,7 @@ const AddToCart = () => {
       urunFiyat: product.product_price,
       urunAdet: urunAdet,
       urunNotu: urunNotu,
+      siparisToplamTutar: urunAdet * product.product_price,
     };
     if (deletedItems.length > 0) {
       urun.urunNotu =
@@ -103,7 +105,7 @@ const AddToCart = () => {
   return (
     <>
       <div
-        className={`relative flex w-full  items-center justify-center h-screen mb-32  transition-all duration-500 ease-in-out  ${
+        className={`relative flex w-full  items-center justify-center h-auto mb-32  transition-all duration-500 ease-in-out  ${
           show ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -132,40 +134,43 @@ const AddToCart = () => {
               {product.product_description}
             </h1>
           </div>
-          <div className="relative flex flex-col mt-auto  h-auto p-4   w-full">
-            <h1 className="text-lg font-bold ">Ürün İçindekiler</h1>
-            <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
-              {productContentArray.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    handleDelete(item);
-                  }}
-                  className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
-                >
-                  <h1 className="text-xs font-bold m-auto">{item}</h1>
-                  <h1 className="text-xs  m-auto">
-                    <CloseIcon fontSize="xs" />
-                  </h1>
-                </li>
-              ))}
-              {deletedItems.map((item, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    handleAdd(item);
-                  }}
-                  className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
-                >
-                  <h1 className="text-xs font-bold m-auto">{item}</h1>
-                  <h1 className=" m-auto">
-                    <CloseIcon fontSize="xs" />
-                  </h1>
-                  <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {product.product_category === "Burgerler" && (
+            <div className="relative flex flex-col mt-auto  h-auto p-4   w-full">
+              <h1 className="text-lg font-bold ">Ürün İçindekiler</h1>
+              <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
+                {productContentArray.map((item, index) => (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      handleDelete(item);
+                    }}
+                    className="transition-all ease-in-out duration-500 p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-green-500"
+                  >
+                    <h1 className="text-xs font-bold m-auto">{item}</h1>
+                    <h1 className="text-xs  m-auto">
+                      <CloseIcon fontSize="xs" />
+                    </h1>
+                  </li>
+                ))}
+                {deletedItems.map((item, index) => (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      handleAdd(item);
+                    }}
+                    className="transition-all ease-in-out duration-500 relative p-2 flex gap-2 h-10 min-w-[100px] rounded-lg border border-red-600"
+                  >
+                    <h1 className="text-xs font-bold m-auto">{item}</h1>
+                    <h1 className=" m-auto">
+                      <CloseIcon fontSize="xs" />
+                    </h1>
+                    <p className="absolute w-full opacity-40 top-5 rotate-[20deg] left-0 border border-red-500 "></p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="relative flex flex-col mt-auto p-2 h-60   w-full">
             <h1 className="text-lg font-bold">Ürün Notu</h1>
             <textarea

@@ -145,13 +145,11 @@ const Products = () => {
     getProductFunction();
     setImageAsset(null);
   };
+
   return (
     <div className="relative z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 h-full ">
       <div className="w-full  mt-16 flex items-center justify-center p-3">
-        <p className="text-gray-800 text-3xl italic">
-          {" "}
-          Ürün Ekle / Sil / Güncelle
-        </p>
+        <p className="text-gray-800 text-3xl italic"> Ürün Ekle</p>
       </div>
       <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
         <Formik

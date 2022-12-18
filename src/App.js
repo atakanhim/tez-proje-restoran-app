@@ -5,8 +5,16 @@ import { Loading, Login } from "./components";
 import { AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 //import setCategories
-import { setCategories, setProducts } from "./store/slices/restoranSlice";
-import { getCategoriesFromDB, getProductsFromDB } from "./api/api";
+import {
+  setCategories,
+  setProducts,
+  setMenus,
+} from "./store/slices/restoranSlice";
+import {
+  getCategoriesFromDB,
+  getProductsFromDB,
+  getMenusFromDB,
+} from "./api/api";
 import {
   Categories,
   Products,
@@ -14,11 +22,13 @@ import {
   AdminHeader,
   CategoryUpdate,
   ProductUpdate,
+  Menus,
+  MenuUpdate,
 } from "./components/Admin";
 import { ChefScreen, ChefHeader } from "./components/Chef";
 import { Cart, Footer, Home, Orders } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
-import { AddToCart } from "./components/CustomCarts";
+import { AddToCart, AddToCartForMenus } from "./components/CustomCarts";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -50,11 +60,14 @@ const App = () => {
   useEffect(() => {
     getCategory();
   }, []);
+
   const getCategory = async () => {
     const response = await getCategoriesFromDB();
     dispatch(setCategories(response));
     const respons2 = await getProductsFromDB();
     dispatch(setProducts(respons2));
+    const respons3 = await getMenusFromDB();
+    dispatch(setMenus(respons3));
   };
 
   const adminRoutes = [
@@ -71,6 +84,14 @@ const App = () => {
     {
       path: "admin/products",
       element: <Products />,
+    },
+    {
+      path: "/admin/menus",
+      element: <Menus />,
+    },
+    {
+      path: "admin/menu-update/:id",
+      element: <MenuUpdate />,
     },
     {
       path: "admin/product-update/:id",
@@ -106,6 +127,10 @@ const App = () => {
               <Route path="/Orders" element={<Orders />} />
               <Route path="/Cart" element={<Cart />} />
               <Route path="/add-to-cart/:id" element={<AddToCart />} />
+              <Route
+                path="/add-to-cart-for-menus/:id"
+                element={<AddToCartForMenus />}
+              />
             </Routes>
             <Footer />
           </>
