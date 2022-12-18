@@ -10,6 +10,7 @@ const initialState = {
   categories: [],
   products: [],
   menus: [],
+  orders: [],
   currentCategory: "Tüm Ürünler",
 };
 
@@ -35,6 +36,11 @@ const restoranSlice = createSlice({
     setMenus: {
       reducer: (state, action) => {
         return { ...state, menus: action.payload };
+      },
+    },
+    setOrders: {
+      reducer: (state, action) => {
+        return { ...state, orders: action.payload };
       },
     },
     setProducts: {

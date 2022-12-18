@@ -151,3 +151,39 @@ export const deleteAllProductsDB = async () => {
   const response = await axios.delete(`http://localhost:5000/api/product`);
   return response.data;
 };
+
+// orders
+export const getOrdersFromDB = async () => {
+  const response = await axios.get("http://localhost:5000/api/order");
+  return response.data;
+};
+export const deleteOrderDB = async (id) => {
+  const response = await axios.delete(`http://localhost:5000/api/order/${id}`);
+  return response.data;
+};
+export const deleteAllOrdersDB = async () => {
+  const response = await axios.delete(`http://localhost:5000/api/order`);
+  return response.data;
+};
+export const updateOrderDB = async (order) => {
+  console.log(order);
+
+  const response = await axios
+    .put(`http://localhost:5000/api/order/${order._id}`, order)
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response.data;
+};
+export const addOrderDB = async (order) => {
+  const response = await axios
+    .post("http://localhost:5000/api/order", order)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return response;
+};
