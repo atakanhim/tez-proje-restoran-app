@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import { addToCart } from "../../store/slices/restoranSlice";
 import alertify from "alertifyjs";
+import { current } from "@reduxjs/toolkit";
 
 const AddToCartForMenus = () => {
   const params = useParams();
@@ -19,6 +20,10 @@ const AddToCartForMenus = () => {
 
   const [menuNotu, setMenuNotu] = useState("");
   const [menuAdet, setMenuAdet] = useState(1);
+  const [menuSoslar, setMenuSoslar] = useState({
+    menu_sos1: "",
+    menu_sos2: "",
+  });
 
   const { products, categories, cart, menus } = useSelector(
     (state) => state.restoran
@@ -232,16 +237,96 @@ const AddToCartForMenus = () => {
     // window.history.back();
     window.history.go(-1);
   };
+  const sosSecimleri = () => {
+    let sosSecimleri = [];
+    products.map((item) => {
+      if (item.product_category === "Soslar") {
+        sosSecimleri.push(
+          <option key={item._id} value={item._id}>
+            {item.product_name}
+          </option>
+        );
+      }
+    });
+    return sosSecimleri;
+  };
+
+  const patatesKizartmalari = () => {
+    let patatesKizartmalari = [];
+    for (let i = 0; i < menu.menu_cips_selection.length; i++) {
+      patatesKizartmalari.push(
+        <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
+          <h1 className="text-lg font-bold ">
+            {i + 1}. Patates Kızartması Seçimi
+          </h1>
+          <select
+            className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
+            onChange={(e) => {
+              let prdt = products.find((item) => item._id === e.target.value);
+              let newMenu = { ...menu };
+
+              let choosingCipsPrice = prdt.product_price;
+              let currentCipsPrice = menu.menu_cips_selection[i][2];
+
+              if (choosingCipsPrice > currentCipsPrice) {
+                let fark = choosingCipsPrice - currentCipsPrice;
+
+                setMenu({
+                  ...menu,
+                  menu_cips_selection: [
+                    ...menu.menu_cips_selection.slice(0, i),
+                    [prdt.product_name, prdt._id, prdt.product_price],
+                    ...menu.menu_cips_selection.slice(i + 1),
+                  ],
+                  menu_price: menu.menu_price + fark,
+                });
+              }
+              if (choosingCipsPrice < currentCipsPrice) {
+                console.log("choosing cips price is bigger");
+                let fark = choosingCipsPrice - currentCipsPrice;
+                console.log("fark", fark);
+                setMenu({
+                  ...menu,
+                  menu_cips_selection: [
+                    ...menu.menu_cips_selection.slice(0, i),
+                    [prdt.product_name, prdt._id, prdt.product_price],
+                    ...menu.menu_cips_selection.slice(i + 1),
+                  ],
+                  menu_price: menu.menu_price + fark,
+                });
+              }
+            }}
+            value={menu.menu_cips_selection[i][1]}
+          >
+            {patatesKizartmasiSecenekleri()}
+          </select>
+        </div>
+      );
+    }
+    return patatesKizartmalari;
+  };
+  const patatesKizartmasiSecenekleri = (i) => {
+    let patatesKizartmasiSecenekleri = [];
+    products.map((product) => {
+      if (product.product_category === "Patates Cipsi") {
+        patatesKizartmasiSecenekleri.push(
+          <option key={product._id} value={product._id}>
+            {product.product_name} - {product.product_price} TL
+          </option>
+        );
+      }
+    });
+
+    return patatesKizartmasiSecenekleri;
+  };
+
   const icindekiler = () => {
     let icindekiler = [];
     for (let i = 0; i < menu.menu_burger_selection.length; i++) {
       icindekiler.push(
-        <div
-          key={i}
-          className="relative flex flex-col mt-auto  h-auto p-4   w-full"
-        >
+        <div key={i} className="relative flex flex-col  h-auto p-4   w-full">
           <h1 className="text-lg font-bold ">
-            {menu.menu_burger_selection[i][0]} İçindekiler
+            {i + 1}. {menu.menu_burger_selection[i][0]} İçindekiler
           </h1>
           <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
             {fonksiyonPozitif(i)}
@@ -454,67 +539,18 @@ const AddToCartForMenus = () => {
             </h1>
           </div>
           {/* buraya sleeect box koyulacak. */}
-          {icindekiler()}
-          <div className="relative flex flex-col p-2 w-full h-60 border border-gray-600">
-            <div>
-              <label htmlFor="menu_drink_selection" className="m-3">
-                1.Atistirmalik secimi
-              </label>
-              <select
-                id="menu_snacks_selection"
-                name="menu_snacks_selection"
-                className="w-2/3 ml-3 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-                onChange={(e) => changedSnack1(e)}
-                value={menu.menu_snacks_selection[0]}
-              >
-                <option value={menu.menu_snacks_selection[0]}>
-                  {menu.menu_snacks_selection[0]}
-                </option>
-                {products.map((product) => {
-                  if (
-                    product.product_category === "Atıştırmalıklar" &&
-                    product.product_name !== menu.menu_snacks_selection[0]
-                  ) {
-                    return (
-                      <option key={product._id} value={product.product_name}>
-                        {product.product_name}
-                      </option>
-                    );
-                  }
-                })}
-              </select>
+          <div className="flex flex-col w-full p-2">
+            <h1 className="text-lg font-bold">Menu Icerigi</h1>
+            <p className="text-sm font-bold m-auto p-2">Hamburger Secimi</p>
+            <div className="flex flex-col w-full max-h-60 overflow-y-scroll">
+              {icindekiler()}
             </div>
-
-            {menu.menu_snacks_selection[1] && (
-              <div className="mt-3">
-                <label htmlFor="menu_drink_selection" className="m-3">
-                  2.Atistirmalik secimi
-                </label>
-                <select
-                  id="menu_snacks_selection"
-                  name="menu_snacks_selection"
-                  className="w-2/3 ml-3 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-                  onChange={(e) => changedSnack2(e)}
-                  value={menu.menu_snacks_selection[1]}
-                >
-                  <option value={menu.menu_snacks_selection[1]}>
-                    {menu.menu_snacks_selection[1]}
-                  </option>
-                  {products.map((product) => {
-                    if (
-                      product.product_category === "Atıştırmalıklar" &&
-                      product.product_name !== menu.menu_snacks_selection[1]
-                    ) {
-                      return (
-                        <option key={product._id} value={product.product_name}>
-                          {product.product_name}
-                        </option>
-                      );
-                    }
-                  })}
-                </select>
-              </div>
-            )}
+            <p className="text-sm font-bold m-auto p-2 ">Patates Secimi</p>
+            <div className="flex flex-col w-full h-auto ">
+              {patatesKizartmalari()}
+            </div>
+            <p className="text-sm font-bold m-auto p-2 ">Sos Secimi</p>
+            <div className="flex flex-col w-full h-auto ">{sosSecimleri()}</div>
           </div>
 
           <div className="relative flex flex-col mt-auto p-2 h-60   w-full">
