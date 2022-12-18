@@ -39,9 +39,9 @@ const AddToCartForMenus = () => {
     _id: "",
   });
 
+  // burger icindei seceneklerin bilgileri alınıyor
   const [productContentArray, setProductContentArray] = useState([]);
   const [productContentArray2, setProductContentArray2] = useState([]);
-
   const [productContentArray3, setProductContentArray3] = useState([]);
   const [productContentArray4, setProductContentArray4] = useState([]);
 
@@ -50,6 +50,7 @@ const AddToCartForMenus = () => {
   const [deletedItems3, setDeletedItems3] = useState([]);
   const [deletedItems4, setDeletedItems4] = useState([]);
 
+  // item silme islemi
   const handleDelete = (item, i) => {
     switch (i) {
       case 0:
@@ -87,6 +88,7 @@ const AddToCartForMenus = () => {
     }
   };
 
+  // silinen itemleri tekrar ekleme
   const handleAdd = (item, i) => {
     switch (i) {
       case 0:
@@ -122,6 +124,7 @@ const AddToCartForMenus = () => {
     }
   };
 
+  // sayfa yüklendiginde bilgiler alınıp local state e atılıyor
   const initSetMenu = () => {
     const menu = menus.find((item) => item._id === id);
     // create await function for filter
@@ -162,6 +165,7 @@ const AddToCartForMenus = () => {
     });
   };
 
+  // menu sayısı arttırlıp azaltıulıyor
   const inCrease = () => {
     setMenuAdet(menuAdet + 1);
   };
@@ -170,22 +174,8 @@ const AddToCartForMenus = () => {
       setMenuAdet(menuAdet - 1);
     }
   };
-  const changedSnack1 = (e) => {
-    const newMenu = { ...menu };
-    newMenu.menu_snacks_selection = [
-      e.target.value,
-      newMenu.menu_snacks_selection[1],
-    ];
-    setMenu(newMenu);
-  };
-  const changedSnack2 = (e) => {
-    const newMenu = { ...menu };
-    newMenu.menu_snacks_selection = [
-      newMenu.menu_snacks_selection[0],
-      e.target.value,
-    ];
-    setMenu(newMenu);
-  };
+
+  // menu sepete ekleniyor
   const addToCartButton = () => {
     const urun = {
       __id: Math.random(),
@@ -231,12 +221,14 @@ const AddToCartForMenus = () => {
     alertify.success(urun.urunAdi + " Sepete Eklendi");
     closeWindow();
   };
+  // ekran kapatılıyor
   const closeWindow = () => {
     // go back to previous window code
     setShow(false);
     // window.history.back();
     window.history.go(-1);
   };
+  // sos ekleniyor
   const sosSecimleri = () => {
     let sosSecimleri = [];
     products.map((item) => {
@@ -251,6 +243,7 @@ const AddToCartForMenus = () => {
     return sosSecimleri;
   };
 
+  // patates kızartması seçimi yapılıyor
   const patatesKizartmalari = () => {
     let patatesKizartmalari = [];
     for (let i = 0; i < menu.menu_cips_selection.length; i++) {
@@ -320,6 +313,7 @@ const AddToCartForMenus = () => {
     return patatesKizartmasiSecenekleri;
   };
 
+  // burger icindekiler kısmı yazılıyor
   const icindekiler = () => {
     let icindekiler = [];
     for (let i = 0; i < menu.menu_burger_selection.length; i++) {
@@ -493,6 +487,7 @@ const AddToCartForMenus = () => {
     }
     return array;
   };
+
   useEffect(() => {
     initSetMenu();
     setShow(true);
