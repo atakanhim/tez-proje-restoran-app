@@ -1,17 +1,47 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setOrders, clearCart } from "../../../store/slices/restoranSlice";
 import { useSelector } from "react-redux";
 
+import { getOrdersFromDB, addOrderDB } from "../../../api/api";
+
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
+import { useEffect } from "react";
+
 const Cart = () => {
-  const { cart } = useSelector((state) => state.restoran);
-  // get masa no code
-  const { masaNo } = useSelector((state) => state.restoran);
+  const dispatch = useDispatch();
+  const { products, categories, menus, cart, masaNo } = useSelector(
+    (state) => state.restoran
+  );
   const cartTotal = cart.reduce((total, item) => {
     return (total += item.siparisToplamTutar);
   }, 0);
-  useEffect(() => {
-    console.log(cart);
-  }, []);
+
+  const refreshOrdersFunction = async () => {
+    const response = await getOrdersFromDB(); // apiden gelen verileri response değişkenine atadık
+    dispatch(setOrders(response)); // response değişkenini global state e atadık
+  };
+
+  const setOrderDbFunction = async () => {
+    const order = {
+      orderTableNo: masaNo,
+      orderStatus: "Restoran Onayı Bekleniyor",
+      orderTotalPrice: cartTotal,
+      orderProducts: cart,
+      orderDate: new Date(),
+    };
+    // eslint-disable-next-line no-unused-vars
+    const response = await addOrderDB(order);
+
+    dispatch(clearCart());
+    alertify.success("siparis verildi takip ekranından takip edebilirsiniz");
+    refreshOrdersFunction();
+  };
+  const addOrder = () => {
+    setOrderDbFunction();
+    console.log("siparis verildi");
+  };
 
   return (
     <div>
@@ -32,7 +62,10 @@ const Cart = () => {
         <h1>Sepet bos , masa no : {masaNo} </h1>
       )}
       <h1>Toplam Tutar : {cartTotal}</h1>
-      <button className="border-4 bg-green-300 text-black border-green-600">
+      <button
+        className="border-4 bg-green-300 text-black border-green-600"
+        onClick={addOrder}
+      >
         Sipariş ver
       </button>
     </div>

@@ -254,7 +254,10 @@ const AddToCartForMenus = () => {
     for (let i = 0; i < menu.menu_drink_selection.length; i++) {
       icecekler.push(
         <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
-          <h1 className="text-lg font-bold ">{i + 1}. İçecek Seçimi</h1>
+          <h1 className="text-lg font-bold ">
+            {" "}
+            {i > 0 ? i + 1 + "." : ""} İçecek Seçimi
+          </h1>
           <select
             className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
             onChange={(e) => {
@@ -328,7 +331,9 @@ const AddToCartForMenus = () => {
       } else {
         soslar.push(
           <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
-            <h1 className="text-lg font-bold ">{i + 1}. Sos Seçimi</h1>
+            <h1 className="text-lg font-bold ">
+              {i > 0 ? i + 1 + "." : ""} Sos Seçimi
+            </h1>
             <select
               className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
               onChange={(e) => {
@@ -398,7 +403,7 @@ const AddToCartForMenus = () => {
       patatesKizartmalari.push(
         <div key={i} className="relative flex flex-col   h-auto p-4   w-full">
           <h1 className="text-lg font-bold ">
-            {i + 1}. Patates Kızartması Seçimi
+            {i > 0 ? i + 1 + "." : ""} Patates Kızartması Seçimi
           </h1>
           <select
             className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-3/4 h-auto  "
@@ -470,7 +475,8 @@ const AddToCartForMenus = () => {
       icindekiler.push(
         <div key={i} className="relative flex flex-col  h-auto p-4   w-full">
           <h1 className="text-lg font-bold ">
-            {i + 1}. {menu.menu_burger_selection[i][0]} İçindekiler
+            {i > 0 ? i + 1 + "." : ""} {menu.menu_burger_selection[i][0]}{" "}
+            İçindekiler
           </h1>
           <ul className="flex  p-2 gap-2 flex-wrap flex-grow flex-row w-full h-auto  ">
             {fonksiyonPozitif(i)}
@@ -686,16 +692,16 @@ const AddToCartForMenus = () => {
           {/* menu icerigi */}
           <div className="flex flex-col w-full p-2">
             <h1 className="text-lg font-bold">Menu Icerigi</h1>
-            <p className="text-sm font-bold m-auto p-2">Hamburger Secimi</p>
+            <p className="text-sm font-bold m-auto w-full border border-gray-200"></p>
             <div className="flex flex-col w-full max-h-60 overflow-y-scroll">
               {icindekiler()}
             </div>
-            <p className="text-sm font-bold m-auto p-2 ">Patates Secimi</p>
+            <p className="text-sm font-bold m-auto w-full border border-gray-200"></p>
             <div className="flex flex-col w-full h-auto ">
               {patatesKizartmalari()}
             </div>
 
-            <p className="text-sm font-bold m-auto p-2 ">Sos Secimi</p>
+            <p className="text-sm font-bold m-auto w-full border border-gray-200"></p>
             <div className="flex flex-col w-full h-auto ">
               {menu.menu_sauce_selection.length > 0 ? (
                 sosSecim()
@@ -705,7 +711,7 @@ const AddToCartForMenus = () => {
                 </h1>
               )}
             </div>
-            <p className="text-sm font-bold m-auto p-2 ">İçecek Secimi</p>
+            <p className="text-sm font-bold m-auto w-full border border-gray-200"></p>
             <div className="flex flex-col w-full h-auto ">{icecekSecim()}</div>
           </div>
 

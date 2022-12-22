@@ -9,11 +9,13 @@ import {
   setCategories,
   setProducts,
   setMenus,
+  setOrders,
 } from "./store/slices/restoranSlice";
 import {
   getCategoriesFromDB,
   getProductsFromDB,
   getMenusFromDB,
+  getOrdersFromDB,
 } from "./api/api";
 import {
   Categories,
@@ -25,10 +27,11 @@ import {
   Menus,
   MenuUpdate,
 } from "./components/Admin";
-import { ChefScreen, ChefHeader } from "./components/Chef";
+import { ChefScreen, ChefHeader, OrderDetails } from "./components/Chef";
 import { Cart, Footer, Home, Orders } from "./components/Customers";
 import "alertifyjs/build/css/alertify.css";
 import { AddToCart, AddToCartForMenus } from "./components/CustomCarts";
+import OrderControl from "./components/Chef/OrderControl/OrderControl";
 
 const App = () => {
   const { user, masaNo } = useSelector((state) => state.restoran);
@@ -68,6 +71,8 @@ const App = () => {
     dispatch(setProducts(respons2));
     const respons3 = await getMenusFromDB();
     dispatch(setMenus(respons3));
+    const respons4 = await getOrdersFromDB();
+    dispatch(setOrders(respons4));
   };
 
   const adminRoutes = [
@@ -110,6 +115,14 @@ const App = () => {
     {
       path: "chef/chefscreen",
       element: <ChefScreen />,
+    },
+    {
+      path: "chef/orders",
+      element: <OrderControl />,
+    },
+    {
+      path: "chef/orderdetails/:id",
+      element: <OrderDetails />,
     },
     {
       path: "chef/*",

@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 // create header for admin
 const logout = () => {
@@ -8,16 +9,25 @@ const logout = () => {
 const ChefHeader = () => {
   return (
     <div>
-      <div className="flex justify-between items-center bg-gray-800 p-4 z-40 fixed w-full">
+      <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6 z-30   ">
         <div className="flex items-center">
-          <div className="text-white font-bold text-2xl">ChefHeader</div>
+          <div className="text-white font-bold text-2xl">Chef</div>
         </div>
-        <button
-          className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
-          onClick={logout}
-        >
-          Logout
-        </button>
+        <div className="flex items-center  ">
+          <ul className="flex gap-6 ">
+            <li className="text-white font-bold text-xl italic border-b border-white hover:border-[dcfce7] hover:scale-110  hover:text-[#dcfce7] rounded-lg p-2  transition-all duration-300 ease-in-out">
+              <NavLink to="/chef/orders">Siparişler</NavLink>
+            </li>
+          </ul>
+        </div>
+        <div className="flex items-center">
+          <button
+            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+            onClick={logout}
+          >
+            Logoutt
+          </button>
+        </div>
       </div>
     </div>
   );
