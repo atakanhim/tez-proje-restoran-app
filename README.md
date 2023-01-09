@@ -1,6 +1,8 @@
 # *QR Kod Restoran Uygulaması.*
 ## *Proje Açıklaması*
- *QR Kod ile giriş yapılan ve giriş yapılan masaya sipariş verilebilen bir mobil web sitesi.*<br/><br/><br/>
+ *QR Kod ile giriş yapılan ve giriş yapılan masaya sipariş verilebilen bir mobil web sitesi.*<br/>
+ *Müşteri Qr kod ile giriş yaptığında qr kod ile örneğin "http://localhost:3000/restoran/table/1" bu url taşıyor olacağız
+ ve müşteri siteye girdiğinde otomatik olarak state de tuttuğumuz değer olan masa bilgisini almış oluyoruz.*<br/><br/>
 # User Storys
 ## User Story 1 ( Ana Ekran )
 ![image](https://user-images.githubusercontent.com/52455771/211342633-24294bb2-1e09-4488-b329-16c4bb77c3ca.png)<br/>
