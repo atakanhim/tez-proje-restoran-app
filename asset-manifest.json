@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/tez-proje-restoran-app/static/css/main.93c463e0.css",
+    "main.js": "/tez-proje-restoran-app/static/js/main.cedd07e7.js",
+    "static/media/lospolos.png": "/tez-proje-restoran-app/static/media/lospolos.995a63e5b0a4006b2a38.png",
+    "index.html": "/tez-proje-restoran-app/index.html",
+    "main.93c463e0.css.map": "/tez-proje-restoran-app/static/css/main.93c463e0.css.map",
+    "main.cedd07e7.js.map": "/tez-proje-restoran-app/static/js/main.cedd07e7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.93c463e0.css",
+    "static/js/main.cedd07e7.js"
+  ]
+}
