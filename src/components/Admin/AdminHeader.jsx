@@ -1,14 +1,18 @@
 import React from "react";
 // import navlink
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // create header for admin
-const logout = () => {
-  sessionStorage.removeItem("user");
-  window.location.href = "/login";
-};
 
 const AdminHeader = () => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    sessionStorage.removeItem("user");
+
+    navigate("/login", { replace: true });
+  };
+
   return (
     <div>
       <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6 z-30   ">
