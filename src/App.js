@@ -54,6 +54,9 @@ const App = () => {
           setIsChef(false);
           break;
       }
+    } else {
+      setIsAdmin(false);
+      setIsChef(false);
     }
     console.log("user", user);
   }, [user]);

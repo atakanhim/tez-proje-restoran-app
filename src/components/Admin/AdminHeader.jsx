@@ -1,15 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 // import navlink
 import { NavLink, useNavigate } from "react-router-dom";
+import { setUser } from "../../store/slices/restoranSlice";
 
 // create header for admin
 
 const AdminHeader = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const logout = () => {
     sessionStorage.removeItem("user");
-
+    dispatch(setUser(null));
     navigate("/login", { replace: true });
   };
 

@@ -34,7 +34,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="absolute flex z-50 w-full items-center justify-center h-screen">
+    <div className="relative flex z-50 w-full items-center justify-center h-screen">
       <div className="w-1/3">
         <form onSubmit={onSubmit}>
           <div className="mb-4">

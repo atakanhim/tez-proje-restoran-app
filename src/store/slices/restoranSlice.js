@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const localMasaNo = Number(sessionStorage.getItem("masaNo")) || null;
 const user = sessionStorage.getItem("user") || null;
 const initialState = {
-  masaNo: localMasaNo,
+  masaNo: localMasaNo || 1,
   cart: [],
   total: 0,
   user: user,

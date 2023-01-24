@@ -1,15 +1,22 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { setUser } from "../../store/slices/restoranSlice";
 
 // create header for admin
-const logout = () => {
-  sessionStorage.removeItem("user");
-  window.location.href = "/login";
-};
+
 const ChefHeader = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logout = () => {
+    sessionStorage.removeItem("user");
+    dispatch(setUser(null));
+
+    navigate("/login", { replace: true });
+  };
   return (
     <div>
-      <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6 z-30   ">
+      <div className="flex fixed w-full h-16 justify-between items-center bg-gray-800 py-4 px-6    ">
         <div className="flex items-center">
           <div className="text-white font-bold text-2xl">Chef</div>
         </div>
