@@ -51,12 +51,14 @@ const MenuUpdate = () => {
     menu_snacks_selection: [],
     menu_cips_selection: [],
     menu_drink_selection: [],
+    menu_sauce_selection: [],
   });
   const [counts, setCounts] = useState({
     burgerCount: 1,
     drinkCount: 1,
     snackCount: 1,
     cipsCount: 1,
+    sauceCount: 1,
   });
   // global stateden veri çekme
   const { products, categories, menus } = useSelector(
@@ -67,6 +69,7 @@ const MenuUpdate = () => {
   const [imageAsset, setImageAsset] = useState(false);
   const [estimatedTotalAmount, setEstimatedTotalAmount] = useState(0);
   const [show, setShow] = useState(false);
+
   const renderOption = () => {
     let content = [];
 
@@ -107,10 +110,74 @@ const MenuUpdate = () => {
         total += valuesArray.menu_snacks_selection[i][2];
       }
     }
+    for (let i = 0; i < valuesArray.menu_sauce_selection.length; i++) {
+      if (
+        valuesArray.menu_sauce_selection[i] &&
+        valuesArray.menu_sauce_selection[i][2] > 0
+      ) {
+        total += valuesArray.menu_sauce_selection[i][2];
+      }
+    }
 
+    total = total.toFixed(2);
     setEstimatedTotalAmount(total);
   };
 
+  const renderSauces = () => {
+    let content = [];
+
+    for (let i = 0; i < counts.sauceCount; i++) {
+      content.push(
+        <div key={i} className=" ">
+          <p className="text-xs text-gray-600">Zorunlu Degildir</p>
+          <select
+            id="menu_sauce_selection"
+            name="menu_sauce_selection"
+            className="flex flex-col w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+            onChange={(e) => {
+              var prdt = products.find(
+                (product) => product._id === e.target.value
+              );
+
+              if (prdt) {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_sauce_selection[i] = [
+                  prdt.product_name,
+                  prdt._id,
+                  prdt.product_price,
+                ];
+
+                setValuesArray(newValuesArray);
+              } else {
+                const newValuesArray = { ...valuesArray };
+                newValuesArray.menu_sauce_selection[i] = e.target.value;
+
+                setValuesArray(newValuesArray);
+              }
+              setEstimatedTotalAmountFunction();
+            }}
+            value={
+              valuesArray.menu_sauce_selection[i]
+                ? valuesArray.menu_sauce_selection[i][1]
+                : "Eklenmedi"
+            }
+          >
+            <option value="Eklenmedi">Sos Eklemeyecegim</option>
+            {products.map((product) => {
+              if (product.product_category === "Soslar") {
+                return (
+                  <option key={product._id} value={product._id}>
+                    {product.product_name} - {product.product_price} TL
+                  </option>
+                );
+              }
+            })}
+          </select>
+        </div>
+      );
+    }
+    return content;
+  };
   const renderBurgers = () => {
     let content = [];
 
@@ -411,6 +478,7 @@ const MenuUpdate = () => {
       menu_drink_selection: valuesArray.menu_drink_selection,
       menu_snacks_selection: valuesArray.menu_snacks_selection,
       menu_cips_selection: valuesArray.menu_cips_selection,
+      menu_sauce_selection: valuesArray.menu_sauce_selection,
       menu_price: values.menu_price,
       menu_image: imageAsset,
     };
@@ -433,6 +501,7 @@ const MenuUpdate = () => {
       drinkCount: menu.menu_drink_selection.length,
       snackCount: menu.menu_snacks_selection.length,
       cipsCount: menu.menu_cips_selection.length,
+      sauceCount: menu.menu_sauce_selection.length,
     });
     setValuesArray({
       ...valuesArray,
@@ -447,6 +516,9 @@ const MenuUpdate = () => {
       ).fill(""),
       menu_cips_selection: new Array(
         parseInt(menu.menu_cips_selection.length)
+      ).fill(""),
+      menu_sauce_selection: new Array(
+        parseInt(menu.menu_sauce_selection.length)
       ).fill(""),
     });
 
@@ -518,7 +590,28 @@ const MenuUpdate = () => {
         setValuesArray(newValuesArray);
       }
     }
+    for (let i = 0; i < menu.menu_sauce_selection.length; i++) {
+      if (
+        menu.menu_sauce_selection[i] === undefined ||
+        menu.menu_sauce_selection[i] === null
+      ) {
+        continue;
+      }
+      let prdt = products.find(
+        (product) => product._id === menu.menu_sauce_selection[i][1]
+      );
 
+      if (prdt) {
+        let newValuesArray = { ...valuesArray };
+
+        newValuesArray.menu_sauce_selection[i] = [
+          prdt.product_name,
+          prdt._id,
+          prdt.product_price,
+        ];
+        setValuesArray(newValuesArray);
+      }
+    }
     setValues({
       menu_name: menu.menu_name,
       menu_price: menu.menu_price,
@@ -576,6 +669,7 @@ const MenuUpdate = () => {
                   onSubmit={formik.handleSubmit}
                   className="flex flex-col items-center justify-center w-full gap-5"
                 >
+                  {/* menu adı */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="menu_name">Menü Adı</label>
                     <input
@@ -593,7 +687,7 @@ const MenuUpdate = () => {
                       </div>
                     ) : null}
                   </div>
-
+                  {/* eklenen hamburgerler */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="menu_burger_selection">
                       Eklenecek Hamburger sayısını seciniz
@@ -618,6 +712,7 @@ const MenuUpdate = () => {
                     </select>
                     {counts.burgerCount > 0 ? renderBurgers() : null}
                   </div>
+                  {/* eklenen cipsler */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="menu_cips_selection">
                       Eklenecek Cips sayısını seciniz
@@ -642,6 +737,7 @@ const MenuUpdate = () => {
                     </select>
                     {counts.cipsCount > 0 ? renderCips() : null}
                   </div>
+                  {/* eklenen icecekler */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="menu_drink_selection">
                       Eklenecek İçecek sayısını seciniz
@@ -666,6 +762,7 @@ const MenuUpdate = () => {
                     </select>
                     {counts.drinkCount > 0 ? renderDrinks() : null}
                   </div>
+                  {/* eklenen atistirmaliklar  */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="menu_burger_selection">
                       Eklenecek Atıştırmalık sayısını seciniz
@@ -690,6 +787,32 @@ const MenuUpdate = () => {
                     </select>
                     {counts.snackCount > 0 ? renderSnacks() : null}
                   </div>
+                  {/* eklenen soslar */}
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="menu_sauce_selection">
+                      Eklenecek Sos sayısını seciniz
+                    </label>
+                    <select
+                      className="w-12 h-6  border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={(e) => {
+                        setCounts({
+                          ...counts,
+                          sauceCount: e.target.value,
+                        });
+                        setValuesArray({
+                          ...valuesArray,
+                          menu_sauce_selection: new Array(
+                            parseInt(e.target.value)
+                          ).fill(""),
+                        });
+                      }}
+                      value={counts.sauceCount}
+                    >
+                      {renderOption()}
+                    </select>
+                    {counts.sauceCount > 0 ? renderSauces() : null}
+                  </div>
+                  {/* menu fiyati */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="product_price">Menü Fiyati</label>
                     <p className="text-xs text-gray-600">
@@ -711,6 +834,7 @@ const MenuUpdate = () => {
                       </div>
                     ) : null}
                   </div>
+                  {/* menu resim */}
                   <div className="flex justify-center items-center w-2/5">
                     <div
                       className="flex justify-center items-center flex-col border-2 border-dotted
@@ -760,7 +884,7 @@ const MenuUpdate = () => {
                       )}
                     </div>
                   </div>
-
+                  {/* menu ekle button */}
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <button
                       type="submit"

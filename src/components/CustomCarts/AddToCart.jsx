@@ -77,6 +77,8 @@ const AddToCart = () => {
     }
   };
   const addToCartButton = () => {
+    let istenmeyenMalzemelerText = "";
+
     const urun = {
       __id: Math.random(),
       urunId: product._id,
@@ -85,10 +87,12 @@ const AddToCart = () => {
       urunAdet: urunAdet,
       urunNotu: urunNotu,
       siparisToplamTutar: urunAdet * product.product_price,
+      istenmeyenMalzemeler: istenmeyenMalzemelerText,
     };
+
     if (deletedItems.length > 0) {
-      urun.urunNotu =
-        urun.urunNotu + " Çıkarılacak Malzemeler : " + deletedItems.join(", ");
+      urun.istenmeyenMalzemeler +=
+        "1. Hamburger için Çıkarılacak Malzemeler : " + deletedItems.join(", ");
     }
 
     var newCart = [...cart, urun];
