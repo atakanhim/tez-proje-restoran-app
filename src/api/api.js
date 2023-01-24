@@ -43,6 +43,60 @@ export const addCategoryDB = async (x, y, z) => {
     });
   return response;
 };
+
+// menus
+
+export const getMenusFromDB = async () => {
+  const response = await axios.get("http://localhost:5000/api/menu");
+  return response.data;
+};
+export const deleteMenuDB = async (id) => {
+  const response = await axios.delete(`http://localhost:5000/api/menu/${id}`);
+  return response.data;
+};
+export const deleteAllMenusDB = async () => {
+  const response = await axios.delete(`http://localhost:5000/api/menu`);
+  return response.data;
+};
+export const updateMenuDB = async (menu) => {
+  console.log(menu);
+
+  const response = await axios
+    .put(`http://localhost:5000/api/menu/${menu._id}`, menu)
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response.data;
+};
+export const addMenuDB = async (
+  menu_name,
+  menu_burger_selection,
+  menu_snacks_selection,
+  menu_drink_selection,
+  menu_cips_selection,
+  menu_price,
+  menu_image
+) => {
+  const response = await axios
+    .post("http://localhost:5000/api/menu", {
+      menu_name: menu_name,
+      menu_burger_selection: menu_burger_selection,
+      menu_snacks_selection: menu_snacks_selection,
+      menu_drink_selection: menu_drink_selection,
+      menu_cips_selection: menu_cips_selection,
+      menu_price: menu_price,
+      menu_image: menu_image,
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return response;
+};
+
 // products
 export const updateProductDB = async (product) => {
   console.log(product);
@@ -64,7 +118,8 @@ export const addProductDB = async (
   product_descriptionValue,
   product_imageValue,
   product_priceValue,
-  product_categoryValue
+  product_categoryValue,
+  product_contentValue
 ) => {
   const response = await axios
     .post("http://localhost:5000/api/product", {
@@ -73,6 +128,7 @@ export const addProductDB = async (
       product_description: product_descriptionValue,
       product_category: product_categoryValue,
       product_price: product_priceValue,
+      product_content: product_contentValue,
     })
     .then((res) => {
       console.log(res.data);

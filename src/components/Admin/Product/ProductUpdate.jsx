@@ -34,6 +34,7 @@ const ProductUpdate = () => {
   const [product, setProduct] = useState({
     product_name: "",
     product_description: "",
+    product_content: "",
     product_price: "",
     product_category: "",
     _id: "",
@@ -114,6 +115,7 @@ const ProductUpdate = () => {
       product_description: values.product_description.trim(),
       product_price: values.product_price,
       product_category: values.product_category.trim(),
+      product_content: values.product_content.trim(),
       _id: id,
       product_image: imageAsset,
     })
@@ -134,6 +136,7 @@ const ProductUpdate = () => {
       product_description: product.product_description,
       product_price: product.product_price,
       product_category: product.product_category,
+      product_content: product.product_content,
       _id: product._id,
     });
     setImageAsset(product.product_image);
@@ -151,10 +154,7 @@ const ProductUpdate = () => {
       {show ? (
         <div className="relative z-10 flex items-center w-full gap-7 bg-gray-200 flex-col p-5 h-full ">
           <div className="w-full  mt-16 flex items-center justify-center p-3">
-            <p className="text-gray-800 text-3xl italic">
-              {" "}
-              Ürün Ekle / Sil / Güncelle
-            </p>
+            <p className="text-gray-800 text-3xl italic"> Ürün Güncelle</p>
           </div>
           <div className="flex flex-col  items-center justify-center w-1/2 h-auto px-4 py-10 bg-gray-300 rounded-lg shadow-lg ">
             <Formik
@@ -167,6 +167,9 @@ const ProductUpdate = () => {
                 ),
                 product_category: Yup.string().required(
                   "Ürünün kategorisi zorunludur"
+                ),
+                product_content: Yup.string().required(
+                  "Ürün içeriği zorunludur"
                 ),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -210,6 +213,7 @@ const ProductUpdate = () => {
                       </div>
                     ) : null}
                   </div>
+
                   <div className="flex flex-col items-center justify-center w-full gap-2">
                     <label htmlFor="product_description">Ürün Açıklaması</label>
                     <input
@@ -225,6 +229,28 @@ const ProductUpdate = () => {
                     formik.errors.product_description ? (
                       <div className="text-red-500">
                         {formik.errors.product_description}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col items-center justify-center w-full gap-2">
+                    <label htmlFor="product_content">Ürün İçindekiler</label>
+                    <p className="text-xs text-gray-600">
+                      Virgül ' , ' işaretini kullanarak malzemeleri
+                      ayırabilirsiniz.(Örnek:Soğan,Domates,Patates)
+                    </p>
+                    <input
+                      type="text"
+                      id="product_content"
+                      name="product_content"
+                      placeholder="Ürün İçindekiler"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                      onChange={formik.handleChange}
+                      value={formik.values.product_content}
+                    />
+                    {formik.touched.product_content &&
+                    formik.errors.product_content ? (
+                      <div className="text-red-500">
+                        {formik.errors.product_content}
                       </div>
                     ) : null}
                   </div>

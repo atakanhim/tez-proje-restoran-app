@@ -9,6 +9,7 @@ const initialState = {
   user: user,
   categories: [],
   products: [],
+  menus: [],
   currentCategory: "Tüm Ürünler",
 };
 
@@ -31,6 +32,11 @@ const restoranSlice = createSlice({
         return { ...state, currentCategory: action.payload };
       },
     },
+    setMenus: {
+      reducer: (state, action) => {
+        return { ...state, menus: action.payload };
+      },
+    },
     setProducts: {
       reducer: (state, action) => {
         return { ...state, products: action.payload };
@@ -39,6 +45,11 @@ const restoranSlice = createSlice({
     setUser: {
       reducer: (state, action) => {
         return { ...state, user: action.payload };
+      },
+    },
+    addToCart: {
+      reducer: (state, action) => {
+        return { ...state, cart: action.payload };
       },
     },
   },
@@ -50,6 +61,8 @@ export const {
   setCurrentCategory,
   setUser,
   setProducts,
+  setMenus,
+  addToCart,
 } = restoranSlice.actions;
 
 export default restoranSlice.reducer;
