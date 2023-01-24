@@ -1,27 +1,26 @@
 import axios from "axios";
 // categories
 
+const API_URL = "https://server-atakanhm.onrender.com/";
+
 export const getCategoriesFromDB = async () => {
-  const response = await axios.get("http://localhost:5000/api/category");
+  const response = await axios.get(API_URL + "api/category");
   return response.data;
 };
 export const deleteCategoryDB = async (id) => {
-  const response = await axios.delete(
-    `http://localhost:5000/api/category/${id}`
-  );
+  const response = await axios.delete(API_URL + `api/category/${id}`);
   return response.data;
 };
 export const deleteAllCategoriesDB = async () => {
-  const response = await axios.delete(`http://localhost:5000/api/category`);
+  const response = await axios.delete(API_URL + `api/category`);
   return response.data;
 };
 export const updateCategoryDB = async (category) => {
   console.log(category);
-  const response = await axios
-    .put(`http://localhost:5000/api/category/${category._id}`, category)
-    .catch((err) => {
-      console.log(err);
-    });
+  let url = API_URL + `api/category/${category._id}`;
+  const response = await axios.put(url, category).catch((err) => {
+    console.log(err);
+  });
 
   return response.data;
 };
@@ -29,7 +28,7 @@ export const addCategoryDB = async (x, y, z) => {
   console.log("add category " + x, y);
 
   const response = await axios
-    .post("http://localhost:5000/api/category", {
+    .post(API_URL + "api/category", {
       category_name: x,
       category_description: y,
       category_image: z,
@@ -47,25 +46,23 @@ export const addCategoryDB = async (x, y, z) => {
 // menus
 
 export const getMenusFromDB = async () => {
-  const response = await axios.get("http://localhost:5000/api/menu");
+  const response = await axios.get(API_URL + "api/menu");
   return response.data;
 };
 export const deleteMenuDB = async (id) => {
-  const response = await axios.delete(`http://localhost:5000/api/menu/${id}`);
+  const response = await axios.delete(API_URL + `api/menu/${id}`);
   return response.data;
 };
 export const deleteAllMenusDB = async () => {
-  const response = await axios.delete(`http://localhost:5000/api/menu`);
+  const response = await axios.delete(API_URL + `api/menu`);
   return response.data;
 };
 export const updateMenuDB = async (menu) => {
   console.log(menu);
-
-  const response = await axios
-    .put(`http://localhost:5000/api/menu/${menu._id}`, menu)
-    .catch((err) => {
-      console.log(err);
-    });
+  let url = API_URL + `api/menu/${menu._id}`;
+  const response = await axios.put(url, menu).catch((err) => {
+    console.log(err);
+  });
 
   return response.data;
 };
@@ -75,16 +72,18 @@ export const addMenuDB = async (
   menu_snacks_selection,
   menu_drink_selection,
   menu_cips_selection,
+  menu_sauce_selection,
   menu_price,
   menu_image
 ) => {
   const response = await axios
-    .post("http://localhost:5000/api/menu", {
+    .post(API_URL + "api/category", {
       menu_name: menu_name,
       menu_burger_selection: menu_burger_selection,
       menu_snacks_selection: menu_snacks_selection,
       menu_drink_selection: menu_drink_selection,
       menu_cips_selection: menu_cips_selection,
+      menu_sauce_selection: menu_sauce_selection,
       menu_price: menu_price,
       menu_image: menu_image,
     })
@@ -100,17 +99,15 @@ export const addMenuDB = async (
 // products
 export const updateProductDB = async (product) => {
   console.log(product);
-
-  const response = await axios
-    .put(`http://localhost:5000/api/product/${product._id}`, product)
-    .catch((err) => {
-      console.log(err);
-    });
+  let url = API_URL + `api/product/${product._id}`;
+  const response = await axios.put(url, product).catch((err) => {
+    console.log(err);
+  });
 
   return response.data;
 };
 export const getProductsFromDB = async () => {
-  const response = await axios.get("http://localhost:5000/api/product");
+  const response = await axios.get(API_URL + "api/product");
   return response.data;
 };
 export const addProductDB = async (
@@ -122,7 +119,7 @@ export const addProductDB = async (
   product_contentValue
 ) => {
   const response = await axios
-    .post("http://localhost:5000/api/product", {
+    .post(API_URL + "api/product", {
       product_name: product_nameValue,
       product_image: product_imageValue,
       product_description: product_descriptionValue,
@@ -139,13 +136,46 @@ export const addProductDB = async (
   return response;
 };
 export const deleteProductDB = async (id) => {
-  const response = await axios.delete(
-    `http://localhost:5000/api/product/${id}`
-  );
+  const response = await axios.delete(API_URL + `api/product/${id}`);
 
   return response.data;
 };
 export const deleteAllProductsDB = async () => {
-  const response = await axios.delete(`http://localhost:5000/api/product`);
+  const response = await axios.delete(API_URL + `api/product`);
   return response.data;
+};
+
+// orders
+export const getOrdersFromDB = async () => {
+  const response = await axios.get(API_URL + "api/order");
+  return response.data;
+};
+export const deleteOrderDB = async (id) => {
+  const response = await axios.delete(API_URL + `api/order/${id}`);
+  return response.data;
+};
+export const deleteAllOrdersDB = async () => {
+  const response = await axios.delete(API_URL + `api/order`);
+  return response.data;
+};
+export const updateOrderDB = async (order) => {
+  console.log(order);
+
+  let url = API_URL + `api/order/${order._id}`;
+  const response = await axios.put(url, order).catch((err) => {
+    console.log(err);
+  });
+
+  return response.data;
+};
+export const addOrderDB = async (order) => {
+  const response = await axios
+    .post(API_URL + "api/order", order)
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return response;
 };
