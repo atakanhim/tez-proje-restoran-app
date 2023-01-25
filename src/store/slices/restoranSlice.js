@@ -2,8 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { nanoid } from "@reduxjs/toolkit";
 const localMasaNo = Number(sessionStorage.getItem("masaNo")) || null;
 const user = sessionStorage.getItem("user") || null;
+// random masaNo
+const random = Math.floor(Math.random() * 1000) + 1;
+
 const initialState = {
-  masaNo: localMasaNo || 1,
+  masaNo: localMasaNo || random,
   cart: [],
   total: 0,
   user: user,
