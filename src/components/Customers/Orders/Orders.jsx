@@ -50,7 +50,7 @@ const Orders = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 p-3 items-center w-full h-auto ">
+    <div className="flex flex-col gap-5 p-3 items-center w-full h-auto mb-[110px]">
       <h1 className="flex gap-6 p-2 text-lg">SİPARİŞLERİM</h1>
       <Button variant="contained" onClick={Yenile}>
         Yenile
@@ -62,7 +62,7 @@ const Orders = () => {
             // item.orderStatus !== "Sipariş Teslim Edildi" && (
             <div
               key={item._id}
-              className="w-full h-auto border border-purple-600 p-3"
+              className="w-full  h-auto border border-purple-600 p-3"
             >
               <div>
                 <p className="text-xs">{item.orderStatus}</p>

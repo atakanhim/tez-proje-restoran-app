@@ -135,7 +135,7 @@ const App = () => {
 
   return (
     <AnimatePresence exitBeforeEnter>
-      <div className="w-full  gap-2  flex  flex-col  text-base font-bold  ">
+      <div className="w-full sm:w-[425px]   gap-2  flex  flex-col my-0 mx-auto   text-base font-bold  ">
         {masaNo ? (
           <>
             <Routes>

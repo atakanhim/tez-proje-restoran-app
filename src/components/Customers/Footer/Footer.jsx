@@ -71,7 +71,7 @@ const Footer = () => {
   const { cart } = useSelector((state) => state.restoran);
 
   return (
-    <div className=" flex items-center flex-row w-full h-20 pt-4 bg-slate-100 bottom-0 fixed">
+    <div className=" w-full sm:w-[425px] flex items-center flex-row  h-20 pt-4 bg-slate-100 bottom-0 fixed">
       <div className="flex relative flex-row w-full h-full justify-between  items-center bg-white ">
         <div className="flex flex-col w-1/3 h-full justify-center items-center ">
           <HomeIcon

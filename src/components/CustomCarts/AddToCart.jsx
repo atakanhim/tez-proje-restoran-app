@@ -109,11 +109,11 @@ const AddToCart = () => {
   return (
     <>
       <div
-        className={`relative flex w-full  items-center justify-center h-auto mb-32  transition-all duration-500 ease-in-out  ${
+        className={`relative flex w-full   items-center justify-center h-auto mb-32  transition-all duration-500 ease-in-out  ${
           show ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="flex flex-col p-1 w-full items-center gap-2 md:w-1/2">
+        <div className="flex flex-col p-1 w-full items-center gap-2 ">
           <div
             className="flex  left-0 top-0 p-3 z-50 fixed"
             onClick={closeWindow}

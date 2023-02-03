@@ -44,7 +44,7 @@ const Cart = () => {
   };
 
   return (
-    <div>
+    <div className="">
       {cart.length > 0 ? (
         cart.map((item) => (
           <div

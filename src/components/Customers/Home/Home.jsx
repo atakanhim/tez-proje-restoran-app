@@ -21,9 +21,9 @@ const Home = () => {
   };
 
   return (
-    <div className="  w-full bg-white flex items-center flex-col gap-3 mb-[110px]  ">
+    <div className="  w-full bg-white flex items-center flex-col gap-3 mb-[110px] p-3  ">
       {/* menuler listeleniyor */}
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full px-5">
         <p className="text-xl text-slate-400 ml-5">Menuler</p>
         {menus.map((menu) => {
           return (
@@ -61,7 +61,7 @@ const Home = () => {
         })}
       </div>
       {/* kategoriler listeleniyor */}
-      <div className="flex flex-col justify-between w-full md:w-1/2 h-1/2 gap-5 p-1">
+      <div className="flex flex-col justify-between w-full  h-1/2 gap-5 px-5">
         {categories.map((category) => {
           return (
             <div key={category._id} className="flex flex-col">
