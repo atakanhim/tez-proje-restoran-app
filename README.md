@@ -2,7 +2,7 @@
 [Demo For Phone Size](https://hmburger.onrender.com/)
 ## *Proje Açıklaması*
  *QR Kod ile giriş yapılan ve giriş yapılan masaya sipariş verilebilen bir mobil web sitesi.*<br/>
- *Müşteri Qr kod ile giriş yaptığında qr kod ile örneğin ['http://hmrestaurant/restoran/table/1'](https://hmburger.onrender.com/) bu url taşıyor olacağız
+ *Müşteri Qr kod ile giriş yaptığında qr kod ile örneğin ['http://hmrestaurant/restoran/table/1'](https://hmburger.onrender.com/) bu url taşıyor olacağız.
  ve müşteri siteye girdiğinde otomatik olarak state de tuttuğumuz değer olan masa bilgisini almış oluyoruz.*<br/><br/>
 # User Storys
 ## User Story 1 ( Ana Ekran )
